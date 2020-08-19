@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "a",
+    "b"
+  ],
+  "key": {
+    "a": {
+      "item": "minecraft:bucket"
+    },
+    "b": {
+      "item": "fluidsystem:structural_tank_block"
+    }
+  },
+  "result": {
+    "item": "fluidsystem:input_pipe"
+  }
+}

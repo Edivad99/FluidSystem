@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "name": "infinite_water_source",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "fluidsystem:infinite_water_source"
+        }
+      ]
+    }
+  ]
+}

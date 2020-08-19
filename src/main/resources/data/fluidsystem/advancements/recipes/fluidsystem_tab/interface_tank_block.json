@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "fluidsystem:interface_tank_block"
+    ]
+  },
+  "criteria": {
+    "structural_tank_block": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fluidsystem:structural_tank_block"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "fluidsystem:interface_tank_block"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "structural_tank_block",
+      "has_the_recipe"
+    ]
+  ]
+}

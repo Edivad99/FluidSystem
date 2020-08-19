@@ -1,0 +1,77 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "fluidsystem:blocks/pipe",
+    "fluidsystem:pipe": "fluidsystem:blocks/pipe"
+  },
+  "elements": [
+    {
+      "from": [
+        3.2,
+        3.2,
+        3.2
+      ],
+      "to": [
+        12.8,
+        12.8,
+        12.8
+      ],
+      "faces": {
+        "down": {
+          "texture": "fluidsystem:pipe",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "up": {
+          "texture": "fluidsystem:pipe",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "north": {
+          "texture": "fluidsystem:pipe",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "fluidsystem:pipe",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "west": {
+          "texture": "fluidsystem:pipe",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "east": {
+          "texture": "fluidsystem:pipe",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        }
+      }
+    }
+  ]
+}

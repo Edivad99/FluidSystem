@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "fluidsystem:block/infinite_water_source"
+    }
+  }
+}

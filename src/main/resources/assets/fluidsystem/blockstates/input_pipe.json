@@ -1,0 +1,50 @@
+{
+  "variants": {
+    "facing=down,powered=false": {
+      "model": "fluidsystem:block/input_pipe_off",
+      "x": 90
+    },
+    "facing=up,powered=false": {
+      "model": "fluidsystem:block/input_pipe_off",
+      "x": 270
+    },
+    "facing=north,powered=false": {
+      "model": "fluidsystem:block/input_pipe_off"
+    },
+    "facing=south,powered=false": {
+      "model": "fluidsystem:block/input_pipe_off",
+      "y": 180
+    },
+    "facing=west,powered=false": {
+      "model": "fluidsystem:block/input_pipe_off",
+      "y": 270
+    },
+    "facing=east,powered=false": {
+      "model": "fluidsystem:block/input_pipe_off",
+      "y": 90
+    },
+    "facing=down,powered=true": {
+      "model": "fluidsystem:block/input_pipe_on",
+      "x": 90
+    },
+    "facing=up,powered=true": {
+      "model": "fluidsystem:block/input_pipe_on",
+      "x": 270
+    },
+    "facing=north,powered=true": {
+      "model": "fluidsystem:block/input_pipe_on"
+    },
+    "facing=south,powered=true": {
+      "model": "fluidsystem:block/input_pipe_on",
+      "y": 180
+    },
+    "facing=west,powered=true": {
+      "model": "fluidsystem:block/input_pipe_on",
+      "y": 270
+    },
+    "facing=east,powered=true": {
+      "model": "fluidsystem:block/input_pipe_on",
+      "y": 90
+    }
+  }
+}

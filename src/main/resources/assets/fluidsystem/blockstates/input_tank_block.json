@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "fluidsystem:block/input_tank_block",
+      "x": 90
+    },
+    "facing=up": {
+      "model": "fluidsystem:block/input_tank_block",
+      "x": 270
+    },
+    "facing=north": {
+      "model": "fluidsystem:block/input_tank_block"
+    },
+    "facing=south": {
+      "model": "fluidsystem:block/input_tank_block",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "fluidsystem:block/input_tank_block",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "fluidsystem:block/input_tank_block",
+      "y": 90
+    }
+  }
+}

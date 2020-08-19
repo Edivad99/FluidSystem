@@ -1,0 +1,119 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "up": "false",
+        "straight": "none",
+        "down": "false",
+        "west": "false",
+        "south": "false",
+        "north": "false",
+        "east": "false"
+      },
+      "apply": {
+        "model": "fluidsystem:block/pipe_center"
+      }
+    },
+    {
+      "when": {
+        "up": "false",
+        "straight": "y",
+        "down": "false",
+        "west": "false",
+        "south": "true",
+        "north": "true",
+        "east": "false"
+      },
+      "apply": {
+        "model": "fluidsystem:block/pipe_straight",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "up": "false",
+        "straight": "x",
+        "down": "false",
+        "west": "true",
+        "south": "false",
+        "north": "false",
+        "east": "true"
+      },
+      "apply": {
+        "model": "fluidsystem:block/pipe_straight",
+        "x": 90,
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "up": "true",
+        "straight": "z",
+        "down": "true",
+        "west": "false",
+        "south": "false",
+        "north": "false",
+        "east": "false"
+      },
+      "apply": {
+        "model": "fluidsystem:block/pipe_straight"
+      }
+    },
+    {
+      "when": {
+        "up": "true",
+        "straight": "none"
+      },
+      "apply": {
+        "model": "fluidsystem:block/pipe_up"
+      }
+    },
+    {
+      "when": {
+        "straight": "none",
+        "down": "true"
+      },
+      "apply": {
+        "model": "fluidsystem:block/pipe_down"
+      }
+    },
+    {
+      "when": {
+        "straight": "none",
+        "east": "true"
+      },
+      "apply": {
+        "model": "fluidsystem:block/pipe_east",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "straight": "none",
+        "north": "true"
+      },
+      "apply": {
+        "model": "fluidsystem:block/pipe_north"
+      }
+    },
+    {
+      "when": {
+        "straight": "none",
+        "south": "true"
+      },
+      "apply": {
+        "model": "fluidsystem:block/pipe_south"
+      }
+    },
+    {
+      "when": {
+        "straight": "none",
+        "west": "true"
+      },
+      "apply": {
+        "model": "fluidsystem:block/pipe_west",
+        "x": 90
+      }
+    }
+  ]
+}
