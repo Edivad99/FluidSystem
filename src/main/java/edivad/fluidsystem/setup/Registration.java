@@ -85,7 +85,7 @@ public class Registration
     public static final RegistryObject<Item> PIPE_ITEM = ITEMS.register("pipe", () -> new BlockItem(PIPE.get(), globalProperties));
 
     public static final RegistryObject<BlockPipeController> PIPE_CONTROLLER = BLOCKS.register("pipe_controller", BlockPipeController::new);
-    public static final RegistryObject<Item> IPE_CONTROLLER_ITEM = ITEMS.register("pipe_controller", () -> new BlockItem(PIPE_CONTROLLER.get(), globalProperties));
+    public static final RegistryObject<Item> PIPE_CONTROLLER_ITEM = ITEMS.register("pipe_controller", () -> new BlockItem(PIPE_CONTROLLER.get(), globalProperties));
 
     public static final RegistryObject<BlockInputPipe> INPUT_PIPE = BLOCKS.register("input_pipe", BlockInputPipe::new);
     public static final RegistryObject<Item> INPUT_PIPE_ITEM = ITEMS.register("input_pipe", () -> new BlockItem(INPUT_PIPE.get(), globalProperties));
