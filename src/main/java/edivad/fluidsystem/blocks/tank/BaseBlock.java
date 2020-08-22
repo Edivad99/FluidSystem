@@ -14,11 +14,12 @@ import net.minecraft.world.World;
 
 public class BaseBlock extends Block
 {
+
     public BaseBlock()
     {
         super(Properties.create(Material.IRON).sound(SoundType.STONE).hardnessAndResistance(5.0F));
     }
-    
+
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
     {
@@ -29,7 +30,7 @@ public class BaseBlock extends Block
 
             if(tile instanceof TileEntityBaseTankBlock && placer instanceof PlayerEntity)
             {
-                ((TileEntityBaseTankBlock) tile).onBlockPlacedBy((PlayerEntity)placer, worldIn, pos);
+                ((TileEntityBaseTankBlock) tile).onBlockPlacedBy((PlayerEntity) placer, worldIn, pos);
             }
         }
     }

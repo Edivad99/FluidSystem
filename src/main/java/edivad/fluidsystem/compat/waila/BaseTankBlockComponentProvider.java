@@ -13,7 +13,8 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.List;
 
-public class BaseTankBlockComponentProvider implements IComponentProvider {
+public class BaseTankBlockComponentProvider implements IComponentProvider
+{
 
     @Override
     public void appendBody(List<ITextComponent> tooltip, IDataAccessor accessor, IPluginConfig config)

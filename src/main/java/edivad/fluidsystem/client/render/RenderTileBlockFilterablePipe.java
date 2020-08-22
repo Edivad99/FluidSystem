@@ -21,6 +21,7 @@ import net.minecraftforge.fluids.FluidStack;
 @OnlyIn(Dist.CLIENT)
 public class RenderTileBlockFilterablePipe extends TileEntityRenderer<TileEntityBlockFilterablePipe>
 {
+
     public RenderTileBlockFilterablePipe(TileEntityRendererDispatcher rendererDispatcherIn)
     {
         super(rendererDispatcherIn);
@@ -45,7 +46,7 @@ public class RenderTileBlockFilterablePipe extends TileEntityRenderer<TileEntity
         float v1 = sprite.getMinV();
         float u2 = sprite.getMaxU();
         float v2 = sprite.getMaxV();
-        
+
         int color = FluidUtils.getLiquidColorWithBiome(fluid, tile);
 
         float r = FluidUtils.getRed(color);

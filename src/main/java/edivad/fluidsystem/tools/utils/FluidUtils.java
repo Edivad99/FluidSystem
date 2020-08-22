@@ -18,6 +18,7 @@ import javax.annotation.Nullable;
 
 public class FluidUtils
 {
+
     //Render liquid
     public static float getRed(int color)
     {

@@ -18,59 +18,42 @@ import java.util.Stack;
 
 public abstract class TileEntityBaseTankBlock extends TileEntity implements ITickableTileEntity
 {
-    protected enum Status
-    {
-        FORMED, CONTROLLER_MISSING, EXTRA_CONTROLLER, TOO_BIG;
-
-        public TranslationTextComponent getStatusText()
-        {
-            switch (this)
-            {
-                case FORMED: return new TranslationTextComponent(Translations.TANK_FORMED);
-                case CONTROLLER_MISSING: return new TranslationTextComponent(Translations.TANK_CONTROLLER_MISSING);
-                case EXTRA_CONTROLLER: return new TranslationTextComponent(Translations.TANK_EXTRA_CONTROLLER);
-                case TOO_BIG: return new TranslationTextComponent(Translations.TANK_TOO_BIG);
-                default: return null;
-            }
-        }
-    }
 
     private TileEntityBaseTankBlock master;
     private boolean firstRun = true;
     private int size;
     private int totalCapacity;
     private Status status;
-  
     protected TileEntityBaseTankBlock(TileEntityType<?> tile)
     {
         super(tile);
     }
-    
+
     public abstract boolean isMaster();
-    
+
     public abstract int blockCapacity();
-    
+
     public TileEntityBaseTankBlock getMaster()
     {
         initializeMultiblockIfNecessary();
         return master;
     }
-    
+
     public int getNumberOfTanksBlock()
     {
         return size;
     }
-    
+
     public int getTotalCapacity()
     {
         return totalCapacity;
     }
-    
+
     public Status getStatus()
     {
         return status;
     }
-    
+
     private void setMaster(TileEntityBaseTankBlock master, int totalCapacity, int size, Status status)
     {
         this.master = master;
@@ -79,9 +62,11 @@ public abstract class TileEntityBaseTankBlock extends TileEntity implements ITic
         this.status = status;
         onMasterUpdate();
     }
-    
-    protected void onMasterUpdate() {}
-    
+
+    protected void onMasterUpdate()
+    {
+    }
+
     private void initializeMultiblockIfNecessary()
     {
         if(master == null || master.isRemoved())
@@ -103,12 +88,12 @@ public abstract class TileEntityBaseTankBlock extends TileEntity implements ITic
                     {
                         if(!connectedStorages.contains(te) && !traversingStorages.contains(te))
                         {
-                            traversingStorages.add((TileEntityBaseTankBlock)te);
+                            traversingStorages.add((TileEntityBaseTankBlock) te);
                         }
                     }
                 }
             }
-            
+
             Status currentStatus = Status.FORMED;
             int controller = 0;
             int calculateCapacity = 0;
@@ -132,7 +117,7 @@ public abstract class TileEntityBaseTankBlock extends TileEntity implements ITic
             }
         }
     }
-    
+
     @Override
     public void tick()
     {
@@ -142,7 +127,7 @@ public abstract class TileEntityBaseTankBlock extends TileEntity implements ITic
             firstRun = false;
         }
     }
-    
+
     @Override
     public void remove()
     {
@@ -162,5 +147,30 @@ public abstract class TileEntityBaseTankBlock extends TileEntity implements ITic
     {
         if(getMaster() == null)
             player.sendStatusMessage(getStatus().getStatusText().mergeStyle(TextFormatting.RED), false);
+    }
+
+    protected enum Status
+    {
+        FORMED,
+        CONTROLLER_MISSING,
+        EXTRA_CONTROLLER,
+        TOO_BIG;
+
+        public TranslationTextComponent getStatusText()
+        {
+            switch (this)
+            {
+                case FORMED:
+                    return new TranslationTextComponent(Translations.TANK_FORMED);
+                case CONTROLLER_MISSING:
+                    return new TranslationTextComponent(Translations.TANK_CONTROLLER_MISSING);
+                case EXTRA_CONTROLLER:
+                    return new TranslationTextComponent(Translations.TANK_EXTRA_CONTROLLER);
+                case TOO_BIG:
+                    return new TranslationTextComponent(Translations.TANK_TOO_BIG);
+                default:
+                    return null;
+            }
+        }
     }
 }

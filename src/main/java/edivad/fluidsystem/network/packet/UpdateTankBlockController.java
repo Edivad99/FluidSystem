@@ -13,9 +13,11 @@ import java.util.function.Supplier;
 
 public class UpdateTankBlockController
 {
-    private BlockPos pos;
-    private FluidStack fluidStack;
-    private int tanksBlock, totalCapacity;
+
+    private final BlockPos pos;
+    private final FluidStack fluidStack;
+    private final int tanksBlock;
+    private final int totalCapacity;
 
     public UpdateTankBlockController(PacketBuffer buf)
     {
@@ -43,7 +45,8 @@ public class UpdateTankBlockController
 
     public void handle(Supplier<NetworkEvent.Context> ctx)
     {
-        ctx.get().enqueueWork(() -> {
+        ctx.get().enqueueWork(() ->
+        {
             World world = Main.proxy.getClientWorld();
             if(world.isBlockPresent(pos))
             {

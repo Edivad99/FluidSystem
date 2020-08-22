@@ -13,7 +13,8 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class TileEntityBlockFilterablePipe extends TileEntity implements ITickableTileEntity, IFluidSystemFilterable {
+public class TileEntityBlockFilterablePipe extends TileEntity implements ITickableTileEntity, IFluidSystemFilterable
+{
 
     private FluidStack fluidFilter = FluidStack.EMPTY;
     private FluidStack clientFluid = FluidStack.EMPTY;

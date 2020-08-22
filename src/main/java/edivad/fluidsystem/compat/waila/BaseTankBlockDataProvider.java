@@ -11,7 +11,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.text.DecimalFormat;
 
-public class BaseTankBlockDataProvider implements IServerDataProvider<TileEntity> {
+public class BaseTankBlockDataProvider implements IServerDataProvider<TileEntity>
+{
 
     @Override
     public void appendServerData(CompoundNBT data, ServerPlayerEntity player, World world, TileEntity tileEntity)
@@ -27,7 +28,8 @@ public class BaseTankBlockDataProvider implements IServerDataProvider<TileEntity
                 data.putInt("numberOfTanksBlock", numberOfTanksBlock);
 
                 data.putBoolean("canReadLiquid", controller.getFluidCap().isPresent());
-                controller.getFluidCap().ifPresent(h -> {
+                controller.getFluidCap().ifPresent(h ->
+                {
                     FluidStack fluidStack = h.getFluidInTank(0);
                     String fluidName = fluidStack.isEmpty() ? "Empty" : fluidStack.getDisplayName().getString();
                     DecimalFormat f = new DecimalFormat("#,##0");

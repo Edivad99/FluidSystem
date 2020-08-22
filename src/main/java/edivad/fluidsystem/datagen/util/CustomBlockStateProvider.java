@@ -1,6 +1,5 @@
 package edivad.fluidsystem.datagen.util;
 
-import edivad.fluidsystem.Main;
 import edivad.fluidsystem.blocks.pipe.BlockPipe;
 import edivad.fluidsystem.blocks.pipe.BlockPipe.Straight;
 import net.minecraft.block.Block;
@@ -14,56 +13,60 @@ import net.minecraftforge.client.model.generators.ModelBuilder.FaceRotation;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class CustomBlockStateProvider extends BlockStateProvider {
+public abstract class CustomBlockStateProvider extends BlockStateProvider
+{
 
     private final ExistingFileHelper exFileHelper;
     private final String modid;
-    
+
     public CustomBlockStateProvider(DataGenerator gen, String modid, ExistingFileHelper exFileHelper)
     {
         super(gen, modid, exFileHelper);
         this.exFileHelper = exFileHelper;
         this.modid = modid;
     }
-    
-    private ModelFile pipeStraight(String modelName, ResourceLocation pipe) {  
+
+    private ModelFile pipeStraight(String modelName, ResourceLocation pipe)
+    {
         BlockModelBuilder model = models().getBuilder(ModelProvider.BLOCK_FOLDER + "/" + modelName).parent(models().getExistingFile(mcLoc("block")));
-        
-        model.element()
-            .from(4, 0, 4)
-            .to(12, 16, 12)
-            .face(Direction.NORTH).uvs(0, 2, 16, 14).texture(modid + ":pipe").end()
-            .face(Direction.SOUTH).uvs(0, 2, 16, 14).texture(modid + ":pipe").end()
-            .face(Direction.WEST).uvs(0, 2, 16, 14).texture(modid + ":pipe").end()
-            .face(Direction.EAST).uvs(0, 2, 16, 14).texture(modid + ":pipe").end()
-            .end()
-            .texture("particle", pipe)
-            .texture(modid + ":pipe", pipe);
-        
+
+        model.element()//
+                .from(4, 0, 4)//
+                .to(12, 16, 12)//
+                .face(Direction.NORTH).uvs(0, 2, 16, 14).texture(modid + ":pipe").end()//
+                .face(Direction.SOUTH).uvs(0, 2, 16, 14).texture(modid + ":pipe").end()//
+                .face(Direction.WEST).uvs(0, 2, 16, 14).texture(modid + ":pipe").end()//
+                .face(Direction.EAST).uvs(0, 2, 16, 14).texture(modid + ":pipe").end()//
+                .end()//
+                .texture("particle", pipe)//
+                .texture(modid + ":pipe", pipe);
+
         return model;
     }
 
-    private ModelFile pipeCenter(String modelName, ResourceLocation pipe) {  
+    private ModelFile pipeCenter(String modelName, ResourceLocation pipe)
+    {
         BlockModelBuilder model = models().getBuilder(ModelProvider.BLOCK_FOLDER + "/" + modelName).parent(models().getExistingFile(mcLoc("block")));
-        
-        model.element()
-            .from(3.2F, 3.2F, 3.2F)
-            .to(12.8F, 12.8F, 12.8F)
-            .face(Direction.DOWN).uvs(0, 0, 16, 16).texture(modid + ":pipe").end()
-            .face(Direction.UP).uvs(0, 0, 16, 16).texture(modid + ":pipe").end()
-            .face(Direction.NORTH).uvs(0, 0, 16, 16).texture(modid + ":pipe").end()
-            .face(Direction.SOUTH).uvs(0, 0, 16, 16).texture(modid + ":pipe").end()
-            .face(Direction.WEST).uvs(0, 0, 16, 16).texture(modid + ":pipe").end()
-            .face(Direction.EAST).uvs(0, 0, 16, 16).texture(modid + ":pipe").end()
-            .end()
-            .texture("particle", pipe)
-            .texture(modid + ":pipe", pipe);
-        
+
+        model.element()//
+                .from(3.2F, 3.2F, 3.2F)//
+                .to(12.8F, 12.8F, 12.8F)//
+                .face(Direction.DOWN).uvs(0, 0, 16, 16).texture(modid + ":pipe").end()//
+                .face(Direction.UP).uvs(0, 0, 16, 16).texture(modid + ":pipe").end()//
+                .face(Direction.NORTH).uvs(0, 0, 16, 16).texture(modid + ":pipe").end()//
+                .face(Direction.SOUTH).uvs(0, 0, 16, 16).texture(modid + ":pipe").end()//
+                .face(Direction.WEST).uvs(0, 0, 16, 16).texture(modid + ":pipe").end()//
+                .face(Direction.EAST).uvs(0, 0, 16, 16).texture(modid + ":pipe").end()//
+                .end()//
+                .texture("particle", pipe)//
+                .texture(modid + ":pipe", pipe);
+
         return model;
     }
-    
-    protected void pipeBuilder(BlockPipe pipe) {
-        
+
+    protected void pipeBuilder(BlockPipe pipe)
+    {
+
         ModelFile pipeStraight = pipeStraight("pipe_straight", modLoc("blocks/pipe"));
         ModelFile pipeCenter = pipeCenter("pipe_center", modLoc("blocks/pipe"));
         ModelFile pipeUp = new ModelFile.ExistingModelFile(modLoc(ModelProvider.BLOCK_FOLDER + "/pipe_up"), this.exFileHelper);
@@ -72,12 +75,12 @@ public abstract class CustomBlockStateProvider extends BlockStateProvider {
         ModelFile pipeNorth = new ModelFile.ExistingModelFile(modLoc(ModelProvider.BLOCK_FOLDER + "/pipe_north"), this.exFileHelper);
         ModelFile pipeSouth = new ModelFile.ExistingModelFile(modLoc(ModelProvider.BLOCK_FOLDER + "/pipe_south"), this.exFileHelper);
         ModelFile pipeWest = new ModelFile.ExistingModelFile(modLoc(ModelProvider.BLOCK_FOLDER + "/pipe_west"), this.exFileHelper);
-        
+
         MultiPartBlockStateBuilder bld = getMultipartBuilder(pipe);
 
         //PipeCenter
         bld.part().modelFile(pipeCenter).addModel().condition(BlockPipe.DOWN, false).condition(BlockPipe.EAST, false).condition(BlockPipe.NORTH, false).condition(BlockPipe.SOUTH, false).condition(BlockPipe.UP, false).condition(BlockPipe.WEST, false).condition(BlockPipe.STRAIGHT, Straight.NONE);
-        
+
         //straight y
         bld.part().modelFile(pipeStraight).rotationX(90).addModel().condition(BlockPipe.DOWN, false).condition(BlockPipe.EAST, false).condition(BlockPipe.NORTH, true).condition(BlockPipe.SOUTH, true).condition(BlockPipe.UP, false).condition(BlockPipe.WEST, false).condition(BlockPipe.STRAIGHT, Straight.Y);
         //straight x
@@ -98,134 +101,154 @@ public abstract class CustomBlockStateProvider extends BlockStateProvider {
         //PipeWest
         bld.part().modelFile(pipeWest).rotationX(90).addModel().condition(BlockPipe.WEST, true).condition(BlockPipe.STRAIGHT, Straight.NONE);
     }
-    
-    protected VariantBlockStateBuilder orientedBlockPowered(Block block, ModelFile modelOff, ModelFile modelOn) 
+
+    protected VariantBlockStateBuilder orientedBlockPowered(Block block, ModelFile modelOff, ModelFile modelOn)
     {
         VariantBlockStateBuilder builder = getVariantBuilder(block);
         for(int i = 0; i < 2; i++)
         {
-            builder.partialState()
-                .with(BlockStateProperties.FACING, Direction.NORTH)
-                .with(BlockStateProperties.POWERED, i==0)
-                .modelForState().modelFile((i==0) ? modelOn : modelOff)
-                .addModel();
-            builder.partialState()
-                .with(BlockStateProperties.FACING, Direction.SOUTH)
-                .with(BlockStateProperties.POWERED, i==0)
-                .modelForState().modelFile((i==0) ? modelOn : modelOff)
-                .rotationY(180)
-                .addModel();
-            builder.partialState()
-                .with(BlockStateProperties.FACING, Direction.WEST)
-                .with(BlockStateProperties.POWERED, i==0)
-                .modelForState().modelFile((i==0) ? modelOn : modelOff)
-                .rotationY(270)
-                .addModel();
-            builder.partialState()
-                .with(BlockStateProperties.FACING, Direction.EAST)
-                .with(BlockStateProperties.POWERED, i==0)
-                .modelForState().modelFile((i==0) ? modelOn : modelOff)
-                .rotationY(90)
-                .addModel();
-            builder.partialState()
-                .with(BlockStateProperties.FACING, Direction.UP)
-                .with(BlockStateProperties.POWERED, i==0)
-                .modelForState().modelFile((i==0) ? modelOn : modelOff)
-                .rotationX(270)
-                .addModel();
-            builder.partialState()
-                .with(BlockStateProperties.FACING, Direction.DOWN)
-                .with(BlockStateProperties.POWERED, i==0)
-                .modelForState().modelFile((i==0) ? modelOn : modelOff)
-                .rotationX(90)
-                .addModel();
+            builder.partialState()//
+                    .with(BlockStateProperties.FACING, Direction.NORTH)//
+                    .with(BlockStateProperties.POWERED, i == 0)//
+                    .modelForState().modelFile((i == 0) ? modelOn : modelOff)//
+                    .addModel();
+            builder.partialState()//
+                    .with(BlockStateProperties.FACING, Direction.SOUTH)//
+                    .with(BlockStateProperties.POWERED, i == 0)//
+                    .modelForState()//
+                    .modelFile((i == 0) ? modelOn : modelOff)//
+                    .rotationY(180)//
+                    .addModel();
+            builder.partialState()//
+                    .with(BlockStateProperties.FACING, Direction.WEST)//
+                    .with(BlockStateProperties.POWERED, i == 0)//
+                    .modelForState().modelFile((i == 0) ? modelOn : modelOff)//
+                    .rotationY(270)//
+                    .addModel();
+            builder.partialState()//
+                    .with(BlockStateProperties.FACING, Direction.EAST)//
+                    .with(BlockStateProperties.POWERED, i == 0)//
+                    .modelForState()//
+                    .modelFile((i == 0) ? modelOn : modelOff)//
+                    .rotationY(90)//
+                    .addModel();
+            builder.partialState()//
+                    .with(BlockStateProperties.FACING, Direction.UP)//
+                    .with(BlockStateProperties.POWERED, i == 0)//
+                    .modelForState()//
+                    .modelFile((i == 0) ? modelOn : modelOff)//
+                    .rotationX(270)//
+                    .addModel();
+            builder.partialState()//
+                    .with(BlockStateProperties.FACING, Direction.DOWN)//
+                    .with(BlockStateProperties.POWERED, i == 0)//
+                    .modelForState().modelFile((i == 0) ? modelOn : modelOff)//
+                    .rotationX(90)//
+                    .addModel();
         }
-        
+
         return builder;
     }
-    
-    protected List<ModelFile> orientedBlockPoweredModel(String modelName, ResourceLocation sideOff, ResourceLocation sideOn, ResourceLocation front, ResourceLocation back) 
-    {  
-        List<ModelFile> models = new ArrayList<ModelFile>(2);
-        
+
+    protected VariantBlockStateBuilder blockPowered(Block block, ModelFile modelOff, ModelFile modelOn)
+    {
+        VariantBlockStateBuilder builder = getVariantBuilder(block);
+
+        builder.partialState()//
+                .with(BlockStateProperties.POWERED, false)//
+                .modelForState().modelFile(modelOff)//
+                .addModel();
+
+        builder.partialState()//
+                .with(BlockStateProperties.POWERED, true)//
+                .modelForState().modelFile(modelOn)//
+                .addModel();
+
+        return builder;
+    }
+
+    protected List<ModelFile> orientedBlockPoweredModel(String modelName, ResourceLocation sideOff, ResourceLocation sideOn, ResourceLocation front, ResourceLocation back)
+    {
+        List<ModelFile> models = new ArrayList<>(2);
+
         for(int i = 0; i < 2; i++)
         {
-            BlockModelBuilder model = models().getBuilder(ModelProvider.BLOCK_FOLDER + "/" + modelName + (i == 0 ? "_off": "_on")).parent(models().getExistingFile(mcLoc("block")));
-            
-            model.element()
-                .from(0, 0, 0)
-                .to(16, 16, 16)
-                .face(Direction.DOWN).cullface(Direction.DOWN).rotation(FaceRotation.UPSIDE_DOWN).uvs(0, 0, 16, 16).texture(modid + ":side").end()
-                .face(Direction.UP).cullface(Direction.UP).texture(modid + ":side").end()
-                .face(Direction.NORTH).cullface(Direction.NORTH).texture(modid + ":front").end()
-                .face(Direction.SOUTH).cullface(Direction.SOUTH).texture(modid + ":back").end()
-                .face(Direction.WEST).cullface(Direction.WEST).rotation(FaceRotation.COUNTERCLOCKWISE_90).texture(modid + ":side").end()
-                .face(Direction.EAST).cullface(Direction.EAST).rotation(FaceRotation.CLOCKWISE_90).texture(modid + ":side").end()
-                .end()
-                .texture(modid + ":side", i==0 ? sideOff : sideOn)
-                .texture(modid + ":front", front)
-                .texture(modid + ":back", back)
-                .texture("particle", i==0 ? sideOff : sideOn);
+            BlockModelBuilder model = models().getBuilder(ModelProvider.BLOCK_FOLDER + "/" + modelName + (i == 0 ? "_off" : "_on")).parent(models().getExistingFile(mcLoc("block")));
+
+            model.element()//
+                    .from(0, 0, 0)//
+                    .to(16, 16, 16)//
+                    .face(Direction.DOWN).cullface(Direction.DOWN).rotation(FaceRotation.UPSIDE_DOWN).uvs(0, 0, 16, 16).texture(modid + ":side").end()//
+                    .face(Direction.UP).cullface(Direction.UP).texture(modid + ":side").end()//
+                    .face(Direction.NORTH).cullface(Direction.NORTH).texture(modid + ":front").end()//
+                    .face(Direction.SOUTH).cullface(Direction.SOUTH).texture(modid + ":back").end()//
+                    .face(Direction.WEST).cullface(Direction.WEST).rotation(FaceRotation.COUNTERCLOCKWISE_90).texture(modid + ":side").end()//
+                    .face(Direction.EAST).cullface(Direction.EAST).rotation(FaceRotation.CLOCKWISE_90).texture(modid + ":side").end()//
+                    .end()//
+                    .texture(modid + ":side", i == 0 ? sideOff : sideOn)//
+                    .texture(modid + ":front", front)//
+                    .texture(modid + ":back", back)//
+                    .texture("particle", i == 0 ? sideOff : sideOn);
             models.add(model);
         }
         return models;
     }
-    
-    protected VariantBlockStateBuilder orientedBlock(Block block, ModelFile model) 
+
+    protected VariantBlockStateBuilder orientedBlock(Block block, ModelFile model)
     {
         VariantBlockStateBuilder builder = getVariantBuilder(block);
 
-        builder.partialState()
-            .with(BlockStateProperties.FACING, Direction.NORTH)
-            .modelForState().modelFile(model)
-            .addModel();
-        builder.partialState()
-            .with(BlockStateProperties.FACING, Direction.SOUTH)
-            .modelForState().modelFile(model)
-            .rotationY(180)
-            .addModel();
-        builder.partialState()
-            .with(BlockStateProperties.FACING, Direction.WEST)
-            .modelForState().modelFile(model)
-            .rotationY(270)
-            .addModel();
-        builder.partialState()
-            .with(BlockStateProperties.FACING, Direction.EAST)
-            .modelForState().modelFile(model)
-            .rotationY(90)
-            .addModel();
-        builder.partialState()
-            .with(BlockStateProperties.FACING, Direction.UP)
-            .modelForState().modelFile(model)
-            .rotationX(270)
-            .addModel();
-        builder.partialState()
-            .with(BlockStateProperties.FACING, Direction.DOWN)
-            .modelForState().modelFile(model)
-            .rotationX(90)
-            .addModel();
-        
+        builder.partialState()//
+                .with(BlockStateProperties.FACING, Direction.NORTH)//
+                .modelForState().modelFile(model)//
+                .addModel();
+        builder.partialState()//
+                .with(BlockStateProperties.FACING, Direction.SOUTH)//
+                .modelForState().modelFile(model)//
+                .rotationY(180)//
+                .addModel();
+        builder.partialState()//
+                .with(BlockStateProperties.FACING, Direction.WEST)//
+                .modelForState().modelFile(model)//
+                .rotationY(270)//
+                .addModel();
+        builder.partialState()//
+                .with(BlockStateProperties.FACING, Direction.EAST)//
+                .modelForState().modelFile(model)//
+                .rotationY(90)//
+                .addModel();
+        builder.partialState()//
+                .with(BlockStateProperties.FACING, Direction.UP)//
+                .modelForState().modelFile(model)//
+                .rotationX(270)//
+                .addModel();
+        builder.partialState()//
+                .with(BlockStateProperties.FACING, Direction.DOWN)//
+                .modelForState().modelFile(model)//
+                .rotationX(90)//
+                .addModel();
+
         return builder;
     }
-    
-    protected ModelFile orientedBlockModel(String modelName, ResourceLocation side, ResourceLocation front, ResourceLocation back) 
+
+    protected ModelFile orientedBlockModel(String modelName, ResourceLocation side, ResourceLocation front, ResourceLocation back)
     {
         BlockModelBuilder model = models().getBuilder(ModelProvider.BLOCK_FOLDER + "/" + modelName).parent(models().getExistingFile(mcLoc("block")));
-        
-        model.element()
-            .from(0, 0, 0)
-            .to(16, 16, 16)
-            .face(Direction.DOWN).cullface(Direction.DOWN).rotation(FaceRotation.UPSIDE_DOWN).uvs(0, 0, 16, 16).texture(modid + ":side").end()
-            .face(Direction.UP).cullface(Direction.UP).texture(modid + ":side").end()
-            .face(Direction.NORTH).cullface(Direction.NORTH).texture(modid + ":front").end()
-            .face(Direction.SOUTH).cullface(Direction.SOUTH).texture(modid + ":back").end()
-            .face(Direction.WEST).cullface(Direction.WEST).rotation(FaceRotation.COUNTERCLOCKWISE_90).texture(modid + ":side").end()
-            .face(Direction.EAST).cullface(Direction.EAST).rotation(FaceRotation.CLOCKWISE_90).texture(modid + ":side").end()
-            .end()
-            .texture(modid + ":side", side)
-            .texture(modid + ":front", front)
-            .texture(modid + ":back", back)
-            .texture("particle", side);
+
+        model.element()//
+                .from(0, 0, 0)//
+                .to(16, 16, 16)//
+                .face(Direction.DOWN).cullface(Direction.DOWN).rotation(FaceRotation.UPSIDE_DOWN).uvs(0, 0, 16, 16).texture(modid + ":side").end()//
+                .face(Direction.UP).cullface(Direction.UP).texture(modid + ":side").end()//
+                .face(Direction.NORTH).cullface(Direction.NORTH).texture(modid + ":front").end()//
+                .face(Direction.SOUTH).cullface(Direction.SOUTH).texture(modid + ":back").end()//
+                .face(Direction.WEST).cullface(Direction.WEST).rotation(FaceRotation.COUNTERCLOCKWISE_90).texture(modid + ":side").end()//
+                .face(Direction.EAST).cullface(Direction.EAST).rotation(FaceRotation.CLOCKWISE_90).texture(modid + ":side").end()//
+                .end()//
+                .texture(modid + ":side", side)//
+                .texture(modid + ":front", front)//
+                .texture(modid + ":back", back)//
+                .texture("particle", side);
         return model;
     }
 

@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 
 public abstract class TOPElement implements IElement
 {
+
     private final int borderColor;
     private final int textColor;
 
@@ -20,6 +21,28 @@ public abstract class TOPElement implements IElement
     {
         this.borderColor = borderColor;
         this.textColor = textColor;
+    }
+
+    protected static void renderScaledText(MatrixStack mStack, Minecraft mc, int x, int y, int color, int maxWidth, ITextComponent component)
+    {
+        String text = component.getString();
+        int length = mc.fontRenderer.getStringWidth(text);
+        if(length <= maxWidth)
+        {
+            mc.fontRenderer.drawString(mStack, text, x, y, color);
+        }
+        else
+        {
+            float scale = (float) maxWidth / length;
+            float reverse = 1 / scale;
+            float yAdd = 4 - (scale * 8) / 2F;
+            mStack.push();
+            mStack.scale(scale, scale, scale);
+            mc.fontRenderer.drawString(mStack, text, (int) (x * reverse), (int) ((y * reverse) + yAdd), color);
+            mStack.pop();
+        }
+        //Make sure the color does not leak from having drawn the string
+        RenderSystem.color4f(1, 1, 1, 1);
     }
 
     @Override
@@ -70,27 +93,5 @@ public abstract class TOPElement implements IElement
     protected boolean applyRenderColor()
     {
         return false;
-    }
-
-    protected static void renderScaledText(MatrixStack mStack, Minecraft mc, int x, int y, int color, int maxWidth, ITextComponent component)
-    {
-        String text = component.getString();
-        int length = mc.fontRenderer.getStringWidth(text);
-        if(length <= maxWidth)
-        {
-            mc.fontRenderer.drawString(mStack, text, x, y, color);
-        }
-        else
-        {
-            float scale = (float) maxWidth / length;
-            float reverse = 1 / scale;
-            float yAdd = 4 - (scale * 8) / 2F;
-            mStack.push();
-            mStack.scale(scale, scale, scale);
-            mc.fontRenderer.drawString(mStack, text, (int) (x * reverse), (int) ((y * reverse) + yAdd), color);
-            mStack.pop();
-        }
-        //Make sure the color does not leak from having drawn the string
-        RenderSystem.color4f(1, 1, 1, 1);
     }
 }

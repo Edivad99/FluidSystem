@@ -12,7 +12,10 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.*;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.text.DecimalFormat;
@@ -21,6 +24,7 @@ import java.util.List;
 
 public class ScreenModularTank extends ContainerScreen<ContainerTankBlockController>
 {
+
     private static final ResourceLocation TEXTURES = new ResourceLocation(Main.MODID, "textures/gui/controller_tank_block.png");
     private final TileEntityControllerTankBlock tile;
 
@@ -30,6 +34,15 @@ public class ScreenModularTank extends ContainerScreen<ContainerTankBlockControl
         this.xSize = 176;
         this.ySize = 187;
         this.tile = screenContainer.tile;
+    }
+
+    private static int getFluidScaled(int pixels, FluidStack fluid, int maxLiquidAmount)
+    {
+        if(maxLiquidAmount == 0)
+            return pixels;
+        Long currentLiquidAmount = (long) fluid.getAmount();
+        long x = currentLiquidAmount * pixels / maxLiquidAmount;
+        return pixels - (int) x;
     }
 
     @Override
@@ -77,14 +90,5 @@ public class ScreenModularTank extends ContainerScreen<ContainerTankBlockControl
             tooltip.add(new TranslationTextComponent(Translations.LIQUID_PERCENTAGE, String.format("%.2f", percentage)).appendString("%").mergeStyle(percentage < 60 ? TextFormatting.GREEN : percentage < 90 ? TextFormatting.YELLOW : TextFormatting.RED));
             this.renderTooltip(mStack, Lists.transform(tooltip, ITextComponent::func_241878_f), mouseX, mouseY);
         }
-    }
-
-    private static int getFluidScaled(int pixels, FluidStack fluid, int maxLiquidAmount)
-    {
-        if(maxLiquidAmount == 0)
-            return pixels;
-        Long currentLiquidAmount = (long) fluid.getAmount();
-        long x = currentLiquidAmount * pixels / maxLiquidAmount;
-        return pixels - (int)x;
     }
 }

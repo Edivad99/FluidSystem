@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(Dist.CLIENT)
 public class ProxyClient implements IProxy
 {
+
     @Override
     public PlayerEntity getClientPlayer()
     {

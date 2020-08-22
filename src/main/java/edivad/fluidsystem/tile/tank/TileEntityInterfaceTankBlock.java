@@ -8,6 +8,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 public class TileEntityInterfaceTankBlock extends TileEntityBaseTankBlock
 {
+
     public TileEntityInterfaceTankBlock()
     {
         super(Registration.INTERFACE_TANK_BLOCK_TILE.get());
@@ -30,7 +31,7 @@ public class TileEntityInterfaceTankBlock extends TileEntityBaseTankBlock
     {
         if(cap.equals(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY))
         {
-            TileEntityControllerTankBlock controller = (TileEntityControllerTankBlock)getMaster();
+            TileEntityControllerTankBlock controller = (TileEntityControllerTankBlock) getMaster();
             if(controller != null)
                 return controller.getFluidCap().cast();
         }

@@ -2,7 +2,6 @@ package edivad.fluidsystem.network.packet;
 
 import edivad.fluidsystem.Main;
 import edivad.fluidsystem.tile.pipe.TileEntityBlockFilterablePipe;
-import edivad.fluidsystem.tile.pipe.TileEntityBlockOutputPipe;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -14,8 +13,9 @@ import java.util.function.Supplier;
 
 public class UpdateBlockFilterablePipe
 {
-    private BlockPos pos;
-    private FluidStack fluidStack;
+
+    private final BlockPos pos;
+    private final FluidStack fluidStack;
 
     public UpdateBlockFilterablePipe(PacketBuffer buf)
     {
@@ -37,7 +37,8 @@ public class UpdateBlockFilterablePipe
 
     public void handle(Supplier<NetworkEvent.Context> ctx)
     {
-        ctx.get().enqueueWork(() -> {
+        ctx.get().enqueueWork(() ->
+        {
             World world = Main.proxy.getClientWorld();
             if(world.isBlockPresent(pos))
             {

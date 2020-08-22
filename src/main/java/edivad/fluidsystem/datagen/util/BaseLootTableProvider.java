@@ -18,7 +18,8 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class BaseLootTableProvider extends LootTableProvider {
+public abstract class BaseLootTableProvider extends LootTableProvider
+{
 
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
@@ -28,7 +29,8 @@ public abstract class BaseLootTableProvider extends LootTableProvider {
 
     private final DataGenerator generator;
 
-    public BaseLootTableProvider(DataGenerator dataGeneratorIn) {
+    public BaseLootTableProvider(DataGenerator dataGeneratorIn)
+    {
         super(dataGeneratorIn);
         this.generator = dataGeneratorIn;
     }
@@ -37,42 +39,51 @@ public abstract class BaseLootTableProvider extends LootTableProvider {
     protected abstract void addTables();
 
     // Subclasses can call this if they want a standard loot table. Modify this for your own needs
-    protected LootTable.Builder createBaseBlockStandardTable(Block block) {
+    protected LootTable.Builder createBaseBlockStandardTable(Block block)
+    {
         String name = block.getRegistryName().getPath();
-        LootPool.Builder builder = LootPool.builder()
-                .name(name)
-                .rolls(ConstantRange.of(1))
+        LootPool.Builder builder = LootPool.builder()//
+                .name(name)//
+                .rolls(ConstantRange.of(1))//
                 .addEntry(ItemLootEntry.builder(block));
         return LootTable.builder().addLootPool(builder);
     }
 
     @Override
     // Entry point
-    public void act(DirectoryCache cache) {
+    public void act(DirectoryCache cache)
+    {
         addTables();
 
         Map<ResourceLocation, LootTable> tables = new HashMap<>();
-        for (Map.Entry<Block, LootTable.Builder> entry : lootTables.entrySet()) {
+        for(Map.Entry<Block, LootTable.Builder> entry : lootTables.entrySet())
+        {
             tables.put(entry.getKey().getLootTable(), entry.getValue().setParameterSet(LootParameterSets.BLOCK).build());
         }
         writeTables(cache, tables);
     }
 
     // Actually write out the tables in the output folder
-    private void writeTables(DirectoryCache cache, Map<ResourceLocation, LootTable> tables) {
+    private void writeTables(DirectoryCache cache, Map<ResourceLocation, LootTable> tables)
+    {
         Path outputFolder = this.generator.getOutputFolder();
-        tables.forEach((key, lootTable) -> {
+        tables.forEach((key, lootTable) ->
+        {
             Path path = outputFolder.resolve("data/" + key.getNamespace() + "/loot_tables/" + key.getPath() + ".json");
-            try {
+            try
+            {
                 IDataProvider.save(GSON, cache, LootTableManager.toJson(lootTable), path);
-            } catch (IOException e) {
+            }
+            catch(IOException e)
+            {
                 LOGGER.error("Couldn't write loot table {}", path, e);
             }
         });
     }
 
     @Override
-    public String getName() {
+    public String getName()
+    {
         return Main.MODNAME + " LootTables";
     }
 

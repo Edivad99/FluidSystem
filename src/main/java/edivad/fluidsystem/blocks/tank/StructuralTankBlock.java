@@ -18,6 +18,7 @@ import java.util.List;
 
 public class StructuralTankBlock extends BaseBlock
 {
+
     @Override
     public boolean hasTileEntity(BlockState state)
     {

@@ -18,8 +18,10 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 @Mod.EventBusSubscriber(modid = Main.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModSetup
 {
+
     public static final ItemGroup fluidSystemTab = new ItemGroup(Main.MODID + "_tab")
     {
+
         @Override
         public ItemStack createIcon()
         {
@@ -34,7 +36,7 @@ public class ModSetup
         //Compat
         MainCompatHandler.registerTOP();
     }
-    
+
     @SubscribeEvent
     public static void handleFiniteWaterSource(BlockEvent.CreateFluidSourceEvent event)
     {

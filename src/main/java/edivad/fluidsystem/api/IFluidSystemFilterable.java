@@ -2,7 +2,8 @@ package edivad.fluidsystem.api;
 
 import net.minecraft.fluid.Fluid;
 
-public interface IFluidSystemFilterable {
+public interface IFluidSystemFilterable
+{
 
     void setFilteredFluid(Fluid fluid);
 

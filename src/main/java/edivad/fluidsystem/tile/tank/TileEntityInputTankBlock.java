@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class TileEntityInputTankBlock extends TileEntityBaseTankBlock implements IFluidSystemEject
 {
+
     public TileEntityInputTankBlock()
     {
         super(Registration.INPUT_TANK_BLOCK_TILE.get());
@@ -22,7 +23,7 @@ public class TileEntityInputTankBlock extends TileEntityBaseTankBlock implements
     {
         return false;
     }
-    
+
     @Override
     public int blockCapacity()
     {
@@ -34,11 +35,12 @@ public class TileEntityInputTankBlock extends TileEntityBaseTankBlock implements
     {
         if(acceptFluid(resource.getFluid()))
         {
-            TileEntityControllerTankBlock controller = (TileEntityControllerTankBlock)getMaster();
+            TileEntityControllerTankBlock controller = (TileEntityControllerTankBlock) getMaster();
             if(controller != null)
             {
                 AtomicInteger res = new AtomicInteger(0);
-                controller.getFluidCap().ifPresent(h -> {
+                controller.getFluidCap().ifPresent(h ->
+                {
                     res.set(h.fill(resource, action));
                 });
                 return res.get();
@@ -50,11 +52,12 @@ public class TileEntityInputTankBlock extends TileEntityBaseTankBlock implements
     @Override
     public boolean acceptFluid(Fluid fluidToInsert)
     {
-        TileEntityControllerTankBlock controller = (TileEntityControllerTankBlock)getMaster();
+        TileEntityControllerTankBlock controller = (TileEntityControllerTankBlock) getMaster();
         if(controller != null)
         {
             AtomicBoolean result = new AtomicBoolean(false);
-            controller.getFluidCap().ifPresent(h -> {
+            controller.getFluidCap().ifPresent(h ->
+            {
                 if(h.getFluidInTank(0).getFluid().isEquivalentTo(Fluids.EMPTY))
                     result.set(true);
                 else

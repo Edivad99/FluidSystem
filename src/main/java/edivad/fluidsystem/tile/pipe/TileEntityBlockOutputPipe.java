@@ -16,6 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class TileEntityBlockOutputPipe extends TileEntityBlockFilterablePipe implements IFluidSystemEject
 {
+
     public TileEntityBlockOutputPipe()
     {
         super(Registration.OUTPUT_PIPE_TILE.get());
@@ -31,7 +32,8 @@ public class TileEntityBlockOutputPipe extends TileEntityBlockFilterablePipe imp
             if(tile != null)
             {
                 AtomicInteger res = new AtomicInteger(0);
-                tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, outputFace.getOpposite()).ifPresent(h -> {
+                tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, outputFace.getOpposite()).ifPresent(h ->
+                {
                     int r = h.fill(resource, action);
                     res.set(r);
                 });
@@ -51,7 +53,8 @@ public class TileEntityBlockOutputPipe extends TileEntityBlockFilterablePipe imp
             if(tile != null)
             {
                 AtomicBoolean result = new AtomicBoolean(false);
-                tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, outputFace.getOpposite()).ifPresent(h -> {
+                tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, outputFace.getOpposite()).ifPresent(h ->
+                {
                     Fluid fluidInsideTank = h.getFluidInTank(0).getFluid();
                     if(fluidInsideTank.isEquivalentTo(Fluids.EMPTY))
                         result.set(true);

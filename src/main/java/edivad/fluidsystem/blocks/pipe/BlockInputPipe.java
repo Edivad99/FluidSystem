@@ -1,7 +1,6 @@
 package edivad.fluidsystem.blocks.pipe;
 
 import edivad.fluidsystem.api.IFluidSystemConnectableBlock;
-import edivad.fluidsystem.blocks.BlockRotable;
 import edivad.fluidsystem.tile.pipe.TileEntityBlockInputPipe;
 import edivad.fluidsystem.tools.Translations;
 import net.minecraft.block.Block;
@@ -31,6 +30,7 @@ import java.util.List;
 
 public class BlockInputPipe extends BlockFilterable implements IFluidSystemConnectableBlock
 {
+
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     public BlockInputPipe()
@@ -38,7 +38,7 @@ public class BlockInputPipe extends BlockFilterable implements IFluidSystemConne
         super(Properties.create(Material.IRON).sound(SoundType.STONE).hardnessAndResistance(5.0F));
         this.setDefaultState(getDefaultState().with(POWERED, false));
     }
-    
+
     @Override
     public boolean hasTileEntity(BlockState state)
     {

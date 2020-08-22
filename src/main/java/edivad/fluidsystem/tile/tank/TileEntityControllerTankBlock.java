@@ -37,16 +37,15 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock implements INamedContainerProvider
 {
-    private ItemStackHandler itemHandler = createHandler();
-    private LazyOptional<IItemHandler> item = LazyOptional.of(() -> itemHandler);
-
-    private FluidTank tank = new FluidTank(blockCapacity());
-    private LazyOptional<IFluidHandler> fluid;
 
     //Client Side
     public FluidStack clientFluidStack = FluidStack.EMPTY;
     public int tanksBlock;
     public int totalCapacity;
+    private final ItemStackHandler itemHandler = createHandler();
+    private final LazyOptional<IItemHandler> item = LazyOptional.of(() -> itemHandler);
+    private final FluidTank tank = new FluidTank(blockCapacity());
+    private LazyOptional<IFluidHandler> fluid;
 
     public TileEntityControllerTankBlock()
     {
@@ -58,13 +57,13 @@ public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock imple
     {
         return true;
     }
-    
+
     @Override
     public int blockCapacity()
     {
         return 0;
     }
-    
+
     //Usare solo nei moduli
     public LazyOptional<IFluidHandler> getFluidCap()
     {
@@ -75,7 +74,7 @@ public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock imple
     public void tick()
     {
         super.tick();
-        
+
         if(!world.isRemote)
         {
             PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpdateTankBlockController(getPos(), tank.getFluid(), getNumberOfTanksBlock(), getTotalCapacity()));
@@ -84,9 +83,10 @@ public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock imple
             if(input.getCount() != 1 || !output.isEmpty())
                 return;
 
-            input.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
+            input.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h ->
+            {
                 FluidStack checkTypeofLiquid = h.getFluidInTank(0);
-                
+
                 if(!tank.isEmpty())//Il tank contiene del liquido
                 {
                     if(checkTypeofLiquid.isEmpty())//Significa che l'item è completamente vuoto
@@ -127,7 +127,7 @@ public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock imple
             });
         }
     }
-    
+
     @Override
     protected void onMasterUpdate()
     {
@@ -148,12 +148,12 @@ public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock imple
     {
         TileEntityBaseTankBlock master = getMaster();
         if(master != null)
-            NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) this, getPos());
+            NetworkHooks.openGui((ServerPlayerEntity) player, this, getPos());
         else
             player.sendStatusMessage(getStatus().getStatusText().mergeStyle(TextFormatting.DARK_RED), false);
         return ActionResultType.SUCCESS;
     }
-    
+
     @Override
     public CompoundNBT write(CompoundNBT tag)
     {
@@ -173,14 +173,15 @@ public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock imple
 
     private ItemStackHandler createHandler()
     {
-        return new ItemStackHandler(2) {
+        return new ItemStackHandler(2)
+        {
 
             @Override
             protected void onContentsChanged(int slot)
             {
                 markDirty();
             }
-            
+
             @Override
             public boolean isItemValid(int slot, ItemStack stack)
             {
@@ -188,7 +189,7 @@ public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock imple
             }
         };
     }
-    
+
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
     {

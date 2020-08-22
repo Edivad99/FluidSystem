@@ -12,8 +12,9 @@ import net.minecraft.util.Rotation;
 
 public class BlockRotable extends Block
 {
+
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
-    
+
     public BlockRotable(Properties properties)
     {
         super(properties);

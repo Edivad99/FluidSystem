@@ -1,9 +1,7 @@
 package edivad.fluidsystem.compat.top;
 
 import edivad.fluidsystem.Main;
-import edivad.fluidsystem.api.IFluidSystemFilterable;
 import edivad.fluidsystem.tile.pipe.TileEntityBlockFilterablePipe;
-import edivad.fluidsystem.tile.pipe.TileEntityBlockOutputPipe;
 import edivad.fluidsystem.tile.tank.TileEntityBaseTankBlock;
 import edivad.fluidsystem.tile.tank.TileEntityControllerTankBlock;
 import edivad.fluidsystem.tools.Config;
@@ -21,6 +19,7 @@ import java.util.function.Function;
 
 public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, Void>
 {
+
     @Override
     public Void apply(ITheOneProbe probe)
     {
@@ -39,10 +38,11 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
             TileEntityBaseTankBlock tankBase = ((TileEntityBaseTankBlock) te).getMaster();
             if(tankBase != null)
             {
-                TileEntityControllerTankBlock controller = (TileEntityControllerTankBlock)tankBase;
+                TileEntityControllerTankBlock controller = (TileEntityControllerTankBlock) tankBase;
 
                 probeInfo.horizontal().text(new TranslationTextComponent(Translations.TANKS_BLOCK).appendString(String.format("%d/%d", controller.getNumberOfTanksBlock(), Config.NUMBER_OF_MODULES.get())));
-                controller.getFluidCap().ifPresent(h -> {
+                controller.getFluidCap().ifPresent(h ->
+                {
                     probeInfo.element(new FluidElement(h.getFluidInTank(0), controller.getTotalCapacity(), controller));
                 });
             }

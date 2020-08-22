@@ -24,7 +24,9 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
-public class BlockPipe extends Block implements IWaterLoggable, IFluidSystemConnectableBlock {
+public class BlockPipe extends Block implements IWaterLoggable, IFluidSystemConnectableBlock
+{
+
     public static final BooleanProperty NORTH = BooleanProperty.create("north");
     public static final BooleanProperty EAST = BooleanProperty.create("east");
     public static final BooleanProperty SOUTH = BooleanProperty.create("south");
@@ -49,7 +51,15 @@ public class BlockPipe extends Block implements IWaterLoggable, IFluidSystemConn
     public BlockPipe()
     {
         super(Properties.create(Material.IRON).sound(SoundType.STONE).hardnessAndResistance(5.0F));
-        this.setDefaultState(getDefaultState().with(NORTH, false).with(EAST, false).with(SOUTH, false).with(WEST, false).with(UP, false).with(DOWN, false).with(STRAIGHT, Straight.NONE).with(WATERLOGGED, false));
+        this.setDefaultState(getDefaultState()//
+                .with(NORTH, false)//
+                .with(EAST, false)//
+                .with(SOUTH, false)//
+                .with(WEST, false)//
+                .with(UP, false)//
+                .with(DOWN, false)//
+                .with(STRAIGHT, Straight.NONE)//
+                .with(WATERLOGGED, false));
     }
 
     @Override
@@ -117,7 +127,8 @@ public class BlockPipe extends Block implements IWaterLoggable, IFluidSystemConn
         world.setBlockState(pos, getState(world, pos));
     }
 
-    private BlockState getState(IWorld world, BlockPos pos) {
+    private BlockState getState(IWorld world, BlockPos pos)
+    {
         FluidState fluidstate = world.getFluidState(pos);
 
         Block north = world.getBlockState(pos.north()).getBlock();
@@ -138,14 +149,14 @@ public class BlockPipe extends Block implements IWaterLoggable, IFluidSystemConn
         boolean y = isConnectToNorth && isConnectToSouth && !isConnectToEast && !isConnectToWest && !isConnectToUp && !isConnectToDown;
         boolean z = isConnectToUp && isConnectToDown && !isConnectToNorth && !isConnectToSouth && !isConnectToEast && !isConnectToWest;
 
-        BlockState result =  getDefaultState()
-            .with(NORTH, isConnectToNorth)
-            .with(EAST, isConnectToEast)
-            .with(SOUTH, isConnectToSouth)
-            .with(WEST, isConnectToWest)
-            .with(UP, isConnectToUp)
-            .with(DOWN, isConnectToDown)
-            .with(WATERLOGGED, Boolean.valueOf(fluidstate.getFluid() == Fluids.WATER));
+        BlockState result = getDefaultState()//
+                .with(NORTH, isConnectToNorth)//
+                .with(EAST, isConnectToEast)//
+                .with(SOUTH, isConnectToSouth)//
+                .with(WEST, isConnectToWest)//
+                .with(UP, isConnectToUp)//
+                .with(DOWN, isConnectToDown)//
+                .with(WATERLOGGED, Boolean.valueOf(fluidstate.getFluid() == Fluids.WATER));
 
         if(x)
             return result.with(STRAIGHT, Straight.X);
@@ -159,7 +170,7 @@ public class BlockPipe extends Block implements IWaterLoggable, IFluidSystemConn
 
     private boolean checkBlock(IWorld world, BlockPos pos, Block block, Direction direction)
     {
-        return (block instanceof IFluidSystemConnectableBlock) && ((IFluidSystemConnectableBlock)block).canConnectTo(world, pos.offset(direction), direction);
+        return (block instanceof IFluidSystemConnectableBlock) && ((IFluidSystemConnectableBlock) block).canConnectTo(world, pos.offset(direction), direction);
     }
 
     @SuppressWarnings("deprecation")
@@ -199,12 +210,18 @@ public class BlockPipe extends Block implements IWaterLoggable, IFluidSystemConn
         BlockState currentState = world.getBlockState(pos);
         switch (dir.getOpposite())
         {
-            case NORTH: return currentState.get(NORTH).booleanValue();
-            case EAST: return currentState.get(EAST).booleanValue();
-            case SOUTH: return currentState.get(SOUTH).booleanValue();
-            case WEST: return currentState.get(WEST).booleanValue();
-            case UP: return currentState.get(UP).booleanValue();
-            case DOWN: return currentState.get(DOWN).booleanValue();
+            case NORTH:
+                return currentState.get(NORTH).booleanValue();
+            case EAST:
+                return currentState.get(EAST).booleanValue();
+            case SOUTH:
+                return currentState.get(SOUTH).booleanValue();
+            case WEST:
+                return currentState.get(WEST).booleanValue();
+            case UP:
+                return currentState.get(UP).booleanValue();
+            case DOWN:
+                return currentState.get(DOWN).booleanValue();
         }
         return false;
     }
@@ -212,11 +229,14 @@ public class BlockPipe extends Block implements IWaterLoggable, IFluidSystemConn
     public enum Straight implements IStringSerializable
     {
 
-        X("x"), Y("y"), Z("z"), NONE("none");
+        X("x"),
+        Y("y"),
+        Z("z"),
+        NONE("none");
 
         private final String value;
 
-        private Straight(String value)
+        Straight(String value)
         {
             this.value = value;
         }

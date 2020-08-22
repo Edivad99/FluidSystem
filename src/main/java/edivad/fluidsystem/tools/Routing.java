@@ -15,6 +15,7 @@ import java.util.Stack;
 
 public class Routing
 {
+
     public static List<IFluidSystemEject> getBlockEject(World world, BlockPos startPos, BlockPos firstScan)
     {
         List<IFluidSystemEject> output = new ArrayList<>();
@@ -35,7 +36,7 @@ public class Routing
                 if(pipe.isEndPoint(world, posScanBlock))
                 {
                     TileEntity tileScanBlock = world.getTileEntity(posScanBlock);
-                    if(tileScanBlock instanceof IFluidSystemEject && !output.contains((IFluidSystemEject) tileScanBlock) && !blockVisited.contains(posScanBlock))
+                    if(tileScanBlock instanceof IFluidSystemEject && !output.contains(tileScanBlock) && !blockVisited.contains(posScanBlock))
                     {
                         output.add((IFluidSystemEject) tileScanBlock);
                         blockVisited.add(posScanBlock);

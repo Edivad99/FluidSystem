@@ -24,6 +24,7 @@ import java.util.List;
 
 public class ControllerTankBlock extends BaseBlock
 {
+
     @Override
     public boolean hasTileEntity(BlockState state)
     {
@@ -36,7 +37,7 @@ public class ControllerTankBlock extends BaseBlock
     {
         return new TileEntityControllerTankBlock();
     }
-    
+
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
     {

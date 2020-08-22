@@ -9,6 +9,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 public class ClientSetup
 {
+
     public static void init(FMLClientSetupEvent event)
     {
         //Version checker
@@ -16,7 +17,7 @@ public class ClientSetup
 
         //Special render & GUI
         ScreenManager.registerFactory(Registration.CONTROLLER_TANK_BLOCK_CONTAINER.get(), ScreenModularTank::new);
-        
+
         ClientRegistry.bindTileEntityRenderer(Registration.OUTPUT_PIPE_TILE.get(), RenderTileBlockFilterablePipe::new);
         ClientRegistry.bindTileEntityRenderer(Registration.INPUT_PIPE_TILE.get(), RenderTileBlockFilterablePipe::new);
     }

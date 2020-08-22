@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 
 public class InfiniteTank implements IFluidHandler, IFluidTank
 {
+
     private final Fluid fluid;
 
     public InfiniteTank(Fluid fluid)
@@ -76,7 +77,7 @@ public class InfiniteTank implements IFluidHandler, IFluidTank
     @Override
     public FluidStack drain(FluidStack resource, FluidAction action)
     {
-        if (resource.isEmpty() || !resource.isFluidEqual(resource))
+        if(resource.isEmpty() || !resource.isFluidEqual(resource))
         {
             return FluidStack.EMPTY;
         }

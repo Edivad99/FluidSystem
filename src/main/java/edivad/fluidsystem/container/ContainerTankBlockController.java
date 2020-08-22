@@ -12,7 +12,8 @@ import net.minecraft.util.IWorldPosCallable;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class ContainerTankBlockController extends Container {
+public class ContainerTankBlockController extends Container
+{
 
     public TileEntityControllerTankBlock tile;
 
@@ -39,7 +40,8 @@ public class ContainerTankBlockController extends Container {
     {
         if(tile != null)
         {
-            tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h ->
+            {
                 this.addSlot(new SlotItemHandler(h, 0, 92, 22));
                 this.addSlot(new SlotItemHandler(h, 1, 139, 22));
             });
@@ -56,7 +58,7 @@ public class ContainerTankBlockController extends Container {
     public ItemStack transferStackInSlot(PlayerEntity player, int position)
     {
         ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = (Slot) this.inventorySlots.get(position);
+        Slot slot = this.inventorySlots.get(position);
 
         if(slot != null && slot.getHasStack())
         {

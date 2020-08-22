@@ -1,6 +1,5 @@
 package edivad.fluidsystem.blocks.pipe;
 
-import edivad.fluidsystem.api.IFluidSystemFilterable;
 import edivad.fluidsystem.blocks.BlockRotable;
 import edivad.fluidsystem.tile.pipe.TileEntityBlockFilterablePipe;
 import edivad.fluidsystem.tools.Translations;
@@ -18,7 +17,8 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
-public class BlockFilterable extends BlockRotable {
+public class BlockFilterable extends BlockRotable
+{
 
     public BlockFilterable(Properties properties)
     {
@@ -40,7 +40,7 @@ public class BlockFilterable extends BlockRotable {
             {
                 if(bucket.getFluid().isEquivalentTo(Fluids.EMPTY))
                 {
-                    if(!((TileEntityBlockFilterablePipe)tile).getFluidFilter().isEquivalentTo(Fluids.EMPTY))
+                    if(!((TileEntityBlockFilterablePipe) tile).getFluidFilter().isEquivalentTo(Fluids.EMPTY))
                         player.sendStatusMessage(new TranslationTextComponent(Translations.FLUID_FILTERED_REMOVE), false);
                 }
                 else
@@ -48,7 +48,7 @@ public class BlockFilterable extends BlockRotable {
                     String fluidName = bucket.getFluid().getAttributes().getDisplayName(null).getString();
                     player.sendStatusMessage(new TranslationTextComponent(Translations.FLUID_FILTERED_SET, fluidName).mergeStyle(TextFormatting.GREEN), false);
                 }
-                ((TileEntityBlockFilterablePipe)tile).setFilteredFluid(bucket.getFluid());
+                ((TileEntityBlockFilterablePipe) tile).setFilteredFluid(bucket.getFluid());
                 return ActionResultType.SUCCESS;
             }
         }

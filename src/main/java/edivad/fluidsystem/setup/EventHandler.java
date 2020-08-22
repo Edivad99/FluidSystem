@@ -12,6 +12,7 @@ import net.minecraftforge.fml.VersionChecker.Status;
 
 public class EventHandler
 {
+
     public static final EventHandler INSTANCE = new EventHandler();
 
     @SubscribeEvent
@@ -28,7 +29,7 @@ public class EventHandler
             String changes = versionRAW.changes.get(versionRAW.target);
             if(changes != null)
             {
-                String changesFormat[] = changes.split("\n");
+                String[] changesFormat = changes.split("\n");
 
                 for(String change : changesFormat)
                 {

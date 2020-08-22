@@ -4,10 +4,11 @@ import edivad.fluidsystem.Main;
 
 public class Translations
 {
+
     public static String TANKS_BLOCK = "gui." + Main.MODID + ".tanksBlock";
     public static String LIQUID_AMOUNT = "gui." + Main.MODID + ".liquidAmount";
     public static String LIQUID_PERCENTAGE = "gui." + Main.MODID + ".liquidPercentage";
-    
+
     public static String TANK_FORMED = "message." + Main.MODID + ".tankFormed";
     public static String TANK_CONTROLLER_MISSING = "message." + Main.MODID + ".tankControllerMissing";
     public static String TANK_EXTRA_CONTROLLER = "message." + Main.MODID + ".tankExtraController";

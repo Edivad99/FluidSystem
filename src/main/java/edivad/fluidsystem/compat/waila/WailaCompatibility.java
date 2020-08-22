@@ -10,7 +10,8 @@ import mcp.mobius.waila.api.TooltipPosition;
 import mcp.mobius.waila.api.WailaPlugin;
 
 @WailaPlugin(Main.MODID)
-public class WailaCompatibility implements IWailaPlugin {
+public class WailaCompatibility implements IWailaPlugin
+{
 
     @Override
     public void register(IRegistrar registrar)
