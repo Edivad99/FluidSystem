@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "fluidsystem:block/pipe_controller_off"
+    },
+    "powered=true": {
+      "model": "fluidsystem:block/pipe_controller_on"
+    }
+  }
+}

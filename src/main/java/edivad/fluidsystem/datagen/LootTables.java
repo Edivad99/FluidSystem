@@ -4,7 +4,8 @@ import edivad.fluidsystem.datagen.util.BaseLootTableProvider;
 import edivad.fluidsystem.setup.Registration;
 import net.minecraft.data.DataGenerator;
 
-public class LootTables extends BaseLootTableProvider {
+public class LootTables extends BaseLootTableProvider
+{
 
     public LootTables(DataGenerator dataGeneratorIn)
     {
@@ -22,5 +23,6 @@ public class LootTables extends BaseLootTableProvider {
         lootTables.put(Registration.PIPE.get(), createBaseBlockStandardTable(Registration.PIPE.get()));
         lootTables.put(Registration.INPUT_PIPE.get(), createBaseBlockStandardTable(Registration.INPUT_PIPE.get()));
         lootTables.put(Registration.OUTPUT_PIPE.get(), createBaseBlockStandardTable(Registration.OUTPUT_PIPE.get()));
+        lootTables.put(Registration.PIPE_CONTROLLER.get(), createBaseBlockStandardTable(Registration.PIPE_CONTROLLER.get()));
     }
 }

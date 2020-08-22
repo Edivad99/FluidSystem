@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "fluidsystem:structural_tank_block"
+      "fluidsystem:pipe_controller"
     ]
   },
   "criteria": {
-    "iron": {
+    "pipe": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "minecraft:iron_ingot"
+            "item": "fluidsystem:pipe"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "fluidsystem:structural_tank_block"
+        "recipe": "fluidsystem:pipe_controller"
       }
     }
   },
   "requirements": [
     [
-      "iron",
+      "pipe",
       "has_the_recipe"
     ]
   ]

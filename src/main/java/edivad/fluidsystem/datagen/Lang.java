@@ -1,14 +1,13 @@
 package edivad.fluidsystem.datagen;
 
 import edivad.fluidsystem.Main;
-import edivad.fluidsystem.setup.ModSetup;
 import edivad.fluidsystem.setup.Registration;
 import edivad.fluidsystem.tools.Translations;
-import net.minecraft.block.TrapDoorBlock;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.LanguageProvider;
 
-public class Lang extends LanguageProvider {
+public class Lang extends LanguageProvider
+{
 
     public Lang(DataGenerator gen)
     {
@@ -28,6 +27,7 @@ public class Lang extends LanguageProvider {
         add(Registration.PIPE.get(), "Pipe");
         add(Registration.INPUT_PIPE.get(), "Input Pipe");
         add(Registration.OUTPUT_PIPE.get(), "Output Pipe");
+        add(Registration.PIPE_CONTROLLER.get(), "Pipe Controller");
 
         add(Registration.INFINITE_WATER_SOURCE.get(), "Infinite Water Source");
 

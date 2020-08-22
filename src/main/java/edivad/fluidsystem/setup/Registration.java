@@ -5,6 +5,7 @@ import edivad.fluidsystem.blocks.InfiniteWaterSource;
 import edivad.fluidsystem.blocks.pipe.BlockInputPipe;
 import edivad.fluidsystem.blocks.pipe.BlockOutputPipe;
 import edivad.fluidsystem.blocks.pipe.BlockPipe;
+import edivad.fluidsystem.blocks.pipe.BlockPipeController;
 import edivad.fluidsystem.blocks.tank.ControllerTankBlock;
 import edivad.fluidsystem.blocks.tank.InputTankBlock;
 import edivad.fluidsystem.blocks.tank.InterfaceTankBlock;
@@ -82,7 +83,10 @@ public class Registration
 
     public static final RegistryObject<BlockPipe> PIPE = BLOCKS.register("pipe", BlockPipe::new);
     public static final RegistryObject<Item> PIPE_ITEM = ITEMS.register("pipe", () -> new BlockItem(PIPE.get(), globalProperties));
-    
+
+    public static final RegistryObject<BlockPipeController> PIPE_CONTROLLER = BLOCKS.register("pipe_controller", BlockPipeController::new);
+    public static final RegistryObject<Item> IPE_CONTROLLER_ITEM = ITEMS.register("pipe_controller", () -> new BlockItem(PIPE_CONTROLLER.get(), globalProperties));
+
     public static final RegistryObject<BlockInputPipe> INPUT_PIPE = BLOCKS.register("input_pipe", BlockInputPipe::new);
     public static final RegistryObject<Item> INPUT_PIPE_ITEM = ITEMS.register("input_pipe", () -> new BlockItem(INPUT_PIPE.get(), globalProperties));
     public static final RegistryObject<TileEntityType<TileEntityBlockInputPipe>> INPUT_PIPE_TILE = TILES.register("input_pipe", () -> TileEntityType.Builder.create(TileEntityBlockInputPipe::new, INPUT_PIPE.get()).build(null));

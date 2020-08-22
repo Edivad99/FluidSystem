@@ -6,6 +6,7 @@
   "block.fluidsystem.interface_tank_block": "Tank Block Interface",
   "block.fluidsystem.output_pipe": "Output Pipe",
   "block.fluidsystem.pipe": "Pipe",
+  "block.fluidsystem.pipe_controller": "Pipe Controller",
   "block.fluidsystem.structural_tank_block": "Tank Block",
   "gui.fluidsystem.liquidAmount": "%smB/%smB",
   "gui.fluidsystem.liquidPercentage": "Full: %s",
