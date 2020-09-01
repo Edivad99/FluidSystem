@@ -38,13 +38,13 @@ import net.minecraftforge.items.ItemStackHandler;
 public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock implements INamedContainerProvider
 {
 
+    private final ItemStackHandler itemHandler = createHandler();
+    private final LazyOptional<IItemHandler> item = LazyOptional.of(() -> itemHandler);
+    private final FluidTank tank = new FluidTank(blockCapacity());
     //Client Side
     public FluidStack clientFluidStack = FluidStack.EMPTY;
     public int tanksBlock;
     public int totalCapacity;
-    private final ItemStackHandler itemHandler = createHandler();
-    private final LazyOptional<IItemHandler> item = LazyOptional.of(() -> itemHandler);
-    private final FluidTank tank = new FluidTank(blockCapacity());
     private LazyOptional<IFluidHandler> fluid;
 
     public TileEntityControllerTankBlock()
@@ -64,7 +64,6 @@ public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock imple
         return 0;
     }
 
-    //Usare solo nei moduli
     public LazyOptional<IFluidHandler> getFluidCap()
     {
         return fluid;
@@ -133,9 +132,8 @@ public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock imple
     {
         int newCapacity = getTotalCapacity();
         int oldCapacity = tank.getCapacity();
-        int oldSpace = tank.getSpace();
         tank.setCapacity(newCapacity);
-        if(oldCapacity > newCapacity && oldSpace == 0)
+        if(oldCapacity > newCapacity)
         {
             tank.drain(new FluidStack(tank.getFluid(), oldCapacity - newCapacity), FluidAction.EXECUTE);
         }

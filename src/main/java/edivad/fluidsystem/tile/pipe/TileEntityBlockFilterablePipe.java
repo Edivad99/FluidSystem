@@ -27,10 +27,10 @@ public class TileEntityBlockFilterablePipe extends TileEntity implements ITickab
     @Override
     public void tick()
     {
-        if(world.isRemote)
-            return;
-
-        PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpdateBlockFilterablePipe(getPos(), fluidFilter));
+        if(!world.isRemote)
+        {
+            PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpdateBlockFilterablePipe(getPos(), fluidFilter));
+        }
     }
 
     @Override

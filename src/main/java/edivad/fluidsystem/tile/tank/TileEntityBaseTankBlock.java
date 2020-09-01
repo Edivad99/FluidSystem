@@ -24,6 +24,7 @@ public abstract class TileEntityBaseTankBlock extends TileEntity implements ITic
     private int size;
     private int totalCapacity;
     private Status status;
+
     protected TileEntityBaseTankBlock(TileEntityType<?> tile)
     {
         super(tile);
