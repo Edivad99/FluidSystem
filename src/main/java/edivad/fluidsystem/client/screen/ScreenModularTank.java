@@ -36,15 +36,6 @@ public class ScreenModularTank extends ContainerScreen<ContainerTankBlockControl
         this.tile = screenContainer.tile;
     }
 
-    private static int getFluidScaled(int pixels, FluidStack fluid, int maxLiquidAmount)
-    {
-        if(maxLiquidAmount == 0)
-            return pixels;
-        Long currentLiquidAmount = (long) fluid.getAmount();
-        long x = currentLiquidAmount * pixels / maxLiquidAmount;
-        return pixels - (int) x;
-    }
-
     @Override
     protected void drawGuiContainerBackgroundLayer(MatrixStack mStack, float partialTicks, int mouseX, int mouseY)
     {
@@ -53,7 +44,7 @@ public class ScreenModularTank extends ContainerScreen<ContainerTankBlockControl
 
         //Render fluid
         FluidStack fluid = tile.clientFluidStack;
-        int index = getFluidScaled(43, fluid, tile.totalCapacity);
+        int index = FluidUtils.getFluidScaled(43, fluid, tile.totalCapacity);
         TextureAtlasSprite fluidTexture = FluidUtils.getFluidTexture(fluid);
         this.minecraft.getTextureManager().bindTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE);
         FluidUtils.color(FluidUtils.getLiquidColorWithBiome(fluid, tile));
@@ -79,7 +70,7 @@ public class ScreenModularTank extends ContainerScreen<ContainerTankBlockControl
         if(mouseX > this.guiLeft + 6 && mouseX < this.guiLeft + 61 && mouseY > this.guiTop + 18 && mouseY < this.guiTop + 63)
         {
             List<ITextComponent> tooltip = new ArrayList<>();
-            tooltip.add(tile.clientFluidStack.isEmpty() ? new StringTextComponent("Empty") : tile.clientFluidStack.getDisplayName());
+            tooltip.add(tile.clientFluidStack.isEmpty() ? new TranslationTextComponent(Translations.TANK_EMPTY) : tile.clientFluidStack.getDisplayName());
             DecimalFormat f = new DecimalFormat("#,##0");
             tooltip.add(new TranslationTextComponent(Translations.LIQUID_AMOUNT, f.format(tile.clientFluidStack.getAmount()), f.format(tile.totalCapacity)));
             float percentage;

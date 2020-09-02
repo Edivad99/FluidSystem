@@ -65,4 +65,13 @@ public class FluidUtils
     {
         return getLiquidColorWithBiome(fluid, tileEntity.getWorld(), tileEntity.getPos());
     }
+
+    public static int getFluidScaled(int pixels, FluidStack fluid, int maxLiquidAmount)
+    {
+        if(maxLiquidAmount == 0)
+            return pixels;
+        Long currentLiquidAmount = (long) fluid.getAmount();
+        long x = currentLiquidAmount * pixels / maxLiquidAmount;
+        return pixels - (int) x;
+    }
 }

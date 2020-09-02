@@ -39,6 +39,7 @@ public class Lang extends LanguageProvider
         add(Translations.TANK_CONTROLLER_MISSING, "The structure has no controller");
         add(Translations.TANK_EXTRA_CONTROLLER, "The structure contains more than one controller");
         add(Translations.TANK_TOO_BIG, "The structure is too big");
+        add(Translations.TANK_EMPTY, "Empty");
         add(Translations.FLUID_FILTERED, "Fluid filtered: %s");
         add(Translations.FLUID_FILTERED_SET, "Fluid filter set: %s");
         add(Translations.FLUID_FILTERED_REMOVE, "Remove fluid filter");

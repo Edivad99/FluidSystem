@@ -16,6 +16,7 @@ public class Translations
     public static String FLUID_FILTERED = "message." + Main.MODID + ".fluidFiltered";
     public static String FLUID_FILTERED_SET = "message." + Main.MODID + ".fluidFilteredSet";
     public static String FLUID_FILTERED_REMOVE = "message." + Main.MODID + ".fluidFilterRemoved";
+    public static String TANK_EMPTY = "message" + Main.MODID + ".tankEmpty";
 
     public static String TANK_BLOCK_TOOLTIP = "tooltip." + Main.MODID + ".tankBlock";
     public static String TANK_BLOCK_INTERFACE_TOOLTIP = "tooltip." + Main.MODID + ".tankBlockInterface";
