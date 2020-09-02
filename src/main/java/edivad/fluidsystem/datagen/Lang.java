@@ -50,6 +50,7 @@ public class Lang extends LanguageProvider
         add(Translations.TANK_BLOCK_INPUT_TOOLTIP, "Block that allows the insertion of liquids through our pipes");
         add(Translations.INPUT_PIPE_TOOLTIP, "Block that allows you to put liquid in the pipes, with a redstone signal");
         add(Translations.OUTPUT_PIPE_TOOLTIP, "Block that allows you to take the liquid from the pipes");
+        add(Translations.PIPE_CONTROLLER, "When a redstone signal is applied disconnect the pipes");
     }
 
 }

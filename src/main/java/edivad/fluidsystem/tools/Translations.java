@@ -24,4 +24,5 @@ public class Translations
     public static String TANK_BLOCK_INPUT_TOOLTIP = "tooltip." + Main.MODID + ".tankBlockInput";
     public static String INPUT_PIPE_TOOLTIP = "tooltip." + Main.MODID + ".inputPipe";
     public static String OUTPUT_PIPE_TOOLTIP = "tooltip." + Main.MODID + ".outputPipe";
+    public static String PIPE_CONTROLLER = "tooltip." + Main.MODID + ".pipeController";
 }
