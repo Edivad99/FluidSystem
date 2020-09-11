@@ -5,7 +5,6 @@ import net.minecraft.world.World;
 
 public interface IProxy
 {
-
     PlayerEntity getClientPlayer();
 
     World getClientWorld();

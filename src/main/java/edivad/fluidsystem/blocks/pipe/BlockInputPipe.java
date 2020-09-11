@@ -30,7 +30,6 @@ import java.util.List;
 
 public class BlockInputPipe extends BlockFilterable implements IFluidSystemConnectableBlock
 {
-
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     public BlockInputPipe()

@@ -11,7 +11,6 @@ import java.util.List;
 
 public class BlockStates extends CustomBlockStateProvider
 {
-
     public BlockStates(DataGenerator gen, ExistingFileHelper exFileHelper)
     {
         super(gen, Main.MODID, exFileHelper);

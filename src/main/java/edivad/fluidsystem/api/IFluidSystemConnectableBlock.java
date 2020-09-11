@@ -10,7 +10,6 @@ import net.minecraft.world.World;
  */
 public interface IFluidSystemConnectableBlock
 {
-
     /**
      * Checks if pipe can connect from side
      *

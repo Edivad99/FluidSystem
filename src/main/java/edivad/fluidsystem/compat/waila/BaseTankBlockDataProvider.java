@@ -13,7 +13,6 @@ import java.text.DecimalFormat;
 
 public class BaseTankBlockDataProvider implements IServerDataProvider<TileEntity>
 {
-
     @Override
     public void appendServerData(CompoundNBT data, ServerPlayerEntity player, World world, TileEntity tileEntity)
     {

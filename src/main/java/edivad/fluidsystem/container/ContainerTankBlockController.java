@@ -14,7 +14,6 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerTankBlockController extends Container
 {
-
     public TileEntityControllerTankBlock tile;
 
     public ContainerTankBlockController(int id, PlayerInventory playerInventory, TileEntityControllerTankBlock tile)

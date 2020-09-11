@@ -23,7 +23,6 @@ import java.util.List;
 
 public class InputTankBlock extends BaseBlockRotable implements IFluidSystemConnectableBlock
 {
-
     @Override
     public boolean hasTileEntity(BlockState state)
     {

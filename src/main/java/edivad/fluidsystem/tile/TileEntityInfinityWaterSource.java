@@ -15,7 +15,6 @@ import javax.annotation.Nullable;
 
 public class TileEntityInfinityWaterSource extends TileEntity
 {
-
     private final InfiniteTank tank = new InfiniteTank(Fluids.WATER);
     private final LazyOptional<IFluidHandler> fluidHandler = LazyOptional.of(() -> tank);
 

@@ -9,7 +9,6 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
  */
 public interface IFluidSystemEject
 {
-
     /**
      * Called when fluid is eject from the FluidSystem's pipes into this TE
      *

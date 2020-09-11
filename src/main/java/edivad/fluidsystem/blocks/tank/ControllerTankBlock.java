@@ -24,7 +24,6 @@ import java.util.List;
 
 public class ControllerTankBlock extends BaseBlock
 {
-
     @Override
     public boolean hasTileEntity(BlockState state)
     {

@@ -11,7 +11,6 @@ import net.minecraft.world.World;
 
 public class BlockFilterablePipeDataProvider implements IServerDataProvider<TileEntity>
 {
-
     @Override
     public void appendServerData(CompoundNBT data, ServerPlayerEntity player, World world, TileEntity tileEntity)
     {

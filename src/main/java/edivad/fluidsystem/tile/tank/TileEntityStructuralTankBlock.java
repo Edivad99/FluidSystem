@@ -5,7 +5,6 @@ import edivad.fluidsystem.tools.Config;
 
 public class TileEntityStructuralTankBlock extends TileEntityBaseTankBlock
 {
-
     public TileEntityStructuralTankBlock()
     {
         super(Registration.STRUCTURAL_TANK_BLOCK_TILE.get());

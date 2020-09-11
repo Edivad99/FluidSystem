@@ -26,7 +26,6 @@ import net.minecraft.world.World;
 
 public class BlockPipe extends Block implements IWaterLoggable, IFluidSystemConnectableBlock
 {
-
     public static final BooleanProperty NORTH = BooleanProperty.create("north");
     public static final BooleanProperty EAST = BooleanProperty.create("east");
     public static final BooleanProperty SOUTH = BooleanProperty.create("south");

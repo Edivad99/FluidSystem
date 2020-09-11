@@ -12,7 +12,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class TileEntityInputTankBlock extends TileEntityBaseTankBlock implements IFluidSystemEject
 {
-
     public TileEntityInputTankBlock()
     {
         super(Registration.INPUT_TANK_BLOCK_TILE.get());

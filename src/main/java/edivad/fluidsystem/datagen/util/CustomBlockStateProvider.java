@@ -16,7 +16,6 @@ import java.util.List;
 
 public abstract class CustomBlockStateProvider extends BlockStateProvider
 {
-
     private final ExistingFileHelper exFileHelper;
     private final String modid;
 

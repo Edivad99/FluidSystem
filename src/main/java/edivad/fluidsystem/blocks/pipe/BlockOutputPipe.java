@@ -25,7 +25,6 @@ import java.util.List;
 
 public class BlockOutputPipe extends BlockFilterable implements IFluidSystemConnectableBlock
 {
-
     public BlockOutputPipe()
     {
         super(Properties.create(Material.IRON).sound(SoundType.STONE).hardnessAndResistance(5.0F));

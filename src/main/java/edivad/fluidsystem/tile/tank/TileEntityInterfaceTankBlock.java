@@ -8,7 +8,6 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 public class TileEntityInterfaceTankBlock extends TileEntityBaseTankBlock
 {
-
     public TileEntityInterfaceTankBlock()
     {
         super(Registration.INTERFACE_TANK_BLOCK_TILE.get());

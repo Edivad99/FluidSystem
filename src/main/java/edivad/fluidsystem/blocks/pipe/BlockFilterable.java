@@ -19,7 +19,6 @@ import net.minecraft.world.World;
 
 public class BlockFilterable extends BlockRotable
 {
-
     public BlockFilterable(Properties properties)
     {
         super(properties);

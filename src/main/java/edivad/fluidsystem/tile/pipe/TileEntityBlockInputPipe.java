@@ -17,7 +17,6 @@ import java.util.List;
 
 public class TileEntityBlockInputPipe extends TileEntityBlockFilterablePipe implements ITickableTileEntity
 {
-
     public TileEntityBlockInputPipe()
     {
         super(Registration.INPUT_PIPE_TILE.get());

@@ -13,7 +13,6 @@ import java.util.function.Supplier;
 
 public class UpdateTankBlockController
 {
-
     private final BlockPos pos;
     private final FluidStack fluidStack;
     private final int tanksBlock;

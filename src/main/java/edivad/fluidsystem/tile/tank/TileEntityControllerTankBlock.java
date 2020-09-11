@@ -37,7 +37,6 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock implements INamedContainerProvider
 {
-
     private final ItemStackHandler itemHandler = createHandler();
     private final LazyOptional<IItemHandler> item = LazyOptional.of(() -> itemHandler);
     private final FluidTank tank = new FluidTank(blockCapacity());

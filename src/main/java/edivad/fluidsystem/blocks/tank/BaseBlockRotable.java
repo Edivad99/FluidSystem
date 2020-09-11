@@ -14,7 +14,6 @@ import net.minecraft.world.World;
 
 public class BaseBlockRotable extends BlockRotable
 {
-
     public BaseBlockRotable()
     {
         super(Properties.create(Material.IRON).sound(SoundType.STONE).hardnessAndResistance(5.0F));

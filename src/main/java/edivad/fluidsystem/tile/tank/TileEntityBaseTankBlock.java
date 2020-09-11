@@ -18,7 +18,6 @@ import java.util.Stack;
 
 public abstract class TileEntityBaseTankBlock extends TileEntity implements ITickableTileEntity
 {
-
     private TileEntityBaseTankBlock master;
     private boolean firstRun = true;
     private int size;

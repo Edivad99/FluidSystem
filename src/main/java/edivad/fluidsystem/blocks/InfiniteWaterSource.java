@@ -12,7 +12,6 @@ import javax.annotation.Nullable;
 
 public class InfiniteWaterSource extends Block
 {
-
     public InfiniteWaterSource()
     {
         super(Properties.create(Material.ROCK).sound(SoundType.SNOW).hardnessAndResistance(10.0F, 1200.0F));

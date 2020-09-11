@@ -24,7 +24,6 @@ import java.util.List;
 
 public class ScreenModularTank extends ContainerScreen<ContainerTankBlockController>
 {
-
     private static final ResourceLocation TEXTURES = new ResourceLocation(Main.MODID, "textures/gui/controller_tank_block.png");
     private final TileEntityControllerTankBlock tile;
 

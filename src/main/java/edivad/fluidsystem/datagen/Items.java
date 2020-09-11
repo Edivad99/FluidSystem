@@ -11,7 +11,6 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class Items extends ItemModelProvider
 {
-
     public Items(DataGenerator generator, ExistingFileHelper existingFileHelper)
     {
         super(generator, Main.MODID, existingFileHelper);

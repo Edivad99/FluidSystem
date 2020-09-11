@@ -18,7 +18,6 @@ import java.util.List;
 
 public class InterfaceTankBlock extends BaseBlock
 {
-
     @Override
     public boolean hasTileEntity(BlockState state)
     {

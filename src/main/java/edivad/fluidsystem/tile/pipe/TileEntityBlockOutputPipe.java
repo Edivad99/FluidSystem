@@ -16,7 +16,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class TileEntityBlockOutputPipe extends TileEntityBlockFilterablePipe implements IFluidSystemEject
 {
-
     public TileEntityBlockOutputPipe()
     {
         super(Registration.OUTPUT_PIPE_TILE.get());

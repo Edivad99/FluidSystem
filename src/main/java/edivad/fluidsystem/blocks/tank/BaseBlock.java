@@ -14,7 +14,6 @@ import net.minecraft.world.World;
 
 public class BaseBlock extends Block
 {
-
     public BaseBlock()
     {
         super(Properties.create(Material.IRON).sound(SoundType.STONE).hardnessAndResistance(5.0F));

@@ -13,7 +13,6 @@ import javax.annotation.Nullable;
 
 public abstract class TOPElement implements IElement
 {
-
     private final int borderColor;
     private final int textColor;
 

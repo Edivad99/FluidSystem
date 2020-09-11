@@ -12,7 +12,6 @@ import java.util.Optional;
 
 public class PacketHandler
 {
-
     private static final String PROTOCOL_VERSION = "1";
     public static SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(Main.MODID, "net"), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
 

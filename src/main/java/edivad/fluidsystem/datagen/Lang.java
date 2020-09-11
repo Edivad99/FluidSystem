@@ -8,7 +8,6 @@ import net.minecraftforge.common.data.LanguageProvider;
 
 public class Lang extends LanguageProvider
 {
-
     public Lang(DataGenerator gen)
     {
         super(gen, Main.MODID, "en_us");

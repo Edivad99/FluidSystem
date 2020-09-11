@@ -19,7 +19,6 @@ import java.util.function.Function;
 
 public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, Void>
 {
-
     @Override
     public Void apply(ITheOneProbe probe)
     {

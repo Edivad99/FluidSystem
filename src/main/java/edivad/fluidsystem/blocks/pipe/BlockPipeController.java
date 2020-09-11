@@ -28,7 +28,6 @@ import java.util.List;
 
 public class BlockPipeController extends Block implements IFluidSystemConnectableBlock
 {
-
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     public BlockPipeController()
