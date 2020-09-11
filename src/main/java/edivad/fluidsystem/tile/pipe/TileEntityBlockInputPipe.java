@@ -6,6 +6,7 @@ import edivad.fluidsystem.setup.Registration;
 import edivad.fluidsystem.tools.Routing;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraftforge.fluids.FluidStack;
@@ -14,7 +15,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import java.util.List;
 
-public class TileEntityBlockInputPipe extends TileEntityBlockFilterablePipe
+public class TileEntityBlockInputPipe extends TileEntityBlockFilterablePipe implements ITickableTileEntity
 {
 
     public TileEntityBlockInputPipe()
@@ -25,7 +26,6 @@ public class TileEntityBlockInputPipe extends TileEntityBlockFilterablePipe
     @Override
     public void tick()
     {
-        super.tick();
         if(world.isRemote)
             return;
 

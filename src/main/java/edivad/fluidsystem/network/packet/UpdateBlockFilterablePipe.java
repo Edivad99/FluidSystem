@@ -46,7 +46,7 @@ public class UpdateBlockFilterablePipe
                 if(te instanceof TileEntityBlockFilterablePipe)
                 {
                     TileEntityBlockFilterablePipe output = (TileEntityBlockFilterablePipe) te;
-                    output.setClientFluid(fluidStack);
+                    output.setFilteredFluid(fluidStack.getFluid());
                 }
             }
         });

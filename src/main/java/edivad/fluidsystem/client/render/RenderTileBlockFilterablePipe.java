@@ -21,7 +21,6 @@ import net.minecraftforge.fluids.FluidStack;
 @OnlyIn(Dist.CLIENT)
 public class RenderTileBlockFilterablePipe extends TileEntityRenderer<TileEntityBlockFilterablePipe>
 {
-
     public RenderTileBlockFilterablePipe(TileEntityRendererDispatcher rendererDispatcherIn)
     {
         super(rendererDispatcherIn);
@@ -30,10 +29,10 @@ public class RenderTileBlockFilterablePipe extends TileEntityRenderer<TileEntity
     @Override
     public void render(TileEntityBlockFilterablePipe tile, float partialTicks, MatrixStack mStack, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn)
     {
-        if(tile == null || tile.isRemoved() || tile.getClientFluid().isEquivalentTo(Fluids.EMPTY))
+        if(tile == null || tile.isRemoved() || tile.getFluidFilter().isEquivalentTo(Fluids.EMPTY))
             return;
 
-        FluidStack fluid = new FluidStack(tile.getClientFluid(), 1000);
+        FluidStack fluid = new FluidStack(tile.getFluidFilter(), 1000);
         TextureAtlasSprite sprite = FluidUtils.getFluidTexture(fluid);
         if(sprite == null)
             return;
