@@ -5,9 +5,9 @@ import edivad.fluidsystem.blocks.pipe.BlockPipe;
 import edivad.fluidsystem.setup.Registration;
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
-import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class Items extends ItemModelProvider
 {
