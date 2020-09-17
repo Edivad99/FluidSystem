@@ -40,6 +40,7 @@ public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock imple
     private final ItemStackHandler itemHandler = createHandler();
     private final LazyOptional<IItemHandler> item = LazyOptional.of(() -> itemHandler);
     private final FluidTank tank = new FluidTank(blockCapacity());
+
     //Client Side
     public FluidStack clientFluidStack = FluidStack.EMPTY;
     public int tanksBlock;
@@ -154,10 +155,9 @@ public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock imple
     @Override
     public CompoundNBT write(CompoundNBT tag)
     {
-        tag = super.write(tag);
         tag.put("inventory", itemHandler.serializeNBT());
         tank.writeToNBT(tag);
-        return tag;
+        return super.write(tag);
     }
 
     @Override

@@ -71,8 +71,8 @@ public abstract class TileEntityBaseTankBlock extends TileEntity implements ITic
     {
         if(master == null || master.isRemoved())
         {
-            List<TileEntityBaseTankBlock> connectedStorages = new ArrayList<TileEntityBaseTankBlock>();
-            Stack<TileEntityBaseTankBlock> traversingStorages = new Stack<TileEntityBaseTankBlock>();
+            List<TileEntityBaseTankBlock> connectedStorages = new ArrayList<>();
+            Stack<TileEntityBaseTankBlock> traversingStorages = new Stack<>();
             TileEntityBaseTankBlock master = null;
             traversingStorages.add(this);
             while(!traversingStorages.isEmpty())
@@ -121,7 +121,7 @@ public abstract class TileEntityBaseTankBlock extends TileEntity implements ITic
     @Override
     public void tick()
     {
-        if(!world.isRemote && firstRun)
+        if(firstRun && !world.isRemote)
         {
             initializeMultiblockIfNecessary();
             firstRun = false;
