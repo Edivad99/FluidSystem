@@ -4,6 +4,7 @@ import edivad.fluidsystem.Main;
 import edivad.fluidsystem.setup.Registration;
 import edivad.fluidsystem.tools.Translations;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.data.LanguageProvider;
 
 public class Lang extends LanguageProvider
@@ -20,6 +21,7 @@ public class Lang extends LanguageProvider
 
         add(Registration.STRUCTURAL_TANK_BLOCK.get(), "Tank Block");
         add(Registration.CONTROLLER_TANK_BLOCK.get(), "Tank Block Controller");
+        add(Registration.INDICATOR_TANK_BLOCK.get(), "Tank Block Indicator");
         add(Registration.INTERFACE_TANK_BLOCK.get(), "Tank Block Interface");
         add(Registration.INPUT_TANK_BLOCK.get(), "Tank Block Input");
 
@@ -46,6 +48,7 @@ public class Lang extends LanguageProvider
         add(Translations.TANK_BLOCK_TOOLTIP, "Block that adds capacity to the tank");
         add(Translations.TANK_BLOCK_INTERFACE_TOOLTIP, "Block that allows you to withdraw and insert liquids into the tank");
         add(Translations.TANK_BLOCK_CONTROLLER_TOOLTIP, "Main block that allows you to form the tank");
+        add(Translations.TANK_BLOCK_INDICATOR_TOOLTIP, "Block that indicates how much liquid is inside the tank");
         add(Translations.TANK_BLOCK_INPUT_TOOLTIP, "Block that allows the insertion of liquids through our pipes");
         add(Translations.INPUT_PIPE_TOOLTIP, "Block that allows you to put liquid in the pipes, with a redstone signal");
         add(Translations.OUTPUT_PIPE_TOOLTIP, "Block that allows you to take the liquid from the pipes");

@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ada",
+    "cbc",
+    "ada"
+  ],
+  "key": {
+    "a": {
+      "item": "minecraft:redstone"
+    },
+    "b": {
+      "item": "fluidsystem:structural_tank_block"
+    },
+    "c": {
+      "item": "minecraft:quartz"
+    },
+    "d": {
+      "item": "minecraft:bucket"
+    }
+  },
+  "result": {
+    "item": "fluidsystem:indicator_tank_block"
+  }
+}

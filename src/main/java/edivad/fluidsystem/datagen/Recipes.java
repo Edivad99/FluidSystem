@@ -83,6 +83,17 @@ public class Recipes extends RecipeProvider
                 .addCriterion("structural_tank_block", hasItem(Registration.STRUCTURAL_TANK_BLOCK.get()))//
                 .build(consumer);
 
+        ShapedRecipeBuilder.shapedRecipe(Registration.INDICATOR_TANK_BLOCK.get())//
+                .patternLine("ada")//
+                .patternLine("cbc")//
+                .patternLine("ada")//
+                .key('a', Items.REDSTONE)//
+                .key('b', Registration.STRUCTURAL_TANK_BLOCK.get())//
+                .key('c', Items.QUARTZ)//
+                .key('d', Items.BUCKET)//
+                .addCriterion("indicator_tank_block", hasItem(Registration.STRUCTURAL_TANK_BLOCK.get()))//
+                .build(consumer);
+
         ShapedRecipeBuilder.shapedRecipe(Registration.INPUT_TANK_BLOCK.get())//
                 .patternLine(" b ")//
                 .patternLine("aaa")//

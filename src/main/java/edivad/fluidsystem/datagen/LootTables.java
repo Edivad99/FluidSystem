@@ -16,6 +16,7 @@ public class LootTables extends BaseLootTableProvider
     {
         lootTables.put(Registration.STRUCTURAL_TANK_BLOCK.get(), createBaseBlockStandardTable(Registration.STRUCTURAL_TANK_BLOCK.get()));
         lootTables.put(Registration.CONTROLLER_TANK_BLOCK.get(), createBaseBlockStandardTable(Registration.CONTROLLER_TANK_BLOCK.get()));
+        lootTables.put(Registration.INDICATOR_TANK_BLOCK.get(), createBaseBlockStandardTable(Registration.INDICATOR_TANK_BLOCK.get()));
         lootTables.put(Registration.INTERFACE_TANK_BLOCK.get(), createBaseBlockStandardTable(Registration.INTERFACE_TANK_BLOCK.get()));
         lootTables.put(Registration.INPUT_TANK_BLOCK.get(), createBaseBlockStandardTable(Registration.INPUT_TANK_BLOCK.get()));
         lootTables.put(Registration.INFINITE_WATER_SOURCE.get(), createBaseBlockStandardTable(Registration.INFINITE_WATER_SOURCE.get()));

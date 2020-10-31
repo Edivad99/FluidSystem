@@ -4,7 +4,7 @@
     "type": "CTM",
     "layer": "SOLID",
     "textures": [
-      "fluidsystem:blocks/tank/structural_tank_block-ctm"
+      "fluidsystem:blocks/tank/indicator_tank_block-ctm"
     ],
     "extra": {
       "connect_to": [

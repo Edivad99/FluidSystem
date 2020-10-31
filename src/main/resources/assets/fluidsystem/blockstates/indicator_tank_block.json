@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "fluidsystem:block/indicator_tank_block"
+    }
+  }
+}

@@ -22,6 +22,7 @@ public class BlockStates extends CustomBlockStateProvider
         //Tank
         ModelFile tankBlock = models().cubeAll("structural_tank_block", modLoc("blocks/tank/structural_tank_block"));
         ModelFile tankBlockController = models().cubeBottomTop("controller_tank_block", modLoc("blocks/tank/controller_tank_block"), modLoc("blocks/tank/structural_tank_block"), modLoc("blocks/tank/structural_tank_block"));
+        ModelFile tankBlockIndicator = models().cubeBottomTop("indicator_tank_block", modLoc("blocks/tank/indicator_tank_block"), modLoc("blocks/tank/structural_tank_block"), modLoc("blocks/tank/structural_tank_block"));
         ModelFile tankBlockInterface = models().cubeAll("interface_tank_block", modLoc("blocks/tank/interface_tank_block"));
         ModelFile inputBlock = orientedBlockModel("input_tank_block", modLoc("blocks/tank/structural_tank_block"), modLoc("blocks/tank/input_tank_block"), modLoc("blocks/tank/structural_tank_block"));
         orientedBlock(Registration.INPUT_TANK_BLOCK.get(), inputBlock);
@@ -31,6 +32,7 @@ public class BlockStates extends CustomBlockStateProvider
 
         simpleBlock(Registration.STRUCTURAL_TANK_BLOCK.get(), tankBlock);
         simpleBlock(Registration.CONTROLLER_TANK_BLOCK.get(), tankBlockController);
+        simpleBlock(Registration.INDICATOR_TANK_BLOCK.get(), tankBlockIndicator);
         simpleBlock(Registration.INTERFACE_TANK_BLOCK.get(), tankBlockInterface);
 
         simpleBlock(Registration.INFINITE_WATER_SOURCE.get(), infiniteWaterSource);

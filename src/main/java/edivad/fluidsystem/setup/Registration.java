@@ -7,6 +7,7 @@ import edivad.fluidsystem.blocks.pipe.BlockOutputPipe;
 import edivad.fluidsystem.blocks.pipe.BlockPipe;
 import edivad.fluidsystem.blocks.pipe.BlockPipeController;
 import edivad.fluidsystem.blocks.tank.ControllerTankBlock;
+import edivad.fluidsystem.blocks.tank.IndicatorTankBlock;
 import edivad.fluidsystem.blocks.tank.InputTankBlock;
 import edivad.fluidsystem.blocks.tank.InterfaceTankBlock;
 import edivad.fluidsystem.blocks.tank.StructuralTankBlock;
@@ -15,6 +16,7 @@ import edivad.fluidsystem.tile.pipe.TileEntityBlockInputPipe;
 import edivad.fluidsystem.tile.pipe.TileEntityBlockOutputPipe;
 import edivad.fluidsystem.tile.TileEntityInfinityWaterSource;
 import edivad.fluidsystem.tile.tank.TileEntityControllerTankBlock;
+import edivad.fluidsystem.tile.tank.TileEntityIndicatorTankBlock;
 import edivad.fluidsystem.tile.tank.TileEntityInputTankBlock;
 import edivad.fluidsystem.tile.tank.TileEntityInterfaceTankBlock;
 import edivad.fluidsystem.tile.tank.TileEntityStructuralTankBlock;
@@ -75,7 +77,11 @@ public class Registration
         TileEntityControllerTankBlock tile = (TileEntityControllerTankBlock) te;
         return new ContainerTankBlockController(windowId, inv.player.inventory, tile);
     }));
-    
+
+    public static final RegistryObject<IndicatorTankBlock> INDICATOR_TANK_BLOCK = BLOCKS.register("indicator_tank_block", IndicatorTankBlock::new);
+    public static final RegistryObject<Item> INDICATOR_TANK_BLOCK_ITEM = ITEMS.register("indicator_tank_block", () -> new BlockItem(INDICATOR_TANK_BLOCK.get(), globalProperties));
+    public static final RegistryObject<TileEntityType<TileEntityIndicatorTankBlock>> INDICATOR_TANK_BLOCK_TILE = TILES.register("indicator_tank_block", () -> TileEntityType.Builder.create(TileEntityIndicatorTankBlock::new, INDICATOR_TANK_BLOCK.get()).build(null));
+
     public static final RegistryObject<InfiniteWaterSource> INFINITE_WATER_SOURCE = BLOCKS.register("infinite_water_source", InfiniteWaterSource::new);
     public static final RegistryObject<Item> INFINITE_WATER_SOURCE_ITEM = ITEMS.register("infinite_water_source", () -> new BlockItem(INFINITE_WATER_SOURCE.get(), globalProperties));
     public static final RegistryObject<TileEntityType<TileEntityInfinityWaterSource>> INFINITE_WATER_SOURCE_TILE = TILES.register("infinite_water_source", () -> TileEntityType.Builder.create(TileEntityInfinityWaterSource::new, INFINITE_WATER_SOURCE.get()).build(null));

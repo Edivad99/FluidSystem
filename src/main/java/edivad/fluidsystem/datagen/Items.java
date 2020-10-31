@@ -22,6 +22,7 @@ public class Items extends ItemModelProvider
         //Tank
         parentedBlock(Registration.STRUCTURAL_TANK_BLOCK.get());
         parentedBlock(Registration.CONTROLLER_TANK_BLOCK.get());
+        parentedBlock(Registration.INDICATOR_TANK_BLOCK.get());
         parentedBlock(Registration.INTERFACE_TANK_BLOCK.get());
         parentedBlock(Registration.INPUT_TANK_BLOCK.get());
 
