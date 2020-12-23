@@ -18,6 +18,7 @@
   "message.fluidsystem.tankControllerMissing": "The structure has no controller",
   "message.fluidsystem.tankExtraController": "The structure contains more than one controller",
   "message.fluidsystem.tankFormed": "The structure is correctly built",
+  "message.fluidsystem.tankMissingSpace": "The structure has no Tank Block",
   "message.fluidsystem.tankTooBig": "The structure is too big",
   "messagefluidsystem.tankEmpty": "Empty",
   "tooltip.fluidsystem.inputPipe": "Block that allows you to put liquid in the pipes, with a redstone signal",

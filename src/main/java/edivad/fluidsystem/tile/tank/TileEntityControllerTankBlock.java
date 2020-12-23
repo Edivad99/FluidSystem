@@ -133,9 +133,9 @@ public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock imple
         int newCapacity = getTotalCapacity();
         int oldCapacity = tank.getCapacity();
         tank.setCapacity(newCapacity);
-        if(oldCapacity > newCapacity)
+        if(oldCapacity > newCapacity && tank.getFluidAmount() > newCapacity)
         {
-            tank.drain(new FluidStack(tank.getFluid(), oldCapacity - newCapacity), FluidAction.EXECUTE);
+            tank.drain(new FluidStack(tank.getFluid(), tank.getFluidAmount() - newCapacity), FluidAction.EXECUTE);
         }
         if(fluid != null)
             fluid.invalidate();

@@ -110,6 +110,8 @@ public abstract class TileEntityBaseTankBlock extends TileEntity implements ITic
                 currentStatus = Status.EXTRA_CONTROLLER;
             else if(connectedStorages.size() > Config.NUMBER_OF_MODULES.get())
                 currentStatus = Status.TOO_BIG;
+            else if (calculateCapacity == 0)
+                currentStatus = Status.MISSING_SPACE;
 
             for(TileEntityBaseTankBlock storage : connectedStorages)
             {
@@ -154,7 +156,8 @@ public abstract class TileEntityBaseTankBlock extends TileEntity implements ITic
         FORMED,
         CONTROLLER_MISSING,
         EXTRA_CONTROLLER,
-        TOO_BIG;
+        TOO_BIG,
+        MISSING_SPACE;
 
         public TranslationTextComponent getStatusText()
         {
@@ -168,6 +171,8 @@ public abstract class TileEntityBaseTankBlock extends TileEntity implements ITic
                     return new TranslationTextComponent(Translations.TANK_EXTRA_CONTROLLER);
                 case TOO_BIG:
                     return new TranslationTextComponent(Translations.TANK_TOO_BIG);
+                case MISSING_SPACE:
+                    return new TranslationTextComponent(Translations.TANK_MISSING_SPACE);
                 default:
                     return null;
             }

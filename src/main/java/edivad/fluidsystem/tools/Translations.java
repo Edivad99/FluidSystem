@@ -13,6 +13,7 @@ public class Translations
     public static String TANK_CONTROLLER_MISSING = "message." + Main.MODID + ".tankControllerMissing";
     public static String TANK_EXTRA_CONTROLLER = "message." + Main.MODID + ".tankExtraController";
     public static String TANK_TOO_BIG = "message." + Main.MODID + ".tankTooBig";
+    public static String TANK_MISSING_SPACE = "message." + Main.MODID + ".tankMissingSpace";
     public static String FLUID_FILTERED = "message." + Main.MODID + ".fluidFiltered";
     public static String FLUID_FILTERED_SET = "message." + Main.MODID + ".fluidFilteredSet";
     public static String FLUID_FILTERED_REMOVE = "message." + Main.MODID + ".fluidFilterRemoved";
