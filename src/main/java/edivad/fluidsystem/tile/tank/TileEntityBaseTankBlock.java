@@ -113,9 +113,12 @@ public abstract class TileEntityBaseTankBlock extends TileEntity implements ITic
             else if (calculateCapacity == 0)
                 currentStatus = Status.MISSING_SPACE;
 
+            if(currentStatus != Status.FORMED)
+                master = null;
+
             for(TileEntityBaseTankBlock storage : connectedStorages)
             {
-                storage.setMaster(currentStatus == Status.FORMED ? master : null, calculateCapacity, connectedStorages.size(), currentStatus);
+                storage.setMaster(master, calculateCapacity, connectedStorages.size(), currentStatus);
             }
         }
     }

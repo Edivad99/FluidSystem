@@ -110,8 +110,8 @@ dependencies {
     //runtimeOnly fg.deobf("mcp.mobius.waila:Hwyla:${waila_version}")
 
     runtimeOnly fg.deobf("team.chisel.ctm:CTM:MC1.16.1-${ctm_version}")
-    //runtimeOnly fg.deobf("mezz.jei:jei-1.16.3:${jei_version}")
-    //runtimeOnly fg.deobf("curse.maven:mekanism:${mekanism_version}")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.16.4:${jei_version}")
+    runtimeOnly fg.deobf("curse.maven:mekanism:${mekanism_version}")
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
