@@ -53,8 +53,8 @@ public class ScreenModularTank extends ContainerScreen<ContainerTankBlockControl
     @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack mStack, int mouseX, int mouseY)
     {
-        this.font.func_243248_b(mStack, this.title, this.titleX, this.titleY, 4210752);
-        this.font.func_243248_b(mStack, new TranslationTextComponent(Translations.TANKS_BLOCK).appendString(String.valueOf(tile.tanksBlock)), this.titleX, this.titleY + 60, 4210752);
+        this.font.drawText(mStack, this.title, this.titleX, this.titleY, 4210752);
+        this.font.drawText(mStack, new TranslationTextComponent(Translations.TANKS_BLOCK).appendString(String.valueOf(tile.tanksBlock)), this.titleX, this.titleY + 60, 4210752);
         //Render indicator
         this.minecraft.getTextureManager().bindTexture(TEXTURES);
         blit(mStack, 8, 19, 176, 0, 52, 228);
