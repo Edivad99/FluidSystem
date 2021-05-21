@@ -117,7 +117,7 @@ public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock imple
                 {
                     if(checkTypeofLiquid.getAmount() > 0)//Significa che l'item è parzialmente pieno
                     {
-                        FluidActionResult result = FluidUtil.tryEmptyContainerAndStow(input, tank, itemHandler, checkTypeofLiquid.getAmount(), null, true);
+                        FluidActionResult result = FluidUtil.tryEmptyContainerAndStow(input, tank, itemHandler, tank.getSpace(), null, true);
                         itemHandler.extractItem(0, 1, false);
                         itemHandler.insertItem(1, result.getResult(), false);
                         markDirty();
