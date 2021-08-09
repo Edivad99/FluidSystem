@@ -3,7 +3,7 @@ package edivad.fluidsystem.datagen;
 import edivad.fluidsystem.Main;
 import edivad.fluidsystem.blocks.pipe.BlockPipe;
 import edivad.fluidsystem.setup.Registration;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;

@@ -3,82 +3,84 @@ package edivad.fluidsystem.tile.pipe;
 import edivad.fluidsystem.api.IFluidSystemFilterable;
 import edivad.fluidsystem.network.PacketHandler;
 import edivad.fluidsystem.network.packet.UpdateBlockFilterablePipe;
-import net.minecraft.block.BlockState;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
-public class TileEntityBlockFilterablePipe extends TileEntity implements IFluidSystemFilterable
+public class TileEntityBlockFilterablePipe extends BlockEntity implements IFluidSystemFilterable
 {
     private FluidStack fluidFilter = FluidStack.EMPTY;
 
-    public TileEntityBlockFilterablePipe(TileEntityType<?> tileEntityTypeIn)
+    public TileEntityBlockFilterablePipe(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState)
     {
-        super(tileEntityTypeIn);
+        super(blockEntityType, blockPos, blockState);
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT tag)
+    public CompoundTag save(CompoundTag tag)
     {
         fluidFilter.writeToNBT(tag);
-        return super.write(tag);
+        return super.save(tag);
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT tag)
+    public void load(CompoundTag tag)
     {
-        super.read(state, tag);
+        super.load(tag);
         fluidFilter = FluidStack.loadFluidStackFromNBT(tag);
     }
 
     //Synchronizing on block update
     @Override
-    public SUpdateTileEntityPacket getUpdatePacket()
+    public ClientboundBlockEntityDataPacket getUpdatePacket()
     {
-        CompoundNBT tag = new CompoundNBT();
+        CompoundTag tag = new CompoundTag();
         fluidFilter.writeToNBT(tag);
-        return new SUpdateTileEntityPacket(getPos(), 1 , tag);
+        return new ClientboundBlockEntityDataPacket(getBlockPos(), 1 , tag);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt)
     {
-        CompoundNBT tag = pkt.getNbtCompound();
+        CompoundTag tag = pkt.getTag();
         fluidFilter = FluidStack.loadFluidStackFromNBT(tag);
     }
 
     //Synchronizing on chunk load
     @Override
-    public CompoundNBT getUpdateTag()
+    public CompoundTag getUpdateTag()
     {
-        CompoundNBT tag = super.getUpdateTag();
+        CompoundTag tag = super.getUpdateTag();
         fluidFilter.writeToNBT(tag);
         return tag;
     }
 
     @Override
-    public void handleUpdateTag(BlockState state, CompoundNBT tag)
+    public void handleUpdateTag(CompoundTag tag)
     {
-        super.handleUpdateTag(state, tag);
+        super.handleUpdateTag(tag);
         fluidFilter = FluidStack.loadFluidStackFromNBT(tag);
     }
 
     @Override
     public void setFilteredFluid(Fluid fluid)
     {
-        if(fluid.isEquivalentTo(Fluids.EMPTY))
+        if(fluid.isSame(Fluids.EMPTY))
             fluidFilter = FluidStack.EMPTY;
         else
             fluidFilter = new FluidStack(fluid, 1000);
-        markDirty();
-        if(!world.isRemote)
-            PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpdateBlockFilterablePipe(getPos(), fluidFilter));
+        setChanged();
+        if(!level.isClientSide)
+            PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpdateBlockFilterablePipe(getBlockPos(), fluidFilter));
     }
 
     @Override

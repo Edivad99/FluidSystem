@@ -1,6 +1,6 @@
 package edivad.fluidsystem.tools;
 
-import net.minecraft.fluid.Fluid;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 
 public class InfiniteTank implements IFluidHandler, IFluidTank
 {
-
     private final Fluid fluid;
 
     public InfiniteTank(Fluid fluid)
@@ -39,7 +38,7 @@ public class InfiniteTank implements IFluidHandler, IFluidTank
     @Override
     public boolean isFluidValid(FluidStack stack)
     {
-        return stack.getFluid().isEquivalentTo(fluid);
+        return stack.getFluid().isSame(fluid);
     }
 
     @Override

@@ -2,21 +2,21 @@ package edivad.fluidsystem.tile.tank;
 
 import edivad.fluidsystem.tools.Config;
 import edivad.fluidsystem.tools.Translations;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public abstract class TileEntityBaseTankBlock extends TileEntity implements ITickableTileEntity
+public abstract class TileEntityBaseTankBlock extends BlockEntity
 {
     private TileEntityBaseTankBlock master;
     private boolean firstRun = true;
@@ -24,9 +24,9 @@ public abstract class TileEntityBaseTankBlock extends TileEntity implements ITic
     private int totalCapacity;
     private Status status;
 
-    protected TileEntityBaseTankBlock(TileEntityType<?> tile)
+    protected TileEntityBaseTankBlock(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState)
     {
-        super(tile);
+        super(blockEntityType, blockPos, blockState);
     }
 
     public abstract boolean isMaster();
@@ -83,7 +83,7 @@ public abstract class TileEntityBaseTankBlock extends TileEntity implements ITic
                 connectedStorages.add(storage);
                 for(Direction side : Direction.values())
                 {
-                    TileEntity te = world.getTileEntity(storage.getPos().offset(side));
+                    BlockEntity te = level.getBlockEntity(storage.getBlockPos().relative(side));
                     if(te instanceof TileEntityBaseTankBlock)
                     {
                         if(!connectedStorages.contains(te) && !traversingStorages.contains(te))
@@ -123,35 +123,36 @@ public abstract class TileEntityBaseTankBlock extends TileEntity implements ITic
         }
     }
 
-    @Override
-    public void tick()
-    {
-        if(firstRun && !world.isRemote)
-        {
+    public static void serverTick(Level level, BlockPos blockPos, BlockState blockState, TileEntityBaseTankBlock blockTile) {
+        blockTile.onServerTick(level, blockPos, blockState, blockTile);
+    }
+
+    public void onServerTick(Level level, BlockPos blockPos, BlockState blockState, TileEntityBaseTankBlock blockTile) {
+        if(firstRun) {
             initializeMultiblockIfNecessary();
             firstRun = false;
         }
     }
 
     @Override
-    public void remove()
+    public void setRemoved()
     {
-        super.remove();
+        super.setRemoved();
         for(Direction side : Direction.values())
         {
-            TileEntity te = world.getTileEntity(pos.offset(side));
-            if(te instanceof TileEntityBaseTankBlock)
+            BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
+            if(te instanceof TileEntityBaseTankBlock baseTankBlock)
             {
-                ((TileEntityBaseTankBlock) te).master = null;
-                ((TileEntityBaseTankBlock) te).initializeMultiblockIfNecessary();
+                baseTankBlock.master = null;
+                baseTankBlock.initializeMultiblockIfNecessary();
             }
         }
     }
 
-    public void onBlockPlacedBy(PlayerEntity player, World worldIn, BlockPos pos)
+    public void onBlockPlacedBy(Player player, Level worldIn, BlockPos pos)
     {
         if(getMaster() == null)
-            player.sendStatusMessage(getStatus().getStatusText().mergeStyle(TextFormatting.RED), false);
+            player.displayClientMessage(getStatus().getStatusText().withStyle(ChatFormatting.RED), false);
     }
 
     protected enum Status
@@ -162,23 +163,16 @@ public abstract class TileEntityBaseTankBlock extends TileEntity implements ITic
         TOO_BIG,
         MISSING_SPACE;
 
-        public TranslationTextComponent getStatusText()
+        public TranslatableComponent getStatusText()
         {
-            switch (this)
-            {
-                case FORMED:
-                    return new TranslationTextComponent(Translations.TANK_FORMED);
-                case CONTROLLER_MISSING:
-                    return new TranslationTextComponent(Translations.TANK_CONTROLLER_MISSING);
-                case EXTRA_CONTROLLER:
-                    return new TranslationTextComponent(Translations.TANK_EXTRA_CONTROLLER);
-                case TOO_BIG:
-                    return new TranslationTextComponent(Translations.TANK_TOO_BIG);
-                case MISSING_SPACE:
-                    return new TranslationTextComponent(Translations.TANK_MISSING_SPACE);
-                default:
-                    return null;
-            }
+            return switch(this) {
+                case FORMED -> new TranslatableComponent(Translations.TANK_FORMED);
+                case CONTROLLER_MISSING -> new TranslatableComponent(Translations.TANK_CONTROLLER_MISSING);
+                case EXTRA_CONTROLLER -> new TranslatableComponent(Translations.TANK_EXTRA_CONTROLLER);
+                case TOO_BIG -> new TranslatableComponent(Translations.TANK_TOO_BIG);
+                case MISSING_SPACE -> new TranslatableComponent(Translations.TANK_MISSING_SPACE);
+                default -> null;
+            };
         }
     }
 }

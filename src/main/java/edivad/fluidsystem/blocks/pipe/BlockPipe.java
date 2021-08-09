@@ -1,30 +1,32 @@
 package edivad.fluidsystem.blocks.pipe;
 
 import edivad.fluidsystem.api.IFluidSystemConnectableBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.Direction;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.core.Direction;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 
-public class BlockPipe extends Block implements IWaterLoggable, IFluidSystemConnectableBlock
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
+public class BlockPipe extends Block implements SimpleWaterloggedBlock, IFluidSystemConnectableBlock
 {
     public static final BooleanProperty NORTH = BooleanProperty.create("north");
     public static final BooleanProperty EAST = BooleanProperty.create("east");
@@ -36,64 +38,64 @@ public class BlockPipe extends Block implements IWaterLoggable, IFluidSystemConn
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    private static final VoxelShape CENTER_SHAPE = makeCuboidShape(3.2, 3.2, 3.2, 12.8, 12.8, 12.8);
-    private static final VoxelShape NORTH_SHAPE = makeCuboidShape(4, 4, 0, 12, 12, 3.5);
-    private static final VoxelShape SOUTH_SHAPE = makeCuboidShape(4, 4, 12.5, 12, 12, 16);
-    private static final VoxelShape EAST_SHAPE = makeCuboidShape(12.5, 4, 4, 16, 12, 12);
-    private static final VoxelShape WEST_SHAPE = makeCuboidShape(0, 4, 4, 3.5, 12, 12);
-    private static final VoxelShape UP_SHAPE = makeCuboidShape(4, 12.5, 4, 12, 16, 12);
-    private static final VoxelShape DOWN_SHAPE = makeCuboidShape(4, 0, 4, 12, 3.5, 12);
-    private static final VoxelShape STRAIGHT_X_SHAPE = makeCuboidShape(0, 4, 4, 16, 12, 12);
-    private static final VoxelShape STRAIGHT_Y_SHAPE = makeCuboidShape(4, 4, 0, 12, 12, 16);
-    private static final VoxelShape STRAIGHT_Z_SHAPE = makeCuboidShape(4, 0, 4, 12, 16, 12);
+    private static final VoxelShape CENTER_SHAPE = box(3.2, 3.2, 3.2, 12.8, 12.8, 12.8);
+    private static final VoxelShape NORTH_SHAPE = box(4, 4, 0, 12, 12, 3.5);
+    private static final VoxelShape SOUTH_SHAPE = box(4, 4, 12.5, 12, 12, 16);
+    private static final VoxelShape EAST_SHAPE = box(12.5, 4, 4, 16, 12, 12);
+    private static final VoxelShape WEST_SHAPE = box(0, 4, 4, 3.5, 12, 12);
+    private static final VoxelShape UP_SHAPE = box(4, 12.5, 4, 12, 16, 12);
+    private static final VoxelShape DOWN_SHAPE = box(4, 0, 4, 12, 3.5, 12);
+    private static final VoxelShape STRAIGHT_X_SHAPE = box(0, 4, 4, 16, 12, 12);
+    private static final VoxelShape STRAIGHT_Y_SHAPE = box(4, 4, 0, 12, 12, 16);
+    private static final VoxelShape STRAIGHT_Z_SHAPE = box(4, 0, 4, 12, 16, 12);
 
     public BlockPipe()
     {
-        super(Properties.create(Material.IRON).sound(SoundType.STONE).hardnessAndResistance(5.0F));
-        this.setDefaultState(getDefaultState()//
-                .with(NORTH, false)//
-                .with(EAST, false)//
-                .with(SOUTH, false)//
-                .with(WEST, false)//
-                .with(UP, false)//
-                .with(DOWN, false)//
-                .with(STRAIGHT, Straight.NONE)//
-                .with(WATERLOGGED, false));
+        super(Properties.of(Material.METAL).sound(SoundType.STONE).strength(5.0F));
+        this.registerDefaultState(defaultBlockState()//
+                .setValue(NORTH, false)//
+                .setValue(EAST, false)//
+                .setValue(SOUTH, false)//
+                .setValue(WEST, false)//
+                .setValue(UP, false)//
+                .setValue(DOWN, false)//
+                .setValue(STRAIGHT, Straight.NONE)//
+                .setValue(WATERLOGGED, false));
     }
 
     @Override
-    protected void fillStateContainer(Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(Builder<Block, BlockState> builder)
     {
-        super.fillStateContainer(builder);
+        super.createBlockStateDefinition(builder);
         builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, STRAIGHT, WATERLOGGED);
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
-        if(state.get(STRAIGHT).equals(Straight.NONE))
+        if(state.getValue(STRAIGHT).equals(Straight.NONE))
         {
             VoxelShape shape = CENTER_SHAPE;
 
-            if(state.get(NORTH).booleanValue())
-                shape = VoxelShapes.or(shape, NORTH_SHAPE);
-            if(state.get(SOUTH).booleanValue())
-                shape = VoxelShapes.or(shape, SOUTH_SHAPE);
-            if(state.get(EAST).booleanValue())
-                shape = VoxelShapes.or(shape, EAST_SHAPE);
-            if(state.get(WEST).booleanValue())
-                shape = VoxelShapes.or(shape, WEST_SHAPE);
-            if(state.get(UP).booleanValue())
-                shape = VoxelShapes.or(shape, UP_SHAPE);
-            if(state.get(DOWN).booleanValue())
-                shape = VoxelShapes.or(shape, DOWN_SHAPE);
+            if(state.getValue(NORTH))
+                shape = Shapes.or(shape, NORTH_SHAPE);
+            if(state.getValue(SOUTH))
+                shape = Shapes.or(shape, SOUTH_SHAPE);
+            if(state.getValue(EAST))
+                shape = Shapes.or(shape, EAST_SHAPE);
+            if(state.getValue(WEST))
+                shape = Shapes.or(shape, WEST_SHAPE);
+            if(state.getValue(UP))
+                shape = Shapes.or(shape, UP_SHAPE);
+            if(state.getValue(DOWN))
+                shape = Shapes.or(shape, DOWN_SHAPE);
             return shape;
         }
         else
         {
-            if(state.get(STRAIGHT).equals(Straight.X))
+            if(state.getValue(STRAIGHT).equals(Straight.X))
                 return STRAIGHT_X_SHAPE;
-            if(state.get(STRAIGHT).equals(Straight.Y))
+            if(state.getValue(STRAIGHT).equals(Straight.Y))
                 return STRAIGHT_Y_SHAPE;
             else
                 return STRAIGHT_Z_SHAPE;
@@ -101,32 +103,31 @@ public class BlockPipe extends Block implements IWaterLoggable, IFluidSystemConn
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
         return getCollisionShape(state, worldIn, pos, context);
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context)
+    public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        return getState(context.getWorld(), context.getPos());
+        return getState(context.getLevel(), context.getClickedPos());
     }
 
     @Override
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
     {
         return getState(worldIn, currentPos);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving)
+    public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving)
     {
         super.neighborChanged(state, world, pos, block, fromPos, isMoving);
-        world.setBlockState(pos, getState(world, pos));
+        world.setBlockAndUpdate(pos, getState(world, pos));
     }
 
-    private BlockState getState(IWorld world, BlockPos pos)
+    private BlockState getState(LevelAccessor world, BlockPos pos)
     {
         FluidState fluidstate = world.getFluidState(pos);
 
@@ -134,8 +135,8 @@ public class BlockPipe extends Block implements IWaterLoggable, IFluidSystemConn
         Block east = world.getBlockState(pos.east()).getBlock();
         Block south = world.getBlockState(pos.south()).getBlock();
         Block west = world.getBlockState(pos.west()).getBlock();
-        Block up = world.getBlockState(pos.up()).getBlock();
-        Block down = world.getBlockState(pos.down()).getBlock();
+        Block up = world.getBlockState(pos.above()).getBlock();
+        Block down = world.getBlockState(pos.below()).getBlock();
 
         boolean isConnectToNorth = checkBlock(world, pos, north, Direction.NORTH);
         boolean isConnectToEast = checkBlock(world, pos, east, Direction.EAST);
@@ -148,86 +149,76 @@ public class BlockPipe extends Block implements IWaterLoggable, IFluidSystemConn
         boolean y = isConnectToNorth && isConnectToSouth && !isConnectToEast && !isConnectToWest && !isConnectToUp && !isConnectToDown;
         boolean z = isConnectToUp && isConnectToDown && !isConnectToNorth && !isConnectToSouth && !isConnectToEast && !isConnectToWest;
 
-        BlockState result = getDefaultState()//
-                .with(NORTH, isConnectToNorth)//
-                .with(EAST, isConnectToEast)//
-                .with(SOUTH, isConnectToSouth)//
-                .with(WEST, isConnectToWest)//
-                .with(UP, isConnectToUp)//
-                .with(DOWN, isConnectToDown)//
-                .with(WATERLOGGED, Boolean.valueOf(fluidstate.getFluid() == Fluids.WATER));
+        BlockState result = defaultBlockState()//
+                .setValue(NORTH, isConnectToNorth)//
+                .setValue(EAST, isConnectToEast)//
+                .setValue(SOUTH, isConnectToSouth)//
+                .setValue(WEST, isConnectToWest)//
+                .setValue(UP, isConnectToUp)//
+                .setValue(DOWN, isConnectToDown)//
+                .setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
 
         if(x)
-            return result.with(STRAIGHT, Straight.X);
+            return result.setValue(STRAIGHT, Straight.X);
         else if(y)
-            return result.with(STRAIGHT, Straight.Y);
+            return result.setValue(STRAIGHT, Straight.Y);
         else if(z)
-            return result.with(STRAIGHT, Straight.Z);
+            return result.setValue(STRAIGHT, Straight.Z);
         else
-            return result.with(STRAIGHT, Straight.NONE);
+            return result.setValue(STRAIGHT, Straight.NONE);
     }
 
-    private boolean checkBlock(IWorld world, BlockPos pos, Block block, Direction direction)
+    private boolean checkBlock(LevelAccessor world, BlockPos pos, Block block, Direction direction)
     {
-        return (block instanceof IFluidSystemConnectableBlock) && ((IFluidSystemConnectableBlock) block).canConnectTo(world, pos.offset(direction), direction);
+        return (block instanceof IFluidSystemConnectableBlock) && ((IFluidSystemConnectableBlock) block).canConnectTo(world, pos.relative(direction), direction);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public FluidState getFluidState(BlockState state)
     {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
-    public boolean receiveFluid(IWorld worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn)
+    public boolean placeLiquid(LevelAccessor worldIn, BlockPos pos, BlockState state, FluidState fluidStateIn)
     {
-        return IWaterLoggable.super.receiveFluid(worldIn, pos, state, fluidStateIn);
+        return SimpleWaterloggedBlock.super.placeLiquid(worldIn, pos, state, fluidStateIn);
     }
 
     @Override
-    public boolean canContainFluid(IBlockReader worldIn, BlockPos pos, BlockState state, Fluid fluidIn)
+    public boolean canPlaceLiquid(BlockGetter worldIn, BlockPos pos, BlockState state, Fluid fluidIn)
     {
-        return IWaterLoggable.super.canContainFluid(worldIn, pos, state, fluidIn);
+        return SimpleWaterloggedBlock.super.canPlaceLiquid(worldIn, pos, state, fluidIn);
     }
 
     @Override
-    public boolean canConnectTo(IWorld world, BlockPos myPos, Direction side)
+    public boolean canConnectTo(LevelAccessor levelAccessor, BlockPos myPos, Direction side)
     {
         return true;
     }
 
     @Override
-    public boolean isEndPoint(IWorld world, BlockPos pos)
+    public boolean isEndPoint(LevelAccessor levelAccessor, BlockPos pos)
     {
         return false;
     }
 
     @Override
-    public boolean checkConnection(World world, BlockPos pos, Direction dir)
+    public boolean checkConnection(Level level, BlockPos pos, Direction dir)
     {
-        BlockState currentState = world.getBlockState(pos);
-        switch (dir.getOpposite())
-        {
-            case NORTH:
-                return currentState.get(NORTH).booleanValue();
-            case EAST:
-                return currentState.get(EAST).booleanValue();
-            case SOUTH:
-                return currentState.get(SOUTH).booleanValue();
-            case WEST:
-                return currentState.get(WEST).booleanValue();
-            case UP:
-                return currentState.get(UP).booleanValue();
-            case DOWN:
-                return currentState.get(DOWN).booleanValue();
-        }
-        return false;
+        BlockState currentState = level.getBlockState(pos);
+        return switch(dir.getOpposite()) {
+            case NORTH -> currentState.getValue(NORTH);
+            case EAST -> currentState.getValue(EAST);
+            case SOUTH -> currentState.getValue(SOUTH);
+            case WEST -> currentState.getValue(WEST);
+            case UP -> currentState.getValue(UP);
+            case DOWN -> currentState.getValue(DOWN);
+        };
     }
 
-    public enum Straight implements IStringSerializable
+    public enum Straight implements StringRepresentable
     {
-
         X("x"),
         Y("y"),
         Z("z"),
@@ -243,11 +234,11 @@ public class BlockPipe extends Block implements IWaterLoggable, IFluidSystemConn
         @Override
         public String toString()
         {
-            return this.getString();
+            return this.getSerializedName();
         }
 
         @Override
-        public String getString()
+        public String getSerializedName()
         {
             return this.value;
         }

@@ -1,17 +1,16 @@
 package edivad.fluidsystem.tools.utils;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldVertexBufferUploader;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.inventory.container.PlayerContainer;
-import org.lwjgl.opengl.GL11;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import net.minecraft.world.inventory.InventoryMenu;
 
-public class GuiUtils
-{
+public class GuiUtils {
 
     public static void drawTiledSprite(int xPosition, int yPosition, int yOffset, int desiredWidth, int desiredHeight, TextureAtlasSprite sprite, int textureWidth, int textureHeight, int zLevel)
     {
@@ -19,22 +18,23 @@ public class GuiUtils
         {
             return;
         }
-        Minecraft.getInstance().textureManager.bindTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
+
         int xTileCount = desiredWidth / textureWidth;
         int xRemainder = desiredWidth - (xTileCount * textureWidth);
         int yTileCount = desiredHeight / textureHeight;
         int yRemainder = desiredHeight - (yTileCount * textureHeight);
         int yStart = yPosition + yOffset;
-        float uMin = sprite.getMinU();
-        float uMax = sprite.getMaxU();
-        float vMin = sprite.getMinV();
-        float vMax = sprite.getMaxV();
+        float uMin = sprite.getU0();
+        float uMax = sprite.getU1();
+        float vMin = sprite.getV0();
+        float vMax = sprite.getV1();
         float uDif = uMax - uMin;
         float vDif = vMax - vMin;
         RenderSystem.enableBlend();
-        RenderSystem.enableAlphaTest();
-        BufferBuilder vertexBuffer = Tessellator.getInstance().getBuffer();
-        vertexBuffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        BufferBuilder vertexBuffer = Tesselator.getInstance().getBuilder();
+        vertexBuffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
         for(int xTile = 0; xTile <= xTileCount; xTile++)
         {
             int width = (xTile == xTileCount) ? xRemainder : textureWidth;
@@ -58,15 +58,14 @@ public class GuiUtils
                 int y = yStart - ((yTile + 1) * textureHeight);
                 int maskTop = textureHeight - height;
                 float vMaxLocal = vMax - (vDif * maskTop / textureHeight);
-                vertexBuffer.pos(x, y + textureHeight, zLevel).tex(uMin, vMaxLocal).endVertex();
-                vertexBuffer.pos(shiftedX, y + textureHeight, zLevel).tex(uMaxLocal, vMaxLocal).endVertex();
-                vertexBuffer.pos(shiftedX, y + maskTop, zLevel).tex(uMaxLocal, vMin).endVertex();
-                vertexBuffer.pos(x, y + maskTop, zLevel).tex(uMin, vMin).endVertex();
+                vertexBuffer.vertex(x, y + textureHeight, zLevel).uv(uMin, vMaxLocal).endVertex();
+                vertexBuffer.vertex(shiftedX, y + textureHeight, zLevel).uv(uMaxLocal, vMaxLocal).endVertex();
+                vertexBuffer.vertex(shiftedX, y + maskTop, zLevel).uv(uMaxLocal, vMin).endVertex();
+                vertexBuffer.vertex(x, y + maskTop, zLevel).uv(uMin, vMin).endVertex();
             }
         }
-        vertexBuffer.finishDrawing();
-        WorldVertexBufferUploader.draw(vertexBuffer);
-        RenderSystem.disableAlphaTest();
+        vertexBuffer.end();
+        BufferUploader.end(vertexBuffer);
         RenderSystem.disableBlend();
     }
 }

@@ -4,22 +4,22 @@ import edivad.fluidsystem.container.ContainerTankBlockController;
 import edivad.fluidsystem.network.PacketHandler;
 import edivad.fluidsystem.network.packet.UpdateTankBlockController;
 import edivad.fluidsystem.setup.Registration;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidActionResult;
@@ -29,13 +29,13 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.fml.network.NetworkHooks;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock implements INamedContainerProvider
+public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock implements MenuProvider
 {
     private final ItemStackHandler itemHandler = createHandler();
     private final LazyOptional<IItemHandler> item = LazyOptional.of(() -> itemHandler);
@@ -47,9 +47,9 @@ public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock imple
     public int totalCapacity;
     private LazyOptional<IFluidHandler> fluid;
 
-    public TileEntityControllerTankBlock()
+    public TileEntityControllerTankBlock(BlockPos blockPos, BlockState blockState)
     {
-        super(Registration.CONTROLLER_TANK_BLOCK_TILE.get());
+        super(Registration.CONTROLLER_TANK_BLOCK_TILE.get(), blockPos, blockState);
     }
 
     @Override
@@ -70,61 +70,58 @@ public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock imple
     }
 
     @Override
-    public void tick()
+    public void onServerTick(Level level, BlockPos blockPos, BlockState blockState, TileEntityBaseTankBlock tileEntityBaseTankBlock)
     {
-        super.tick();
+        super.onServerTick(level, blockPos, blockState, tileEntityBaseTankBlock);
 
-        if(!world.isRemote)
+        PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpdateTankBlockController(getBlockPos(), tank.getFluid(), getNumberOfTanksBlock(), getTotalCapacity()));
+        ItemStack input = itemHandler.getStackInSlot(0);
+        ItemStack output = itemHandler.getStackInSlot(1);
+        if(input.getCount() != 1 || !output.isEmpty())
+            return;
+
+        input.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h ->
         {
-            PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpdateTankBlockController(getPos(), tank.getFluid(), getNumberOfTanksBlock(), getTotalCapacity()));
-            ItemStack input = itemHandler.getStackInSlot(0);
-            ItemStack output = itemHandler.getStackInSlot(1);
-            if(input.getCount() != 1 || !output.isEmpty())
-                return;
+            FluidStack checkTypeofLiquid = h.getFluidInTank(0);
 
-            input.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h ->
+            if(!tank.isEmpty())//Il tank contiene del liquido
             {
-                FluidStack checkTypeofLiquid = h.getFluidInTank(0);
-
-                if(!tank.isEmpty())//Il tank contiene del liquido
+                if(checkTypeofLiquid.isEmpty())//Significa che l'item è completamente vuoto
                 {
-                    if(checkTypeofLiquid.isEmpty())//Significa che l'item è completamente vuoto
-                    {
-                        FluidActionResult result = FluidUtil.tryFillContainerAndStow(input, tank, itemHandler, h.getTankCapacity(0), null, true);
-                        itemHandler.extractItem(0, 1, false);
-                        itemHandler.insertItem(1, result.getResult(), false);
-                        markDirty();
-                    }
-                    else if(checkTypeofLiquid.getAmount() < h.getTankCapacity(0))//Significa che l'item è parzialmente pieno
-                    {
-                        FluidActionResult result = FluidUtil.tryFillContainerAndStow(input, tank, itemHandler, h.getTankCapacity(0) - checkTypeofLiquid.getAmount(), null, true);
-                        itemHandler.extractItem(0, 1, false);
-                        itemHandler.insertItem(1, result.getResult(), false);
-                        markDirty();
-                    }
-                    else if(checkTypeofLiquid.getAmount() == h.getTankCapacity(0) && checkTypeofLiquid.isFluidEqual(tank.getFluid()))//L'oggetto è pieno e il tank contiene lo stesso liquido
-                    {
-                        if(h.getTankCapacity(0) <= tank.getSpace())
-                        {
-                            FluidActionResult result = FluidUtil.tryEmptyContainerAndStow(input, tank, itemHandler, tank.getSpace(), null, true);
-                            itemHandler.extractItem(0, 1, false);
-                            itemHandler.insertItem(1, result.getResult(), false);
-                            markDirty();
-                        }
-                    }
+                    FluidActionResult result = FluidUtil.tryFillContainerAndStow(input, tank, itemHandler, h.getTankCapacity(0), null, true);
+                    itemHandler.extractItem(0, 1, false);
+                    itemHandler.insertItem(1, result.getResult(), false);
+                    setChanged();
                 }
-                else if(tank.isEmpty())//Il tank è vuoto
+                else if(checkTypeofLiquid.getAmount() < h.getTankCapacity(0))//Significa che l'item è parzialmente pieno
                 {
-                    if(checkTypeofLiquid.getAmount() > 0)//Significa che l'item è parzialmente pieno
+                    FluidActionResult result = FluidUtil.tryFillContainerAndStow(input, tank, itemHandler, h.getTankCapacity(0) - checkTypeofLiquid.getAmount(), null, true);
+                    itemHandler.extractItem(0, 1, false);
+                    itemHandler.insertItem(1, result.getResult(), false);
+                    setChanged();
+                }
+                else if(checkTypeofLiquid.getAmount() == h.getTankCapacity(0) && checkTypeofLiquid.isFluidEqual(tank.getFluid()))//L'oggetto è pieno e il tank contiene lo stesso liquido
+                {
+                    if(h.getTankCapacity(0) <= tank.getSpace())
                     {
                         FluidActionResult result = FluidUtil.tryEmptyContainerAndStow(input, tank, itemHandler, tank.getSpace(), null, true);
                         itemHandler.extractItem(0, 1, false);
                         itemHandler.insertItem(1, result.getResult(), false);
-                        markDirty();
+                        setChanged();
                     }
                 }
-            });
-        }
+            }
+            else //Il tank è vuoto
+            {
+                if(checkTypeofLiquid.getAmount() > 0)//Significa che l'item è parzialmente pieno
+                {
+                    FluidActionResult result = FluidUtil.tryEmptyContainerAndStow(input, tank, itemHandler, tank.getSpace(), null, true);
+                    itemHandler.extractItem(0, 1, false);
+                    itemHandler.insertItem(1, result.getResult(), false);
+                    setChanged();
+                }
+            }
+        });
     }
 
     @Override
@@ -142,28 +139,28 @@ public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock imple
         fluid = LazyOptional.of(() -> tank);
     }
 
-    public ActionResultType activate(PlayerEntity player, World worldIn, BlockPos pos, Hand handIn)
+    public InteractionResult activate(Player player, Level worldIn, BlockPos pos, InteractionHand handIn)
     {
         TileEntityBaseTankBlock master = getMaster();
         if(master != null)
-            NetworkHooks.openGui((ServerPlayerEntity) player, this, getPos());
+            NetworkHooks.openGui((ServerPlayer) player, this, getBlockPos());
         else
-            player.sendStatusMessage(getStatus().getStatusText().mergeStyle(TextFormatting.DARK_RED), false);
-        return ActionResultType.SUCCESS;
+            player.displayClientMessage(getStatus().getStatusText().withStyle(ChatFormatting.DARK_RED), false);
+        return InteractionResult.SUCCESS;
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT tag)
+    public CompoundTag save(CompoundTag tag)
     {
         tag.put("inventory", itemHandler.serializeNBT());
         tank.writeToNBT(tag);
-        return super.write(tag);
+        return super.save(tag);
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT tag)
+    public void load(CompoundTag tag)
     {
-        super.read(state, tag);
+        super.load(tag);
         itemHandler.deserializeNBT(tag.getCompound("inventory"));
         tank.readFromNBT(tag);
     }
@@ -176,7 +173,7 @@ public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock imple
             @Override
             protected void onContentsChanged(int slot)
             {
-                markDirty();
+                setChanged();
             }
 
             @Override
@@ -196,14 +193,14 @@ public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock imple
     }
 
     @Override
-    public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity)
+    public AbstractContainerMenu createMenu(int id, Inventory playerInventory, Player playerEntity)
     {
         return new ContainerTankBlockController(id, playerInventory, this);
     }
 
     @Override
-    public ITextComponent getDisplayName()
+    public Component getDisplayName()
     {
-        return new TranslationTextComponent(this.getBlockState().getBlock().getTranslationKey());
+        return new TranslatableComponent(this.getBlockState().getBlock().getDescriptionId());
     }
 }

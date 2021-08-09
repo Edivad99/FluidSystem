@@ -2,39 +2,34 @@ package edivad.fluidsystem.blocks.tank;
 
 import edivad.fluidsystem.tile.tank.TileEntityStructuralTankBlock;
 import edivad.fluidsystem.tools.Translations;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class StructuralTankBlock extends BaseBlock
+public class StructuralTankBlock extends BaseBlock implements EntityBlock
 {
-    @Override
-    public boolean hasTileEntity(BlockState state)
-    {
-        return true;
-    }
-
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world)
-    {
-        return new TileEntityStructuralTankBlock();
+    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        return new TileEntityStructuralTankBlock(blockPos, blockState);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+    public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn)
     {
-        tooltip.add(new TranslationTextComponent(Translations.TANK_BLOCK_TOOLTIP).mergeStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslatableComponent(Translations.TANK_BLOCK_TOOLTIP).withStyle(ChatFormatting.GRAY));
     }
 }

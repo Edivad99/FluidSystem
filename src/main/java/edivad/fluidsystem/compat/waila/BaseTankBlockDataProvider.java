@@ -3,22 +3,22 @@ package edivad.fluidsystem.compat.waila;
 import edivad.fluidsystem.tile.tank.TileEntityBaseTankBlock;
 import edivad.fluidsystem.tile.tank.TileEntityControllerTankBlock;
 import mcp.mobius.waila.api.IServerDataProvider;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.text.DecimalFormat;
 
-public class BaseTankBlockDataProvider implements IServerDataProvider<TileEntity>
+public class BaseTankBlockDataProvider implements IServerDataProvider<BlockEntity>
 {
     @Override
-    public void appendServerData(CompoundNBT data, ServerPlayerEntity player, World world, TileEntity tileEntity)
+    public void appendServerData(CompoundTag data, ServerPlayer player, Level world, BlockEntity tileEntity, boolean showDetails)
     {
-        if(tileEntity instanceof TileEntityBaseTankBlock)
+        if(tileEntity instanceof TileEntityBaseTankBlock tankBlock)
         {
-            TileEntityBaseTankBlock tankBase = ((TileEntityBaseTankBlock) tileEntity).getMaster();
+            TileEntityBaseTankBlock tankBase = tankBlock.getMaster();
             if(tankBase != null)
             {
                 data.putBoolean("isControllerPresent", true);

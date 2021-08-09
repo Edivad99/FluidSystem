@@ -2,20 +2,27 @@ package edivad.fluidsystem.blocks.pipe;
 
 import edivad.fluidsystem.blocks.BlockRotable;
 import edivad.fluidsystem.tile.pipe.TileEntityBlockFilterablePipe;
+import edivad.fluidsystem.tile.pipe.TileEntityBlockInputPipe;
 import edivad.fluidsystem.tools.Translations;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
+import javax.annotation.Nullable;
 
 public class BlockFilterable extends BlockRotable
 {
@@ -25,32 +32,31 @@ public class BlockFilterable extends BlockRotable
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
     {
-        if(worldIn.isRemote)
-            return ActionResultType.SUCCESS;
+        if(worldIn.isClientSide)
+            return InteractionResult.SUCCESS;
 
-        ItemStack itemOnHand = player.getHeldItem(handIn);
-        if(!itemOnHand.isEmpty() && itemOnHand.getItem() instanceof BucketItem)
+        ItemStack itemOnHand = player.getItemInHand(handIn);
+        if(!itemOnHand.isEmpty() && itemOnHand.getItem() instanceof BucketItem bucket)
         {
-            BucketItem bucket = ((BucketItem) itemOnHand.getItem());
-            TileEntity tile = worldIn.getTileEntity(pos);
-            if(tile instanceof TileEntityBlockFilterablePipe)
+            BlockEntity tile = worldIn.getBlockEntity(pos);
+            if(tile instanceof TileEntityBlockFilterablePipe tilePipeFilterable)
             {
-                if(bucket.getFluid().isEquivalentTo(Fluids.EMPTY))
+                if(bucket.getFluid().isSame(Fluids.EMPTY))
                 {
-                    if(!((TileEntityBlockFilterablePipe) tile).getFluidFilter().isEquivalentTo(Fluids.EMPTY))
-                        player.sendStatusMessage(new TranslationTextComponent(Translations.FLUID_FILTERED_REMOVE), false);
+                    if(!tilePipeFilterable.getFluidFilter().isSame(Fluids.EMPTY))
+                        player.displayClientMessage(new TranslatableComponent(Translations.FLUID_FILTERED_REMOVE), false);
                 }
                 else
                 {
                     String fluidName = bucket.getFluid().getAttributes().getDisplayName(null).getString();
-                    player.sendStatusMessage(new TranslationTextComponent(Translations.FLUID_FILTERED_SET, fluidName).mergeStyle(TextFormatting.GREEN), false);
+                    player.displayClientMessage(new TranslatableComponent(Translations.FLUID_FILTERED_SET, fluidName).withStyle(ChatFormatting.GREEN), false);
                 }
-                ((TileEntityBlockFilterablePipe) tile).setFilteredFluid(bucket.getFluid());
-                return ActionResultType.SUCCESS;
+                tilePipeFilterable.setFilteredFluid(bucket.getFluid());
+                return InteractionResult.SUCCESS;
             }
         }
-        return ActionResultType.FAIL;
+        return InteractionResult.FAIL;
     }
 }

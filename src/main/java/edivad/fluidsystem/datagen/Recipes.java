@@ -2,10 +2,10 @@ package edivad.fluidsystem.datagen;
 
 import edivad.fluidsystem.setup.Registration;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.data.RecipeProvider;
-import net.minecraft.data.ShapedRecipeBuilder;
-import net.minecraft.item.Items;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.world.item.Items;
 
 import java.util.function.Consumer;
 
@@ -17,89 +17,88 @@ public class Recipes extends RecipeProvider
     }
 
     @Override
-    protected void registerRecipes(Consumer<IFinishedRecipe> consumer)
-    {
-        ShapedRecipeBuilder.shapedRecipe(Registration.STRUCTURAL_TANK_BLOCK.get(), 4)//
-                .patternLine("aba")//
-                .patternLine("bcb")//
-                .patternLine("aba")//
-                .key('a', Items.IRON_INGOT)//
-                .key('b', Items.GREEN_DYE)//
-                .key('c', Items.HONEYCOMB)//
-                .addCriterion("iron", hasItem(Items.IRON_INGOT))//
-                .build(consumer);
+    protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shaped(Registration.STRUCTURAL_TANK_BLOCK.get(), 4)//
+                .pattern("aba")//
+                .pattern("bcb")//
+                .pattern("aba")//
+                .define('a', Items.IRON_INGOT)//
+                .define('b', Items.GREEN_DYE)//
+                .define('c', Items.HONEYCOMB)//
+                .unlockedBy("iron", has(Items.IRON_INGOT))//
+                .save(consumer);
 
-        ShapedRecipeBuilder.shapedRecipe(Registration.PIPE.get(), 8)//
-                .patternLine("aaa")//
-                .patternLine("bbb")//
-                .patternLine("aaa")//
-                .key('a', Items.IRON_INGOT)//
-                .key('b', Items.BAMBOO)//
-                .addCriterion("bamboo", hasItem(Items.BAMBOO))//
-                .build(consumer);
+        ShapedRecipeBuilder.shaped(Registration.PIPE.get(), 8)//
+                .pattern("aaa")//
+                .pattern("bbb")//
+                .pattern("aaa")//
+                .define('a', Items.IRON_INGOT)//
+                .define('b', Items.BAMBOO)//
+                .unlockedBy("bamboo", has(Items.BAMBOO))//
+                .save(consumer);
 
-        ShapedRecipeBuilder.shapedRecipe(Registration.PIPE_CONTROLLER.get())//
-                .patternLine(" a ")//
-                .patternLine("aba")//
-                .patternLine(" a ")//
-                .key('a', Registration.PIPE.get())//
-                .key('b', Items.REDSTONE_BLOCK)//
-                .addCriterion("pipe", hasItem(Registration.PIPE.get()))//
-                .build(consumer);
+        ShapedRecipeBuilder.shaped(Registration.PIPE_CONTROLLER.get())//
+                .pattern(" a ")//
+                .pattern("aba")//
+                .pattern(" a ")//
+                .define('a', Registration.PIPE.get())//
+                .define('b', Items.REDSTONE_BLOCK)//
+                .unlockedBy("pipe", has(Registration.PIPE.get()))//
+                .save(consumer);
 
-        ShapedRecipeBuilder.shapedRecipe(Registration.INTERFACE_TANK_BLOCK.get())//
-                .patternLine("   ")//
-                .patternLine("abc")//
-                .patternLine("   ")//
-                .key('a', Items.BUCKET)//
-                .key('b', Registration.STRUCTURAL_TANK_BLOCK.get())//
-                .key('c', Items.WATER_BUCKET)//
-                .addCriterion("structural_tank_block", hasItem(Registration.STRUCTURAL_TANK_BLOCK.get()))//
-                .build(consumer);
+        ShapedRecipeBuilder.shaped(Registration.INTERFACE_TANK_BLOCK.get())//
+                .pattern("   ")//
+                .pattern("abc")//
+                .pattern("   ")//
+                .define('a', Items.BUCKET)//
+                .define('b', Registration.STRUCTURAL_TANK_BLOCK.get())//
+                .define('c', Items.WATER_BUCKET)//
+                .unlockedBy("structural_tank_block", has(Registration.STRUCTURAL_TANK_BLOCK.get()))//
+                .save(consumer);
 
-        ShapedRecipeBuilder.shapedRecipe(Registration.OUTPUT_PIPE.get())//
-                .patternLine("a")//
-                .patternLine("b")//
-                .key('a', Registration.STRUCTURAL_TANK_BLOCK.get())//
-                .key('b', Items.WATER_BUCKET)//
-                .addCriterion("structural_tank_block", hasItem(Registration.STRUCTURAL_TANK_BLOCK.get()))//
-                .build(consumer);
+        ShapedRecipeBuilder.shaped(Registration.OUTPUT_PIPE.get())//
+                .pattern("a")//
+                .pattern("b")//
+                .define('a', Registration.STRUCTURAL_TANK_BLOCK.get())//
+                .define('b', Items.WATER_BUCKET)//
+                .unlockedBy("structural_tank_block", has(Registration.STRUCTURAL_TANK_BLOCK.get()))//
+                .save(consumer);
 
-        ShapedRecipeBuilder.shapedRecipe(Registration.INPUT_PIPE.get())//
-                .patternLine("a")//
-                .patternLine("b")//
-                .key('a', Items.BUCKET)//
-                .key('b', Registration.STRUCTURAL_TANK_BLOCK.get())//
-                .addCriterion("structural_tank_block", hasItem(Registration.STRUCTURAL_TANK_BLOCK.get()))//
-                .build(consumer);
+        ShapedRecipeBuilder.shaped(Registration.INPUT_PIPE.get())//
+                .pattern("a")//
+                .pattern("b")//
+                .define('a', Items.BUCKET)//
+                .define('b', Registration.STRUCTURAL_TANK_BLOCK.get())//
+                .unlockedBy("structural_tank_block", has(Registration.STRUCTURAL_TANK_BLOCK.get()))//
+                .save(consumer);
 
-        ShapedRecipeBuilder.shapedRecipe(Registration.CONTROLLER_TANK_BLOCK.get())//
-                .patternLine("a a")//
-                .patternLine("cbc")//
-                .patternLine("a a")//
-                .key('a', Items.REDSTONE)//
-                .key('b', Registration.STRUCTURAL_TANK_BLOCK.get())//
-                .key('c', Items.COMPARATOR)//
-                .addCriterion("structural_tank_block", hasItem(Registration.STRUCTURAL_TANK_BLOCK.get()))//
-                .build(consumer);
+        ShapedRecipeBuilder.shaped(Registration.CONTROLLER_TANK_BLOCK.get())//
+                .pattern("a a")//
+                .pattern("cbc")//
+                .pattern("a a")//
+                .define('a', Items.REDSTONE)//
+                .define('b', Registration.STRUCTURAL_TANK_BLOCK.get())//
+                .define('c', Items.COMPARATOR)//
+                .unlockedBy("structural_tank_block", has(Registration.STRUCTURAL_TANK_BLOCK.get()))//
+                .save(consumer);
 
-        ShapedRecipeBuilder.shapedRecipe(Registration.INPUT_TANK_BLOCK.get())//
-                .patternLine(" b ")//
-                .patternLine("aaa")//
-                .patternLine(" c ")//
-                .key('a', Registration.STRUCTURAL_TANK_BLOCK.get())//
-                .key('b', Items.BUCKET).key('c', Items.REDSTONE)//
-                .addCriterion("structural_tank_block", hasItem(Registration.STRUCTURAL_TANK_BLOCK.get()))//
-                .build(consumer);
+        ShapedRecipeBuilder.shaped(Registration.INPUT_TANK_BLOCK.get())//
+                .pattern(" b ")//
+                .pattern("aaa")//
+                .pattern(" c ")//
+                .define('a', Registration.STRUCTURAL_TANK_BLOCK.get())//
+                .define('b', Items.BUCKET).define('c', Items.REDSTONE)//
+                .unlockedBy("structural_tank_block", has(Registration.STRUCTURAL_TANK_BLOCK.get()))//
+                .save(consumer);
 
-        ShapedRecipeBuilder.shapedRecipe(Registration.INFINITE_WATER_SOURCE.get())//
-                .patternLine("aca")//
-                .patternLine("cbc")//
-                .patternLine("aca")//
-                .key('a', Items.NETHERITE_INGOT)//
-                .key('b', Items.NETHER_STAR)//
-                .key('c', Items.BUCKET)//
-                .addCriterion("nether_star", hasItem(Items.NETHER_STAR))//
-                .build(consumer);
+        ShapedRecipeBuilder.shaped(Registration.INFINITE_WATER_SOURCE.get())//
+                .pattern("aca")//
+                .pattern("cbc")//
+                .pattern("aca")//
+                .define('a', Items.NETHERITE_INGOT)//
+                .define('b', Items.NETHER_STAR)//
+                .define('c', Items.BUCKET)//
+                .unlockedBy("nether_star", has(Items.NETHER_STAR))//
+                .save(consumer);
     }
 }

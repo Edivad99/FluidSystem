@@ -2,23 +2,22 @@ package edivad.fluidsystem.compat.waila;
 
 import edivad.fluidsystem.tile.pipe.TileEntityBlockFilterablePipe;
 import mcp.mobius.waila.api.IServerDataProvider;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.Level;
 
-public class BlockFilterablePipeDataProvider implements IServerDataProvider<TileEntity>
+public class BlockFilterablePipeDataProvider implements IServerDataProvider<BlockEntity>
 {
     @Override
-    public void appendServerData(CompoundNBT data, ServerPlayerEntity player, World world, TileEntity tileEntity)
+    public void appendServerData(CompoundTag data, ServerPlayer player, Level world, BlockEntity tileEntity, boolean showDetails)
     {
-        if(tileEntity instanceof TileEntityBlockFilterablePipe)
+        if(tileEntity instanceof TileEntityBlockFilterablePipe output)
         {
-            TileEntityBlockFilterablePipe output = (TileEntityBlockFilterablePipe) tileEntity;
             Fluid fluid = output.getFluidFilter();
-            if(!fluid.isEquivalentTo(Fluids.EMPTY))
+            if(!fluid.isSame(Fluids.EMPTY))
             {
                 data.putBoolean("isFluidPresent", true);
                 data.putString("fluid", fluid.getAttributes().getDisplayName(null).getString());

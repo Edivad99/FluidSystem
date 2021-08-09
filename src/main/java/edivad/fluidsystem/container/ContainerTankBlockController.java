@@ -2,21 +2,21 @@ package edivad.fluidsystem.container;
 
 import edivad.fluidsystem.setup.Registration;
 import edivad.fluidsystem.tile.tank.TileEntityControllerTankBlock;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IWorldPosCallable;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.Container;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class ContainerTankBlockController extends Container
+public class ContainerTankBlockController extends AbstractContainerMenu
 {
     public TileEntityControllerTankBlock tile;
 
-    public ContainerTankBlockController(int id, PlayerInventory playerInventory, TileEntityControllerTankBlock tile)
+    public ContainerTankBlockController(int id, Inventory playerInventory, TileEntityControllerTankBlock tile)
     {
         super(Registration.CONTROLLER_TANK_BLOCK_CONTAINER.get(), id);
         this.tile = tile;
@@ -24,7 +24,7 @@ public class ContainerTankBlockController extends Container
         addPlayerSlots(playerInventory);
     }
 
-    private void addPlayerSlots(IInventory playerInventory)
+    private void addPlayerSlots(Container playerInventory)
     {
         // Main Inventory
         for(int y = 0; y < 3; y++)
@@ -48,36 +48,36 @@ public class ContainerTankBlockController extends Container
     }
 
     @Override
-    public boolean canInteractWith(PlayerEntity playerIn)
+    public boolean stillValid(Player playerIn)
     {
-        return isWithinUsableDistance(IWorldPosCallable.of(tile.getWorld(), tile.getPos()), playerIn, tile.getBlockState().getBlock());
+        return stillValid(ContainerLevelAccess.create(tile.getLevel(), tile.getBlockPos()), playerIn, tile.getBlockState().getBlock());
     }
 
     @Override
-    public ItemStack transferStackInSlot(PlayerEntity player, int position)
+    public ItemStack quickMoveStack(Player player, int position)
     {
         ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = this.inventorySlots.get(position);
+        Slot slot = this.slots.get(position);
 
-        if(slot != null && slot.getHasStack())
+        if(slot != null && slot.hasItem())
         {
-            ItemStack itemstack1 = slot.getStack();
+            ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
 
             // tank to inventory
             if(position < 2)
             {
-                if(!this.mergeItemStack(itemstack1, 2, this.inventorySlots.size(), true))
+                if(!this.moveItemStackTo(itemstack1, 2, this.slots.size(), true))
                     return ItemStack.EMPTY;
             }
             // inventory to tank
-            else if(!this.mergeItemStack(itemstack1, 0, 2, false))
+            else if(!this.moveItemStackTo(itemstack1, 0, 2, false))
                 return ItemStack.EMPTY;
 
             if(itemstack1.getCount() == 0)
-                slot.putStack(ItemStack.EMPTY);
+                slot.set(ItemStack.EMPTY);
             else
-                slot.onSlotChanged();
+                slot.setChanged();
         }
         return itemstack;
     }

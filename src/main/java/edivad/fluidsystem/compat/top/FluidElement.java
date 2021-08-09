@@ -1,11 +1,13 @@
 package edivad.fluidsystem.compat.top;
 
+import edivad.fluidsystem.Main;
 import edivad.fluidsystem.tools.utils.FluidUtils;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -13,9 +15,8 @@ import java.text.DecimalFormat;
 
 public class FluidElement extends TOPElement
 {
-    public static int ID;
+    public static final ResourceLocation ID = new ResourceLocation(Main.MODID, "fluid_element");
 
-    @Nonnull
     protected final FluidStack fluid;
     protected final int capacity;
     protected final int colorLiquid;
@@ -28,18 +29,18 @@ public class FluidElement extends TOPElement
         this.colorLiquid = colorLiquid;
     }
 
-    public FluidElement(@Nonnull FluidStack fluid, int capacity, TileEntity tile)
+    public FluidElement(@Nonnull FluidStack fluid, int capacity, BlockEntity tile)
     {
         this(fluid, capacity, FluidUtils.getLiquidColorWithBiome(fluid, tile));
     }
 
-    public FluidElement(PacketBuffer buf)
+    public FluidElement(FriendlyByteBuf buf)
     {
         this(buf.readFluidStack(), buf.readInt(), buf.readInt());
     }
 
     @Override
-    public void toBytes(PacketBuffer buf)
+    public void toBytes(FriendlyByteBuf buf)
     {
         buf.writeFluidStack(fluid);
         buf.writeInt(capacity);
@@ -65,12 +66,12 @@ public class FluidElement extends TOPElement
     }
 
     @Override
-    public ITextComponent getText()
+    public TextComponent getText()
     {
         String liquidText = fluid.isEmpty() ? "Empty" : fluid.getDisplayName().getString();
         DecimalFormat f = new DecimalFormat("#,##0");
         int amount = fluid.getAmount();
-        return new StringTextComponent(String.format("%s: %smB", liquidText, f.format(amount)));
+        return new TextComponent(String.format("%s: %smB", liquidText, f.format(amount)));
     }
 
     @Override
@@ -81,7 +82,7 @@ public class FluidElement extends TOPElement
     }
 
     @Override
-    public int getID()
+    public ResourceLocation getID()
     {
         return ID;
     }

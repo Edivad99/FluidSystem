@@ -1,32 +1,29 @@
 package edivad.fluidsystem.blocks;
 
 import edivad.fluidsystem.tile.TileEntityInfinityWaterSource;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.BlockGetter;
 
 import javax.annotation.Nullable;
 
-public class InfiniteWaterSource extends Block
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
+public class InfiniteWaterSource extends Block implements EntityBlock
 {
     public InfiniteWaterSource()
     {
-        super(Properties.create(Material.ROCK).sound(SoundType.SNOW).hardnessAndResistance(10.0F, 1200.0F));
-    }
-
-    @Override
-    public boolean hasTileEntity(BlockState state)
-    {
-        return true;
+        super(Properties.of(Material.STONE).sound(SoundType.SNOW).strength(10.0F, 1200.0F));
     }
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world)
-    {
-        return new TileEntityInfinityWaterSource();
+    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        return new TileEntityInfinityWaterSource(blockPos, blockState);
     }
 }

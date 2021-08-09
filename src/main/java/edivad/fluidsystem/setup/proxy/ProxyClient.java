@@ -1,8 +1,8 @@
 package edivad.fluidsystem.setup.proxy;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.common.Mod;
 
@@ -10,14 +10,14 @@ import net.minecraftforge.fml.common.Mod;
 public class ProxyClient implements IProxy
 {
     @Override
-    public PlayerEntity getClientPlayer()
+    public Player getClientPlayer()
     {
         return Minecraft.getInstance().player;
     }
 
     @Override
-    public World getClientWorld()
+    public Level getClientLevel()
     {
-        return Minecraft.getInstance().world;
+        return Minecraft.getInstance().level;
     }
 }

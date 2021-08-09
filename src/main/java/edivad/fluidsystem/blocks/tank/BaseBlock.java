@@ -1,35 +1,39 @@
 package edivad.fluidsystem.blocks.tank;
 
 import edivad.fluidsystem.tile.tank.TileEntityBaseTankBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class BaseBlock extends Block
 {
     public BaseBlock()
     {
-        super(Properties.create(Material.IRON).sound(SoundType.STONE).hardnessAndResistance(5.0F));
+        super(Properties.of(Material.METAL).sound(SoundType.STONE).strength(5.0F));
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
     {
-        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-        if(!worldIn.isRemote)
+        super.setPlacedBy(worldIn, pos, state, placer, stack);
+        if(!worldIn.isClientSide)
         {
-            TileEntity tile = worldIn.getTileEntity(pos);
+            BlockEntity tile = worldIn.getBlockEntity(pos);
 
-            if(tile instanceof TileEntityBaseTankBlock && placer instanceof PlayerEntity)
+            if(tile instanceof TileEntityBaseTankBlock tankBlock)
             {
-                ((TileEntityBaseTankBlock) tile).onBlockPlacedBy((PlayerEntity) placer, worldIn, pos);
+                if(placer instanceof Player player) {
+                    tankBlock.onBlockPlacedBy(player, worldIn, pos);
+                }
             }
         }
     }

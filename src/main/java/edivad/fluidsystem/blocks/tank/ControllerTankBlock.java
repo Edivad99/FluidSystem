@@ -1,61 +1,70 @@
 package edivad.fluidsystem.blocks.tank;
 
+import edivad.fluidsystem.setup.Registration;
+import edivad.fluidsystem.tile.pipe.TileEntityBlockInputPipe;
+import edivad.fluidsystem.tile.tank.TileEntityBaseTankBlock;
 import edivad.fluidsystem.tile.tank.TileEntityControllerTankBlock;
 import edivad.fluidsystem.tools.Translations;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ControllerTankBlock extends BaseBlock
+public class ControllerTankBlock extends BaseBlock implements EntityBlock
 {
+    @Nullable
     @Override
-    public boolean hasTileEntity(BlockState state)
-    {
-        return true;
+    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        return new TileEntityControllerTankBlock(blockPos, blockState);
     }
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world)
-    {
-        return new TileEntityControllerTankBlock();
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
+        BlockEntityTicker<TileEntityBaseTankBlock> serverTicker = TileEntityBaseTankBlock::serverTick;
+        if(Registration.CONTROLLER_TANK_BLOCK_TILE.get() == blockEntityType && !level.isClientSide) {
+            return (BlockEntityTicker<T>) serverTicker;
+        }
+        return null;
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit)
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
     {
-        if(worldIn.isRemote)
-            return ActionResultType.SUCCESS;
+        if(worldIn.isClientSide)
+            return InteractionResult.SUCCESS;
 
-        TileEntity tile = worldIn.getTileEntity(pos);
+        BlockEntity tile = worldIn.getBlockEntity(pos);
 
-        if(tile instanceof TileEntityControllerTankBlock)
+        if(tile instanceof TileEntityControllerTankBlock controllerTankBlock)
         {
-            return ((TileEntityControllerTankBlock) tile).activate(player, worldIn, pos, handIn);
+            return controllerTankBlock.activate(player, worldIn, pos, handIn);
         }
-        return ActionResultType.FAIL;
+        return InteractionResult.FAIL;
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+    public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn)
     {
-        tooltip.add(new TranslationTextComponent(Translations.TANK_BLOCK_CONTROLLER_TOOLTIP).mergeStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslatableComponent(Translations.TANK_BLOCK_CONTROLLER_TOOLTIP).withStyle(ChatFormatting.GRAY));
     }
 }

@@ -4,11 +4,11 @@ import edivad.fluidsystem.Main;
 import edivad.fluidsystem.compat.MainCompatHandler;
 import edivad.fluidsystem.network.PacketHandler;
 import edivad.fluidsystem.tools.Config;
-import net.minecraft.block.BlockState;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -18,11 +18,11 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 @Mod.EventBusSubscriber(modid = Main.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModSetup
 {
-    public static final ItemGroup fluidSystemTab = new ItemGroup(Main.MODID + "_tab")
+    public static final CreativeModeTab fluidSystemTab = new CreativeModeTab(Main.MODID + "_tab")
     {
 
         @Override
-        public ItemStack createIcon()
+        public ItemStack makeIcon()
         {
             return new ItemStack(Registration.INFINITE_WATER_SOURCE.get());
         }
@@ -43,7 +43,7 @@ public class ModSetup
         {
             BlockState state = event.getState();
             FluidState fluidState = state.getFluidState();
-            if(fluidState.getFluid().isEquivalentTo(Fluids.WATER))
+            if(fluidState.getType().isSame(Fluids.WATER))
                 event.setResult(Result.DENY);
         }
     }

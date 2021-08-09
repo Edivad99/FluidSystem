@@ -2,27 +2,25 @@ package edivad.fluidsystem.compat.waila;
 
 import edivad.fluidsystem.tile.pipe.TileEntityBlockFilterablePipe;
 import edivad.fluidsystem.tools.Translations;
+import mcp.mobius.waila.api.BlockAccessor;
 import mcp.mobius.waila.api.IComponentProvider;
-import mcp.mobius.waila.api.IDataAccessor;
-import mcp.mobius.waila.api.IPluginConfig;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-
-import java.util.List;
+import mcp.mobius.waila.api.ITooltip;
+import mcp.mobius.waila.api.config.IPluginConfig;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class BlockFilterablePipeComponentProvider implements IComponentProvider
 {
     @Override
-    public void appendBody(List<ITextComponent> tooltip, IDataAccessor accessor, IPluginConfig config)
+    public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config)
     {
-        if(accessor.getTileEntity() instanceof TileEntityBlockFilterablePipe)
+        if(accessor.getBlockEntity() instanceof TileEntityBlockFilterablePipe)
         {
-            CompoundNBT data = accessor.getServerData();
+            CompoundTag data = accessor.getServerData();
             if(data.getBoolean("isFluidPresent"))
             {
                 String fluidName = data.getString("fluid");
-                tooltip.add(new TranslationTextComponent(Translations.FLUID_FILTERED, fluidName));
+                tooltip.add(new TranslatableComponent(Translations.FLUID_FILTERED, fluidName));
             }
         }
     }

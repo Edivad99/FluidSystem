@@ -7,6 +7,7 @@ import edivad.fluidsystem.setup.proxy.IProxy;
 import edivad.fluidsystem.setup.proxy.Proxy;
 import edivad.fluidsystem.setup.proxy.ProxyClient;
 import edivad.fluidsystem.tools.Config;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -31,7 +32,8 @@ public class Main
         Registration.init();
 
         // Register the setup method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(ModSetup::init);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
+        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        eventBus.addListener(ModSetup::init);
+        eventBus.addListener(ClientSetup::init);
     }
 }

@@ -1,71 +1,68 @@
 package edivad.fluidsystem.blocks.pipe;
 
 import edivad.fluidsystem.api.IFluidSystemConnectableBlock;
+import edivad.fluidsystem.setup.Registration;
 import edivad.fluidsystem.tile.pipe.TileEntityBlockOutputPipe;
 import edivad.fluidsystem.tools.Translations;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockOutputPipe extends BlockFilterable implements IFluidSystemConnectableBlock
+public class BlockOutputPipe extends BlockFilterable implements IFluidSystemConnectableBlock, EntityBlock
 {
     public BlockOutputPipe()
     {
-        super(Properties.create(Material.IRON).sound(SoundType.STONE).hardnessAndResistance(5.0F));
-    }
-
-    @Override
-    public boolean hasTileEntity(BlockState state)
-    {
-        return true;
+        super(Properties.of(Material.METAL).sound(SoundType.STONE).strength(5.0F));
     }
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world)
-    {
-        return new TileEntityBlockOutputPipe();
+    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        return new TileEntityBlockOutputPipe(blockPos, blockState);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+    public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn)
     {
-        tooltip.add(new TranslationTextComponent(Translations.OUTPUT_PIPE_TOOLTIP).mergeStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslatableComponent(Translations.OUTPUT_PIPE_TOOLTIP).withStyle(ChatFormatting.GRAY));
     }
 
     @Override
-    public boolean canConnectTo(IWorld world, BlockPos myPos, Direction side)
+    public boolean canConnectTo(LevelAccessor levelAccessor, BlockPos myPos, Direction side)
     {
-        BlockState state = world.getBlockState(myPos);
-        return state.get(FACING).compareTo(side) == 0;
+        BlockState state = levelAccessor.getBlockState(myPos);
+        return state.getValue(FACING).compareTo(side) == 0;
     }
 
     @Override
-    public boolean isEndPoint(IWorld world, BlockPos pos)
+    public boolean isEndPoint(LevelAccessor levelAccessor, BlockPos pos)
     {
         return true;
     }
 
     @Override
-    public boolean checkConnection(World world, BlockPos pos, Direction dir)
+    public boolean checkConnection(Level level, BlockPos pos, Direction dir)
     {
-        return canConnectTo(world, pos, dir);
+        return canConnectTo(level, pos, dir);
     }
 }

@@ -3,62 +3,56 @@ package edivad.fluidsystem.blocks.tank;
 import edivad.fluidsystem.api.IFluidSystemConnectableBlock;
 import edivad.fluidsystem.tile.tank.TileEntityInputTankBlock;
 import edivad.fluidsystem.tools.Translations;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class InputTankBlock extends BaseBlockRotable implements IFluidSystemConnectableBlock
+public class InputTankBlock extends BaseBlockRotable implements IFluidSystemConnectableBlock, EntityBlock
 {
-    @Override
-    public boolean hasTileEntity(BlockState state)
-    {
-        return true;
-    }
-
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world)
-    {
-        return new TileEntityInputTankBlock();
+    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        return new TileEntityInputTankBlock(blockPos, blockState);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+    public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn)
     {
-        tooltip.add(new TranslationTextComponent(Translations.TANK_BLOCK_INPUT_TOOLTIP).mergeStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslatableComponent(Translations.TANK_BLOCK_INPUT_TOOLTIP).withStyle(ChatFormatting.GRAY));
     }
 
     @Override
-    public boolean canConnectTo(IWorld world, BlockPos myPos, Direction side)
+    public boolean canConnectTo(LevelAccessor levelAccessor, BlockPos myPos, Direction side)
     {
-        BlockState state = world.getBlockState(myPos);
-        return state.get(FACING).compareTo(side.getOpposite()) == 0;
+        BlockState state = levelAccessor.getBlockState(myPos);
+        return state.getValue(FACING).compareTo(side.getOpposite()) == 0;
     }
 
     @Override
-    public boolean isEndPoint(IWorld world, BlockPos myPos)
+    public boolean isEndPoint(LevelAccessor levelAccessor, BlockPos myPos)
     {
         return true;
     }
 
     @Override
-    public boolean checkConnection(World world, BlockPos pos, Direction dir)
+    public boolean checkConnection(Level level, BlockPos pos, Direction dir)
     {
-        return canConnectTo(world, pos, dir);
+        return canConnectTo(level, pos, dir);
     }
 }

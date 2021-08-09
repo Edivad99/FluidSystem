@@ -2,12 +2,12 @@ package edivad.fluidsystem.network.packet;
 
 import edivad.fluidsystem.Main;
 import edivad.fluidsystem.tile.tank.TileEntityControllerTankBlock;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
@@ -18,7 +18,7 @@ public class UpdateTankBlockController
     private final int tanksBlock;
     private final int totalCapacity;
 
-    public UpdateTankBlockController(PacketBuffer buf)
+    public UpdateTankBlockController(FriendlyByteBuf buf)
     {
         pos = buf.readBlockPos();
         fluidStack = buf.readFluidStack();
@@ -34,7 +34,7 @@ public class UpdateTankBlockController
         this.totalCapacity = totalCapacity;
     }
 
-    public void toBytes(PacketBuffer buf)
+    public void toBytes(FriendlyByteBuf buf)
     {
         buf.writeBlockPos(pos);
         buf.writeFluidStack(fluidStack);
@@ -46,13 +46,12 @@ public class UpdateTankBlockController
     {
         ctx.get().enqueueWork(() ->
         {
-            World world = Main.proxy.getClientWorld();
-            if(world.isBlockPresent(pos))
+            Level world = Main.proxy.getClientLevel();
+            if(world.isLoaded(pos))
             {
-                TileEntity te = world.getTileEntity(pos);
-                if(te instanceof TileEntityControllerTankBlock)
+                BlockEntity te = world.getBlockEntity(pos);
+                if(te instanceof TileEntityControllerTankBlock controller)
                 {
-                    TileEntityControllerTankBlock controller = (TileEntityControllerTankBlock) te;
                     controller.clientFluidStack = fluidStack;
                     controller.tanksBlock = tanksBlock;
                     controller.totalCapacity = totalCapacity;
