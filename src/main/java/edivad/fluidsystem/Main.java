@@ -18,16 +18,14 @@ import org.apache.logging.log4j.Logger;
 
 @Mod(Main.MODID)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-public class Main
-{
+public class Main {
 
     public static final String MODID = "fluidsystem";
     public static final String MODNAME = "FluidSystem";
     public static final Logger logger = LogManager.getLogger();
     public static IProxy proxy = DistExecutor.safeRunForDist(() -> ProxyClient::new, () -> Proxy::new);
 
-    public Main()
-    {
+    public Main() {
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SERVER_CONFIG);
         Registration.init();
 

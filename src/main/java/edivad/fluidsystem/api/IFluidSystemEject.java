@@ -7,8 +7,8 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 /**
  * Tile entities that implement this interface will be able to receive fluid from the pressure system
  */
-public interface IFluidSystemEject
-{
+public interface IFluidSystemEject {
+
     /**
      * Called when fluid is eject from the FluidSystem's pipes into this TE
      *

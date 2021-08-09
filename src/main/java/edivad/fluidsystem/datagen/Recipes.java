@@ -9,10 +9,9 @@ import net.minecraft.world.item.Items;
 
 import java.util.function.Consumer;
 
-public class Recipes extends RecipeProvider
-{
-    public Recipes(DataGenerator generatorIn)
-    {
+public class Recipes extends RecipeProvider {
+
+    public Recipes(DataGenerator generatorIn) {
         super(generatorIn);
     }
 

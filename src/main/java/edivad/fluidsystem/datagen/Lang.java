@@ -6,16 +6,14 @@ import edivad.fluidsystem.tools.Translations;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.LanguageProvider;
 
-public class Lang extends LanguageProvider
-{
-    public Lang(DataGenerator gen)
-    {
+public class Lang extends LanguageProvider {
+
+    public Lang(DataGenerator gen) {
         super(gen, Main.MODID, "en_us");
     }
 
     @Override
-    protected void addTranslations()
-    {
+    protected void addTranslations() {
         add("itemGroup." + Main.MODID + "_tab", Main.MODNAME);
 
         add(Registration.STRUCTURAL_TANK_BLOCK.get(), "Tank Block");

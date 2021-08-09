@@ -11,12 +11,10 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
-
 @Mod.EventBusSubscriber(modid = Main.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ClientSetup
-{
-    public static void init(FMLClientSetupEvent event)
-    {
+public class ClientSetup {
+
+    public static void init(FMLClientSetupEvent event) {
         //Version checker
         MinecraftForge.EVENT_BUS.register(EventHandler.INSTANCE);
 

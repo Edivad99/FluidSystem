@@ -4,8 +4,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber
-public class Config
-{
+public class Config {
 
     public static final String CATEGORY_GENERAL = "general";
 
@@ -14,8 +13,7 @@ public class Config
     public static ForgeConfigSpec.IntValue BLOCK_CAPACITY, NUMBER_OF_MODULES;
     public static ForgeConfigSpec.BooleanValue FINITE_WATER_SOURCE;
 
-    static
-    {
+    static {
         ForgeConfigSpec.Builder SERVER_BUILDER = new ForgeConfigSpec.Builder();
 
         SERVER_BUILDER.comment("General settings").push(CATEGORY_GENERAL);

@@ -29,7 +29,7 @@ public class TileEntityBlockInputPipe extends TileEntityBlockFilterablePipe {
 
         Direction inputFace = blockState.getValue(BlockInputPipe.FACING).getOpposite();
         BlockEntity tile = level.getBlockEntity(blockPos.relative(inputFace));
-        if (tile == null)
+        if(tile == null)
             return;
 
         tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, inputFace.getOpposite()).ifPresent(input -> {

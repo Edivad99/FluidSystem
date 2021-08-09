@@ -7,17 +7,15 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
-public class ProxyClient implements IProxy
-{
+public class ProxyClient implements IProxy {
+
     @Override
-    public Player getClientPlayer()
-    {
+    public Player getClientPlayer() {
         return Minecraft.getInstance().player;
     }
 
     @Override
-    public Level getClientLevel()
-    {
+    public Level getClientLevel() {
         return Minecraft.getInstance().level;
     }
 }

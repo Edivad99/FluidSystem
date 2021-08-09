@@ -4,54 +4,47 @@ import edivad.fluidsystem.Main;
 import edivad.fluidsystem.tools.utils.FluidUtils;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
 import java.text.DecimalFormat;
 
-public class FluidElement extends TOPElement
-{
+public class FluidElement extends TOPElement {
+
     public static final ResourceLocation ID = new ResourceLocation(Main.MODID, "fluid_element");
 
     protected final FluidStack fluid;
     protected final int capacity;
     protected final int colorLiquid;
 
-    protected FluidElement(@Nonnull FluidStack fluid, int capacity, int colorLiquid)
-    {
+    protected FluidElement(@Nonnull FluidStack fluid, int capacity, int colorLiquid) {
         super(0xFF000000, 0xFFFFFF);
         this.fluid = fluid;
         this.capacity = capacity;
         this.colorLiquid = colorLiquid;
     }
 
-    public FluidElement(@Nonnull FluidStack fluid, int capacity, BlockEntity tile)
-    {
+    public FluidElement(@Nonnull FluidStack fluid, int capacity, BlockEntity tile) {
         this(fluid, capacity, FluidUtils.getLiquidColorWithBiome(fluid, tile));
     }
 
-    public FluidElement(FriendlyByteBuf buf)
-    {
+    public FluidElement(FriendlyByteBuf buf) {
         this(buf.readFluidStack(), buf.readInt(), buf.readInt());
     }
 
     @Override
-    public void toBytes(FriendlyByteBuf buf)
-    {
+    public void toBytes(FriendlyByteBuf buf) {
         buf.writeFluidStack(fluid);
         buf.writeInt(capacity);
         buf.writeInt(colorLiquid);
     }
 
     @Override
-    public int getScaledLevel(int level)
-    {
-        if(capacity == 0 || fluid.getAmount() == Integer.MAX_VALUE)
-        {
+    public int getScaledLevel(int level) {
+        if(capacity == 0 || fluid.getAmount() == Integer.MAX_VALUE) {
             return level;
         }
         Long fluidAmount = (long) fluid.getAmount();
@@ -60,14 +53,12 @@ public class FluidElement extends TOPElement
     }
 
     @Override
-    public TextureAtlasSprite getIcon()
-    {
+    public TextureAtlasSprite getIcon() {
         return fluid.isEmpty() ? null : FluidUtils.getFluidTexture(fluid);
     }
 
     @Override
-    public TextComponent getText()
-    {
+    public TextComponent getText() {
         String liquidText = fluid.isEmpty() ? "Empty" : fluid.getDisplayName().getString();
         DecimalFormat f = new DecimalFormat("#,##0");
         int amount = fluid.getAmount();
@@ -75,15 +66,13 @@ public class FluidElement extends TOPElement
     }
 
     @Override
-    protected boolean applyRenderColor()
-    {
+    protected boolean applyRenderColor() {
         FluidUtils.color(colorLiquid);
         return true;
     }
 
     @Override
-    public ResourceLocation getID()
-    {
+    public ResourceLocation getID() {
         return ID;
     }
 }

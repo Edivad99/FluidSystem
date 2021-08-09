@@ -6,24 +6,29 @@ import edivad.fluidsystem.tile.tank.TileEntityBaseTankBlock;
 import edivad.fluidsystem.tile.tank.TileEntityControllerTankBlock;
 import edivad.fluidsystem.tools.Config;
 import edivad.fluidsystem.tools.Translations;
-import mcjty.theoneprobe.api.*;
+import mcjty.theoneprobe.api.IElement;
+import mcjty.theoneprobe.api.IElementFactory;
+import mcjty.theoneprobe.api.IProbeHitData;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.IProbeInfoProvider;
+import mcjty.theoneprobe.api.ITheOneProbe;
+import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.level.Level;
 
 import java.util.function.Function;
 
-public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, Void>
-{
+public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, Void> {
+
     @Override
-    public Void apply(ITheOneProbe probe)
-    {
+    public Void apply(ITheOneProbe probe) {
         probe.registerProvider(this);
         probe.registerElementFactory(new IElementFactory() {
 
@@ -41,30 +46,24 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
     }
 
     @Override
-    public void addProbeInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level world, BlockState blockState, IProbeHitData data)
-    {
+    public void addProbeInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level world, BlockState blockState, IProbeHitData data) {
         BlockEntity te = world.getBlockEntity(data.getPos());
 
-        if(te instanceof TileEntityBaseTankBlock)
-        {
-            TileEntityBaseTankBlock tankBase = ((TileEntityBaseTankBlock) te).getMaster();
-            if(tankBase != null)
-            {
+        if(te instanceof TileEntityBaseTankBlock tankBlock) {
+            TileEntityBaseTankBlock tankBase = tankBlock.getMaster();
+            if(tankBase != null) {
                 TileEntityControllerTankBlock controller = (TileEntityControllerTankBlock) tankBase;
 
                 probeInfo.horizontal().text(new TranslatableComponent(Translations.TANKS_BLOCK).append(String.format("%d/%d", controller.getNumberOfTanksBlock(), Config.NUMBER_OF_MODULES.get())));
-                controller.getFluidCap().ifPresent(h ->
-                {
+                controller.getFluidCap().ifPresent(h -> {
                     probeInfo.element(new FluidElement(h.getFluidInTank(0), controller.getTotalCapacity(), controller));
                 });
             }
         }
-        else if(te instanceof TileEntityBlockFilterablePipe)
-        {
+        else if(te instanceof TileEntityBlockFilterablePipe) {
             TileEntityBlockFilterablePipe blockOutputPipe = (TileEntityBlockFilterablePipe) te;
             Fluid filter = blockOutputPipe.getFluidFilter();
-            if(!filter.isSame(Fluids.EMPTY))
-            {
+            if(!filter.isSame(Fluids.EMPTY)) {
                 String fluidName = filter.getAttributes().getDisplayName(null).getString();
                 probeInfo.horizontal().text(new TranslatableComponent(Translations.FLUID_FILTERED, fluidName));
             }
@@ -72,8 +71,7 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
     }
 
     @Override
-    public ResourceLocation getID()
-    {
-        return new ResourceLocation(Main.MODID,"default");
+    public ResourceLocation getID() {
+        return new ResourceLocation(Main.MODID, "default");
     }
 }

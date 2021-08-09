@@ -4,22 +4,22 @@ import edivad.fluidsystem.container.ContainerTankBlockController;
 import edivad.fluidsystem.network.PacketHandler;
 import edivad.fluidsystem.network.packet.UpdateTankBlockController;
 import edivad.fluidsystem.setup.Registration;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.core.Direction;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidActionResult;
@@ -35,8 +35,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock implements MenuProvider
-{
+public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock implements MenuProvider {
+
     private final ItemStackHandler itemHandler = createHandler();
     private final LazyOptional<IItemHandler> item = LazyOptional.of(() -> itemHandler);
     private final FluidTank tank = new FluidTank(blockCapacity());
@@ -47,31 +47,26 @@ public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock imple
     public int totalCapacity;
     private LazyOptional<IFluidHandler> fluid;
 
-    public TileEntityControllerTankBlock(BlockPos blockPos, BlockState blockState)
-    {
+    public TileEntityControllerTankBlock(BlockPos blockPos, BlockState blockState) {
         super(Registration.CONTROLLER_TANK_BLOCK_TILE.get(), blockPos, blockState);
     }
 
     @Override
-    public boolean isMaster()
-    {
+    public boolean isMaster() {
         return true;
     }
 
     @Override
-    public int blockCapacity()
-    {
+    public int blockCapacity() {
         return 0;
     }
 
-    public LazyOptional<IFluidHandler> getFluidCap()
-    {
+    public LazyOptional<IFluidHandler> getFluidCap() {
         return fluid;
     }
 
     @Override
-    public void onServerTick(Level level, BlockPos blockPos, BlockState blockState, TileEntityBaseTankBlock tileEntityBaseTankBlock)
-    {
+    public void onServerTick(Level level, BlockPos blockPos, BlockState blockState, TileEntityBaseTankBlock tileEntityBaseTankBlock) {
         super.onServerTick(level, blockPos, blockState, tileEntityBaseTankBlock);
 
         PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpdateTankBlockController(getBlockPos(), tank.getFluid(), getNumberOfTanksBlock(), getTotalCapacity()));
@@ -80,8 +75,7 @@ public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock imple
         if(input.getCount() != 1 || !output.isEmpty())
             return;
 
-        input.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h ->
-        {
+        input.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
             FluidStack checkTypeofLiquid = h.getFluidInTank(0);
 
             if(!tank.isEmpty())//Il tank contiene del liquido
@@ -102,8 +96,7 @@ public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock imple
                 }
                 else if(checkTypeofLiquid.getAmount() == h.getTankCapacity(0) && checkTypeofLiquid.isFluidEqual(tank.getFluid()))//L'oggetto è pieno e il tank contiene lo stesso liquido
                 {
-                    if(h.getTankCapacity(0) <= tank.getSpace())
-                    {
+                    if(h.getTankCapacity(0) <= tank.getSpace()) {
                         FluidActionResult result = FluidUtil.tryEmptyContainerAndStow(input, tank, itemHandler, tank.getSpace(), null, true);
                         itemHandler.extractItem(0, 1, false);
                         itemHandler.insertItem(1, result.getResult(), false);
@@ -125,13 +118,11 @@ public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock imple
     }
 
     @Override
-    protected void onMasterUpdate()
-    {
+    protected void onMasterUpdate() {
         int newCapacity = getTotalCapacity();
         int oldCapacity = tank.getCapacity();
         tank.setCapacity(newCapacity);
-        if(oldCapacity > newCapacity && tank.getFluidAmount() > newCapacity)
-        {
+        if(oldCapacity > newCapacity && tank.getFluidAmount() > newCapacity) {
             tank.drain(new FluidStack(tank.getFluid(), tank.getFluidAmount() - newCapacity), FluidAction.EXECUTE);
         }
         if(fluid != null)
@@ -139,8 +130,7 @@ public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock imple
         fluid = LazyOptional.of(() -> tank);
     }
 
-    public InteractionResult activate(Player player, Level worldIn, BlockPos pos, InteractionHand handIn)
-    {
+    public InteractionResult activate(Player player, Level worldIn, BlockPos pos, InteractionHand handIn) {
         TileEntityBaseTankBlock master = getMaster();
         if(master != null)
             NetworkHooks.openGui((ServerPlayer) player, this, getBlockPos());
@@ -150,57 +140,48 @@ public class TileEntityControllerTankBlock extends TileEntityBaseTankBlock imple
     }
 
     @Override
-    public CompoundTag save(CompoundTag tag)
-    {
+    public CompoundTag save(CompoundTag tag) {
         tag.put("inventory", itemHandler.serializeNBT());
         tank.writeToNBT(tag);
         return super.save(tag);
     }
 
     @Override
-    public void load(CompoundTag tag)
-    {
+    public void load(CompoundTag tag) {
         super.load(tag);
         itemHandler.deserializeNBT(tag.getCompound("inventory"));
         tank.readFromNBT(tag);
     }
 
-    private ItemStackHandler createHandler()
-    {
-        return new ItemStackHandler(2)
-        {
+    private ItemStackHandler createHandler() {
+        return new ItemStackHandler(2) {
 
             @Override
-            protected void onContentsChanged(int slot)
-            {
+            protected void onContentsChanged(int slot) {
                 setChanged();
             }
 
             @Override
-            public boolean isItemValid(int slot, ItemStack stack)
-            {
+            public boolean isItemValid(int slot, ItemStack stack) {
                 return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent();
             }
         };
     }
 
     @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
-    {
+    public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
         if(cap.equals(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY))
             return item.cast();
         return super.getCapability(cap, side);
     }
 
     @Override
-    public AbstractContainerMenu createMenu(int id, Inventory playerInventory, Player playerEntity)
-    {
+    public AbstractContainerMenu createMenu(int id, Inventory playerInventory, Player playerEntity) {
         return new ContainerTankBlockController(id, playerInventory, this);
     }
 
     @Override
-    public Component getDisplayName()
-    {
+    public Component getDisplayName() {
         return new TranslatableComponent(this.getBlockState().getBlock().getDescriptionId());
     }
 }

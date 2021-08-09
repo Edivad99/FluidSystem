@@ -2,32 +2,35 @@ package edivad.fluidsystem.datagen.util;
 
 import edivad.fluidsystem.blocks.pipe.BlockPipe;
 import edivad.fluidsystem.blocks.pipe.BlockPipe.Straight;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.core.Direction;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.model.generators.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraftforge.client.model.generators.BlockModelBuilder;
+import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ModelBuilder.FaceRotation;
+import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.client.model.generators.ModelProvider;
+import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
+import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class CustomBlockStateProvider extends BlockStateProvider
-{
+public abstract class CustomBlockStateProvider extends BlockStateProvider {
+
     private final ExistingFileHelper exFileHelper;
     private final String modid;
 
-    public CustomBlockStateProvider(DataGenerator gen, String modid, ExistingFileHelper exFileHelper)
-    {
+    public CustomBlockStateProvider(DataGenerator gen, String modid, ExistingFileHelper exFileHelper) {
         super(gen, modid, exFileHelper);
         this.exFileHelper = exFileHelper;
         this.modid = modid;
     }
 
-    private ModelFile pipeStraight(String modelName, ResourceLocation pipe)
-    {
+    private ModelFile pipeStraight(String modelName, ResourceLocation pipe) {
         BlockModelBuilder model = models().getBuilder(ModelProvider.BLOCK_FOLDER + "/" + modelName).parent(models().getExistingFile(mcLoc("block")));
 
         model.element()//
@@ -44,8 +47,7 @@ public abstract class CustomBlockStateProvider extends BlockStateProvider
         return model;
     }
 
-    private ModelFile pipeCenter(String modelName, ResourceLocation pipe)
-    {
+    private ModelFile pipeCenter(String modelName, ResourceLocation pipe) {
         BlockModelBuilder model = models().getBuilder(ModelProvider.BLOCK_FOLDER + "/" + modelName).parent(models().getExistingFile(mcLoc("block")));
 
         model.element()//
@@ -64,8 +66,7 @@ public abstract class CustomBlockStateProvider extends BlockStateProvider
         return model;
     }
 
-    protected void pipeBuilder(BlockPipe pipe)
-    {
+    protected void pipeBuilder(BlockPipe pipe) {
 
         ModelFile pipeStraight = pipeStraight("pipe_straight", modLoc("blocks/pipe"));
         ModelFile pipeCenter = pipeCenter("pipe_center", modLoc("blocks/pipe"));
@@ -102,11 +103,9 @@ public abstract class CustomBlockStateProvider extends BlockStateProvider
         bld.part().modelFile(pipeWest).rotationX(90).addModel().condition(BlockPipe.WEST, true).condition(BlockPipe.STRAIGHT, Straight.NONE);
     }
 
-    protected VariantBlockStateBuilder orientedBlockPowered(Block block, ModelFile modelOff, ModelFile modelOn)
-    {
+    protected VariantBlockStateBuilder orientedBlockPowered(Block block, ModelFile modelOff, ModelFile modelOn) {
         VariantBlockStateBuilder builder = getVariantBuilder(block);
-        for(int i = 0; i < 2; i++)
-        {
+        for(int i = 0; i < 2; i++) {
             builder.partialState()//
                     .with(BlockStateProperties.FACING, Direction.NORTH)//
                     .with(BlockStateProperties.POWERED, i == 0)//
@@ -150,8 +149,7 @@ public abstract class CustomBlockStateProvider extends BlockStateProvider
         return builder;
     }
 
-    protected VariantBlockStateBuilder blockPowered(Block block, ModelFile modelOff, ModelFile modelOn)
-    {
+    protected VariantBlockStateBuilder blockPowered(Block block, ModelFile modelOff, ModelFile modelOn) {
         VariantBlockStateBuilder builder = getVariantBuilder(block);
 
         builder.partialState()//
@@ -167,12 +165,10 @@ public abstract class CustomBlockStateProvider extends BlockStateProvider
         return builder;
     }
 
-    protected List<ModelFile> orientedBlockPoweredModel(String modelName, ResourceLocation sideOff, ResourceLocation sideOn, ResourceLocation front, ResourceLocation back)
-    {
+    protected List<ModelFile> orientedBlockPoweredModel(String modelName, ResourceLocation sideOff, ResourceLocation sideOn, ResourceLocation front, ResourceLocation back) {
         List<ModelFile> models = new ArrayList<>(2);
 
-        for(int i = 0; i < 2; i++)
-        {
+        for(int i = 0; i < 2; i++) {
             BlockModelBuilder model = models().getBuilder(ModelProvider.BLOCK_FOLDER + "/" + modelName + (i == 0 ? "_off" : "_on")).parent(models().getExistingFile(mcLoc("block")));
 
             model.element()//
@@ -194,8 +190,7 @@ public abstract class CustomBlockStateProvider extends BlockStateProvider
         return models;
     }
 
-    protected VariantBlockStateBuilder orientedBlock(Block block, ModelFile model)
-    {
+    protected VariantBlockStateBuilder orientedBlock(Block block, ModelFile model) {
         VariantBlockStateBuilder builder = getVariantBuilder(block);
 
         builder.partialState()//
@@ -231,8 +226,7 @@ public abstract class CustomBlockStateProvider extends BlockStateProvider
         return builder;
     }
 
-    protected ModelFile orientedBlockModel(String modelName, ResourceLocation side, ResourceLocation front, ResourceLocation back)
-    {
+    protected ModelFile orientedBlockModel(String modelName, ResourceLocation side, ResourceLocation front, ResourceLocation back) {
         BlockModelBuilder model = models().getBuilder(ModelProvider.BLOCK_FOLDER + "/" + modelName).parent(models().getExistingFile(mcLoc("block")));
 
         model.element()//

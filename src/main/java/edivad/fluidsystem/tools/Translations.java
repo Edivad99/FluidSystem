@@ -2,8 +2,7 @@ package edivad.fluidsystem.tools;
 
 import edivad.fluidsystem.Main;
 
-public class Translations
-{
+public class Translations {
 
     public static String TANKS_BLOCK = "gui." + Main.MODID + ".tanksBlock";
     public static String LIQUID_AMOUNT = "gui." + Main.MODID + ".liquidAmount";

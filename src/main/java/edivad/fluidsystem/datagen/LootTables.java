@@ -4,16 +4,14 @@ import edivad.fluidsystem.datagen.util.BaseLootTableProvider;
 import edivad.fluidsystem.setup.Registration;
 import net.minecraft.data.DataGenerator;
 
-public class LootTables extends BaseLootTableProvider
-{
-    public LootTables(DataGenerator dataGeneratorIn)
-    {
+public class LootTables extends BaseLootTableProvider {
+
+    public LootTables(DataGenerator dataGeneratorIn) {
         super(dataGeneratorIn);
     }
 
     @Override
-    protected void addTables()
-    {
+    protected void addTables() {
         lootTables.put(Registration.STRUCTURAL_TANK_BLOCK.get(), createBaseBlockStandardTable(Registration.STRUCTURAL_TANK_BLOCK.get()));
         lootTables.put(Registration.CONTROLLER_TANK_BLOCK.get(), createBaseBlockStandardTable(Registration.CONTROLLER_TANK_BLOCK.get()));
         lootTables.put(Registration.INTERFACE_TANK_BLOCK.get(), createBaseBlockStandardTable(Registration.INTERFACE_TANK_BLOCK.get()));

@@ -12,36 +12,29 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class TileEntityInputTankBlock extends TileEntityBaseTankBlock implements IFluidSystemEject
-{
-    public TileEntityInputTankBlock(BlockPos blockPos, BlockState blockState)
-    {
+public class TileEntityInputTankBlock extends TileEntityBaseTankBlock implements IFluidSystemEject {
+
+    public TileEntityInputTankBlock(BlockPos blockPos, BlockState blockState) {
         super(Registration.INPUT_TANK_BLOCK_TILE.get(), blockPos, blockState);
     }
 
     @Override
-    public boolean isMaster()
-    {
+    public boolean isMaster() {
         return false;
     }
 
     @Override
-    public int blockCapacity()
-    {
+    public int blockCapacity() {
         return 0;
     }
 
     @Override
-    public int fill(FluidStack resource, IFluidHandler.FluidAction action)
-    {
-        if(acceptFluid(resource.getFluid()))
-        {
+    public int fill(FluidStack resource, IFluidHandler.FluidAction action) {
+        if(acceptFluid(resource.getFluid())) {
             TileEntityControllerTankBlock controller = (TileEntityControllerTankBlock) getMaster();
-            if(controller != null)
-            {
+            if(controller != null) {
                 AtomicInteger res = new AtomicInteger(0);
-                controller.getFluidCap().ifPresent(h ->
-                {
+                controller.getFluidCap().ifPresent(h -> {
                     res.set(h.fill(resource, action));
                 });
                 return res.get();
@@ -51,14 +44,11 @@ public class TileEntityInputTankBlock extends TileEntityBaseTankBlock implements
     }
 
     @Override
-    public boolean acceptFluid(Fluid fluidToInsert)
-    {
+    public boolean acceptFluid(Fluid fluidToInsert) {
         TileEntityControllerTankBlock controller = (TileEntityControllerTankBlock) getMaster();
-        if(controller != null)
-        {
+        if(controller != null) {
             AtomicBoolean result = new AtomicBoolean(false);
-            controller.getFluidCap().ifPresent(h ->
-            {
+            controller.getFluidCap().ifPresent(h -> {
                 if(h.getFluidInTank(0).getFluid().isSame(Fluids.EMPTY))
                     result.set(true);
                 else

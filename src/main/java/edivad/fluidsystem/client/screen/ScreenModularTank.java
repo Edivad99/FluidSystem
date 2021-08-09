@@ -8,28 +8,27 @@ import edivad.fluidsystem.container.ContainerTankBlockController;
 import edivad.fluidsystem.tile.tank.TileEntityControllerTankBlock;
 import edivad.fluidsystem.tools.Translations;
 import edivad.fluidsystem.tools.utils.FluidUtils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.network.chat.Component;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScreenModularTank extends AbstractContainerScreen<ContainerTankBlockController>
-{
+public class ScreenModularTank extends AbstractContainerScreen<ContainerTankBlockController> {
+
     private static final ResourceLocation TEXTURES = new ResourceLocation(Main.MODID, "textures/gui/controller_tank_block.png");
     private final TileEntityControllerTankBlock tile;
 
-    public ScreenModularTank(ContainerTankBlockController screenContainer, Inventory inv, Component titleIn)
-    {
+    public ScreenModularTank(ContainerTankBlockController screenContainer, Inventory inv, Component titleIn) {
         super(screenContainer, inv, titleIn);
         this.imageWidth = 176;
         this.imageHeight = 187;
@@ -37,10 +36,9 @@ public class ScreenModularTank extends AbstractContainerScreen<ContainerTankBloc
     }
 
     @Override
-    protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY)
-    {
+    protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0F,1.0F,1.0F,1.0F);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURES);
         blit(poseStack, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
 
@@ -54,8 +52,7 @@ public class ScreenModularTank extends AbstractContainerScreen<ContainerTankBloc
     }
 
     @Override
-    protected void renderLabels(PoseStack mStack, int mouseX, int mouseY)
-    {
+    protected void renderLabels(PoseStack mStack, int mouseX, int mouseY) {
         this.font.draw(mStack, this.title, this.titleLabelX, this.titleLabelY, 4210752);
         this.font.draw(mStack, new TranslatableComponent(Translations.TANKS_BLOCK).append(String.valueOf(tile.tanksBlock)), this.titleLabelX, this.titleLabelY + 60, 4210752);
         //Render indicator
@@ -64,13 +61,11 @@ public class ScreenModularTank extends AbstractContainerScreen<ContainerTankBloc
     }
 
     @Override
-    public void render(PoseStack mStack, int mouseX, int mouseY, float partialTicks)
-    {
+    public void render(PoseStack mStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(mStack);
         super.render(mStack, mouseX, mouseY, partialTicks);
         this.renderTooltip(mStack, mouseX, mouseY);
-        if(mouseX > this.leftPos + 6 && mouseX < this.leftPos + 61 && mouseY > this.topPos + 18 && mouseY < this.topPos + 63)
-        {
+        if(mouseX > this.leftPos + 6 && mouseX < this.leftPos + 61 && mouseY > this.topPos + 18 && mouseY < this.topPos + 63) {
             List<Component> tooltip = new ArrayList<>();
             tooltip.add(tile.clientFluidStack.isEmpty() ? new TranslatableComponent(Translations.TANK_EMPTY) : tile.clientFluidStack.getDisplayName());
             DecimalFormat f = new DecimalFormat("#,##0");

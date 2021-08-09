@@ -9,16 +9,13 @@ import mcp.mobius.waila.api.config.IPluginConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 
-public class BlockFilterablePipeComponentProvider implements IComponentProvider
-{
+public class BlockFilterablePipeComponentProvider implements IComponentProvider {
+
     @Override
-    public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config)
-    {
-        if(accessor.getBlockEntity() instanceof TileEntityBlockFilterablePipe)
-        {
+    public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
+        if(accessor.getBlockEntity() instanceof TileEntityBlockFilterablePipe) {
             CompoundTag data = accessor.getServerData();
-            if(data.getBoolean("isFluidPresent"))
-            {
+            if(data.getBoolean("isFluidPresent")) {
                 String fluidName = data.getString("fluid");
                 tooltip.add(new TranslatableComponent(Translations.FLUID_FILTERED, fluidName));
             }

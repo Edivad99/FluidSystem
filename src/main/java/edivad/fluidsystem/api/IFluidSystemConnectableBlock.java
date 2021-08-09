@@ -1,21 +1,21 @@
 package edivad.fluidsystem.api;
 
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 
 /**
  * Implemented on all blocks that can connect to FluidSystem's pipes
  */
-public interface IFluidSystemConnectableBlock
-{
+public interface IFluidSystemConnectableBlock {
+
     /**
      * Checks if pipe can connect from side
      *
      * @param levelAccessor The world where the block is placed
-     * @param myPos Is the position relative to the current block
-     * @param side  Is the side that you want to connect
+     * @param myPos         Is the position relative to the current block
+     * @param side          Is the side that you want to connect
      * @return true if connection is possible
      */
     boolean canConnectTo(LevelAccessor levelAccessor, BlockPos myPos, Direction side);
@@ -25,7 +25,7 @@ public interface IFluidSystemConnectableBlock
      * Blocks that can be part of separate pressure networks should return false
      *
      * @param levelAccessor The world where the block is placed
-     * @param myPos Is the position relative to the current block
+     * @param myPos         Is the position relative to the current block
      * @return true if network connections should pass through this block
      */
     boolean isEndPoint(LevelAccessor levelAccessor, BlockPos myPos);

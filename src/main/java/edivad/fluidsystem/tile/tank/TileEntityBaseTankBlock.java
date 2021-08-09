@@ -2,30 +2,29 @@ package edivad.fluidsystem.tile.tank;
 
 import edivad.fluidsystem.tools.Config;
 import edivad.fluidsystem.tools.Translations;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public abstract class TileEntityBaseTankBlock extends BlockEntity
-{
+public abstract class TileEntityBaseTankBlock extends BlockEntity {
+
     private TileEntityBaseTankBlock master;
     private boolean firstRun = true;
     private int size;
     private int totalCapacity;
     private Status status;
 
-    protected TileEntityBaseTankBlock(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState)
-    {
+    protected TileEntityBaseTankBlock(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
 
@@ -33,29 +32,24 @@ public abstract class TileEntityBaseTankBlock extends BlockEntity
 
     public abstract int blockCapacity();
 
-    public TileEntityBaseTankBlock getMaster()
-    {
+    public TileEntityBaseTankBlock getMaster() {
         initializeMultiblockIfNecessary();
         return master;
     }
 
-    public int getNumberOfTanksBlock()
-    {
+    public int getNumberOfTanksBlock() {
         return size;
     }
 
-    public int getTotalCapacity()
-    {
+    public int getTotalCapacity() {
         return totalCapacity;
     }
 
-    public Status getStatus()
-    {
+    public Status getStatus() {
         return status;
     }
 
-    private void setMaster(TileEntityBaseTankBlock master, int totalCapacity, int size, Status status)
-    {
+    private void setMaster(TileEntityBaseTankBlock master, int totalCapacity, int size, Status status) {
         this.master = master;
         this.totalCapacity = totalCapacity;
         this.size = size;
@@ -63,31 +57,24 @@ public abstract class TileEntityBaseTankBlock extends BlockEntity
         onMasterUpdate();
     }
 
-    protected void onMasterUpdate()
-    {
+    protected void onMasterUpdate() {
     }
 
-    private void initializeMultiblockIfNecessary()
-    {
-        if(master == null || master.isRemoved())
-        {
+    private void initializeMultiblockIfNecessary() {
+        if(master == null || master.isRemoved()) {
             List<TileEntityBaseTankBlock> connectedStorages = new ArrayList<>();
             Stack<TileEntityBaseTankBlock> traversingStorages = new Stack<>();
             TileEntityBaseTankBlock master = null;
             traversingStorages.add(this);
-            while(!traversingStorages.isEmpty())
-            {
+            while(!traversingStorages.isEmpty()) {
                 TileEntityBaseTankBlock storage = traversingStorages.pop();
                 if(storage.isMaster())
                     master = storage;
                 connectedStorages.add(storage);
-                for(Direction side : Direction.values())
-                {
+                for(Direction side : Direction.values()) {
                     BlockEntity te = level.getBlockEntity(storage.getBlockPos().relative(side));
-                    if(te instanceof TileEntityBaseTankBlock)
-                    {
-                        if(!connectedStorages.contains(te) && !traversingStorages.contains(te))
-                        {
+                    if(te instanceof TileEntityBaseTankBlock) {
+                        if(!connectedStorages.contains(te) && !traversingStorages.contains(te)) {
                             traversingStorages.add((TileEntityBaseTankBlock) te);
                         }
                     }
@@ -97,8 +84,7 @@ public abstract class TileEntityBaseTankBlock extends BlockEntity
             Status currentStatus = Status.FORMED;
             int controller = 0;
             int calculateCapacity = 0;
-            for(TileEntityBaseTankBlock storage : connectedStorages)
-            {
+            for(TileEntityBaseTankBlock storage : connectedStorages) {
                 if(storage.isMaster())
                     controller++;
                 calculateCapacity += storage.blockCapacity();
@@ -110,14 +96,13 @@ public abstract class TileEntityBaseTankBlock extends BlockEntity
                 currentStatus = Status.EXTRA_CONTROLLER;
             else if(connectedStorages.size() > Config.NUMBER_OF_MODULES.get())
                 currentStatus = Status.TOO_BIG;
-            else if (calculateCapacity == 0)
+            else if(calculateCapacity == 0)
                 currentStatus = Status.MISSING_SPACE;
 
             if(currentStatus != Status.FORMED)
                 master = null;
 
-            for(TileEntityBaseTankBlock storage : connectedStorages)
-            {
+            for(TileEntityBaseTankBlock storage : connectedStorages) {
                 storage.setMaster(master, calculateCapacity, connectedStorages.size(), currentStatus);
             }
         }
@@ -135,36 +120,26 @@ public abstract class TileEntityBaseTankBlock extends BlockEntity
     }
 
     @Override
-    public void setRemoved()
-    {
+    public void setRemoved() {
         super.setRemoved();
-        for(Direction side : Direction.values())
-        {
+        for(Direction side : Direction.values()) {
             BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
-            if(te instanceof TileEntityBaseTankBlock baseTankBlock)
-            {
+            if(te instanceof TileEntityBaseTankBlock baseTankBlock) {
                 baseTankBlock.master = null;
                 baseTankBlock.initializeMultiblockIfNecessary();
             }
         }
     }
 
-    public void onBlockPlacedBy(Player player, Level worldIn, BlockPos pos)
-    {
+    public void onBlockPlacedBy(Player player, Level worldIn, BlockPos pos) {
         if(getMaster() == null)
             player.displayClientMessage(getStatus().getStatusText().withStyle(ChatFormatting.RED), false);
     }
 
-    protected enum Status
-    {
-        FORMED,
-        CONTROLLER_MISSING,
-        EXTRA_CONTROLLER,
-        TOO_BIG,
-        MISSING_SPACE;
+    protected enum Status {
+        FORMED, CONTROLLER_MISSING, EXTRA_CONTROLLER, TOO_BIG, MISSING_SPACE;
 
-        public TranslatableComponent getStatusText()
-        {
+        public TranslatableComponent getStatusText() {
             return switch(this) {
                 case FORMED -> new TranslatableComponent(Translations.TANK_FORMED);
                 case CONTROLLER_MISSING -> new TranslatableComponent(Translations.TANK_CONTROLLER_MISSING);

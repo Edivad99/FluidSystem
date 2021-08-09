@@ -2,30 +2,28 @@ package edivad.fluidsystem.container;
 
 import edivad.fluidsystem.setup.Registration;
 import edivad.fluidsystem.tile.tank.TileEntityControllerTankBlock;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class ContainerTankBlockController extends AbstractContainerMenu
-{
+public class ContainerTankBlockController extends AbstractContainerMenu {
+
     public TileEntityControllerTankBlock tile;
 
-    public ContainerTankBlockController(int id, Inventory playerInventory, TileEntityControllerTankBlock tile)
-    {
+    public ContainerTankBlockController(int id, Inventory playerInventory, TileEntityControllerTankBlock tile) {
         super(Registration.CONTROLLER_TANK_BLOCK_CONTAINER.get(), id);
         this.tile = tile;
         addCustomSlots();
         addPlayerSlots(playerInventory);
     }
 
-    private void addPlayerSlots(Container playerInventory)
-    {
+    private void addPlayerSlots(Container playerInventory) {
         // Main Inventory
         for(int y = 0; y < 3; y++)
             for(int x = 0; x < 9; x++)
@@ -35,12 +33,9 @@ public class ContainerTankBlockController extends AbstractContainerMenu
             this.addSlot(new Slot(playerInventory, x, 8 + x * 18, 163));
     }
 
-    private void addCustomSlots()
-    {
-        if(tile != null)
-        {
-            tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h ->
-            {
+    private void addCustomSlots() {
+        if(tile != null) {
+            tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                 this.addSlot(new SlotItemHandler(h, 0, 92, 22));
                 this.addSlot(new SlotItemHandler(h, 1, 139, 22));
             });
@@ -48,25 +43,21 @@ public class ContainerTankBlockController extends AbstractContainerMenu
     }
 
     @Override
-    public boolean stillValid(Player playerIn)
-    {
+    public boolean stillValid(Player playerIn) {
         return stillValid(ContainerLevelAccess.create(tile.getLevel(), tile.getBlockPos()), playerIn, tile.getBlockState().getBlock());
     }
 
     @Override
-    public ItemStack quickMoveStack(Player player, int position)
-    {
+    public ItemStack quickMoveStack(Player player, int position) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(position);
 
-        if(slot != null && slot.hasItem())
-        {
+        if(slot != null && slot.hasItem()) {
             ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
 
             // tank to inventory
-            if(position < 2)
-            {
+            if(position < 2) {
                 if(!this.moveItemStackTo(itemstack1, 2, this.slots.size(), true))
                     return ItemStack.EMPTY;
             }

@@ -7,77 +7,65 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nonnull;
 
-public class InfiniteTank implements IFluidHandler, IFluidTank
-{
+public class InfiniteTank implements IFluidHandler, IFluidTank {
+
     private final Fluid fluid;
 
-    public InfiniteTank(Fluid fluid)
-    {
+    public InfiniteTank(Fluid fluid) {
         this.fluid = fluid;
     }
 
     @Nonnull
     @Override
-    public FluidStack getFluid()
-    {
+    public FluidStack getFluid() {
         return new FluidStack(fluid, getFluidAmount());
     }
 
     @Override
-    public int getFluidAmount()
-    {
+    public int getFluidAmount() {
         return Integer.MAX_VALUE;
     }
 
     @Override
-    public int getCapacity()
-    {
+    public int getCapacity() {
         return getFluidAmount();
     }
 
     @Override
-    public boolean isFluidValid(FluidStack stack)
-    {
+    public boolean isFluidValid(FluidStack stack) {
         return stack.getFluid().isSame(fluid);
     }
 
     @Override
-    public int getTanks()
-    {
+    public int getTanks() {
         return 1;
     }
 
     @Nonnull
     @Override
-    public FluidStack getFluidInTank(int tank)
-    {
+    public FluidStack getFluidInTank(int tank) {
         return getFluid();
     }
 
     @Override
-    public int getTankCapacity(int tank)
-    {
+    public int getTankCapacity(int tank) {
         return getFluidAmount();
     }
 
     @Override
-    public boolean isFluidValid(int tank, @Nonnull FluidStack stack)
-    {
+    public boolean isFluidValid(int tank, @Nonnull FluidStack stack) {
         return false;
     }
 
     @Override
-    public int fill(FluidStack resource, FluidAction action)
-    {
+    public int fill(FluidStack resource, FluidAction action) {
         return 0;
     }
 
     @Nonnull
     @Override
-    public FluidStack drain(FluidStack resource, FluidAction action)
-    {
-        if(resource.isEmpty() || !resource.isFluidEqual(resource))
-        {
+    public FluidStack drain(FluidStack resource, FluidAction action) {
+        if(resource.isEmpty() || !resource.isFluidEqual(resource)) {
             return FluidStack.EMPTY;
         }
         return drain(resource.getAmount(), action);
@@ -85,8 +73,7 @@ public class InfiniteTank implements IFluidHandler, IFluidTank
 
     @Nonnull
     @Override
-    public FluidStack drain(int maxDrain, FluidAction action)
-    {
+    public FluidStack drain(int maxDrain, FluidAction action) {
         return new FluidStack(fluid, maxDrain);
     }
 }

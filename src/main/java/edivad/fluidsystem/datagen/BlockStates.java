@@ -9,16 +9,14 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 
 import java.util.List;
 
-public class BlockStates extends CustomBlockStateProvider
-{
-    public BlockStates(DataGenerator gen, ExistingFileHelper exFileHelper)
-    {
+public class BlockStates extends CustomBlockStateProvider {
+
+    public BlockStates(DataGenerator gen, ExistingFileHelper exFileHelper) {
         super(gen, Main.MODID, exFileHelper);
     }
 
     @Override
-    protected void registerStatesAndModels()
-    {
+    protected void registerStatesAndModels() {
         //Tank
         ModelFile tankBlock = models().cubeAll("structural_tank_block", modLoc("blocks/tank/structural_tank_block"));
         ModelFile tankBlockController = models().cubeBottomTop("controller_tank_block", modLoc("blocks/tank/controller_tank_block"), modLoc("blocks/tank/structural_tank_block"), modLoc("blocks/tank/structural_tank_block"));
