@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "fluidsystem:pipe"
+            "items": [
+              "fluidsystem:pipe"
+            ]
           }
         ]
       }
