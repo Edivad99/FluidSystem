@@ -1,6 +1,6 @@
 package edivad.fluidsystem.blocks.tank;
 
-import edivad.fluidsystem.tile.tank.TileEntityStructuralTankBlock;
+import edivad.fluidsystem.blockentity.tank.StructuralTankBlockEntity;
 import edivad.fluidsystem.tools.Translations;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -22,13 +22,13 @@ public class StructuralTankBlock extends BaseBlock implements EntityBlock {
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new TileEntityStructuralTankBlock(blockPos, blockState);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new StructuralTankBlockEntity(pos, state);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flagIn) {
         tooltip.add(new TranslatableComponent(Translations.TANK_BLOCK_TOOLTIP).withStyle(ChatFormatting.GRAY));
     }
 }

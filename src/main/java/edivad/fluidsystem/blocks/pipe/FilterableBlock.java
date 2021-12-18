@@ -1,7 +1,7 @@
 package edivad.fluidsystem.blocks.pipe;
 
-import edivad.fluidsystem.blocks.BlockRotable;
-import edivad.fluidsystem.tile.pipe.TileEntityBlockFilterablePipe;
+import edivad.fluidsystem.blockentity.pipe.FilterablePipeBlockEntity;
+import edivad.fluidsystem.blocks.RotableBlock;
 import edivad.fluidsystem.tools.Translations;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -17,21 +17,21 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class BlockFilterable extends BlockRotable {
+public class FilterableBlock extends RotableBlock {
 
-    public BlockFilterable(Properties properties) {
+    public FilterableBlock(Properties properties) {
         super(properties);
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        if(worldIn.isClientSide)
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+        if(level.isClientSide)
             return InteractionResult.SUCCESS;
 
         ItemStack itemOnHand = player.getItemInHand(handIn);
         if(!itemOnHand.isEmpty() && itemOnHand.getItem() instanceof BucketItem bucket) {
-            BlockEntity tile = worldIn.getBlockEntity(pos);
-            if(tile instanceof TileEntityBlockFilterablePipe tilePipeFilterable) {
+            BlockEntity blockentity = level.getBlockEntity(pos);
+            if(blockentity instanceof FilterablePipeBlockEntity tilePipeFilterable) {
                 if(bucket.getFluid().isSame(Fluids.EMPTY)) {
                     if(!tilePipeFilterable.getFluidFilter().isSame(Fluids.EMPTY))
                         player.displayClientMessage(new TranslatableComponent(Translations.FLUID_FILTERED_REMOVE), false);

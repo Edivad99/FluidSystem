@@ -1,7 +1,7 @@
 package edivad.fluidsystem.datagen;
 
 import edivad.fluidsystem.Main;
-import edivad.fluidsystem.blocks.pipe.BlockPipe;
+import edivad.fluidsystem.blocks.pipe.PipeBlock;
 import edivad.fluidsystem.setup.Registration;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.level.block.Block;
@@ -43,7 +43,7 @@ public class Items extends ItemModelProvider {
         getBuilder(name).parent(new ModelFile.UncheckedModelFile(modLoc("block/" + name + (state ? "_on" : "_off"))));
     }
 
-    private void parentedPipe(BlockPipe pipe) {
+    private void parentedPipe(PipeBlock pipe) {
         String name = pipe.getRegistryName().getPath();
         getBuilder(name).parent(new ModelFile.UncheckedModelFile(modLoc("block/" + name + "_center")));
     }

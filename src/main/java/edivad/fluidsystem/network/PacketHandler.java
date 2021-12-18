@@ -1,12 +1,12 @@
 package edivad.fluidsystem.network;
 
 import edivad.fluidsystem.Main;
-import edivad.fluidsystem.network.packet.UpdateBlockFilterablePipe;
-import edivad.fluidsystem.network.packet.UpdateTankBlockController;
+import edivad.fluidsystem.network.packet.UpdateControllerTankBlock;
+import edivad.fluidsystem.network.packet.UpdateFilterablePipeBlock;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fmllegacy.network.NetworkDirection;
-import net.minecraftforge.fmllegacy.network.NetworkRegistry;
-import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
+import net.minecraftforge.network.NetworkDirection;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.simple.SimpleChannel;
 
 import java.util.Optional;
 
@@ -17,8 +17,8 @@ public class PacketHandler {
 
     public static void init() {
         int id = 0;
-        INSTANCE.registerMessage(id++, UpdateTankBlockController.class, UpdateTankBlockController::toBytes, UpdateTankBlockController::new, UpdateTankBlockController::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
-        INSTANCE.registerMessage(id++, UpdateBlockFilterablePipe.class, UpdateBlockFilterablePipe::toBytes, UpdateBlockFilterablePipe::new, UpdateBlockFilterablePipe::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        INSTANCE.registerMessage(id++, UpdateControllerTankBlock.class, UpdateControllerTankBlock::toBytes, UpdateControllerTankBlock::new, UpdateControllerTankBlock::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        INSTANCE.registerMessage(id++, UpdateFilterablePipeBlock.class, UpdateFilterablePipeBlock::toBytes, UpdateFilterablePipeBlock::new, UpdateFilterablePipeBlock::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
     }
 
 }

@@ -1,7 +1,7 @@
 package edivad.fluidsystem.setup;
 
 import edivad.fluidsystem.Main;
-import edivad.fluidsystem.client.render.RenderTileBlockFilterablePipe;
+import edivad.fluidsystem.client.render.RenderFilterablePipeBlockEntity;
 import edivad.fluidsystem.client.screen.ScreenModularTank;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.api.distmarker.Dist;
@@ -20,14 +20,11 @@ public class ClientSetup {
 
         //Special render & GUI
         MenuScreens.register(Registration.CONTROLLER_TANK_BLOCK_CONTAINER.get(), ScreenModularTank::new);
-
-        //ClientRegistry.bindTileEntityRenderer(Registration.OUTPUT_PIPE_TILE.get(), RenderTileBlockFilterablePipe::new);
-        //ClientRegistry.bindTileEntityRenderer(Registration.INPUT_PIPE_TILE.get(), RenderTileBlockFilterablePipe::new);
     }
 
     @SubscribeEvent
     public static void registerRenders(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(Registration.OUTPUT_PIPE_TILE.get(), RenderTileBlockFilterablePipe::new);
-        event.registerBlockEntityRenderer(Registration.INPUT_PIPE_TILE.get(), RenderTileBlockFilterablePipe::new);
+        event.registerBlockEntityRenderer(Registration.OUTPUT_PIPE_TILE.get(), RenderFilterablePipeBlockEntity::new);
+        event.registerBlockEntityRenderer(Registration.INPUT_PIPE_TILE.get(), RenderFilterablePipeBlockEntity::new);
     }
 }

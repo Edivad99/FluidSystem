@@ -1,7 +1,7 @@
 package edivad.fluidsystem.datagen.util;
 
-import edivad.fluidsystem.blocks.pipe.BlockPipe;
-import edivad.fluidsystem.blocks.pipe.BlockPipe.Straight;
+import edivad.fluidsystem.blocks.pipe.PipeBlock;
+import edivad.fluidsystem.blocks.pipe.PipeBlock.Straight;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -66,7 +66,7 @@ public abstract class CustomBlockStateProvider extends BlockStateProvider {
         return model;
     }
 
-    protected void pipeBuilder(BlockPipe pipe) {
+    protected void pipeBuilder(PipeBlock pipe) {
 
         ModelFile pipeStraight = pipeStraight("pipe_straight", modLoc("blocks/pipe"));
         ModelFile pipeCenter = pipeCenter("pipe_center", modLoc("blocks/pipe"));
@@ -80,27 +80,27 @@ public abstract class CustomBlockStateProvider extends BlockStateProvider {
         MultiPartBlockStateBuilder bld = getMultipartBuilder(pipe);
 
         //PipeCenter
-        bld.part().modelFile(pipeCenter).addModel().condition(BlockPipe.DOWN, false).condition(BlockPipe.EAST, false).condition(BlockPipe.NORTH, false).condition(BlockPipe.SOUTH, false).condition(BlockPipe.UP, false).condition(BlockPipe.WEST, false).condition(BlockPipe.STRAIGHT, Straight.NONE);
+        bld.part().modelFile(pipeCenter).addModel().condition(PipeBlock.DOWN, false).condition(PipeBlock.EAST, false).condition(PipeBlock.NORTH, false).condition(PipeBlock.SOUTH, false).condition(PipeBlock.UP, false).condition(PipeBlock.WEST, false).condition(PipeBlock.STRAIGHT, Straight.NONE);
 
         //straight y
-        bld.part().modelFile(pipeStraight).rotationX(90).addModel().condition(BlockPipe.DOWN, false).condition(BlockPipe.EAST, false).condition(BlockPipe.NORTH, true).condition(BlockPipe.SOUTH, true).condition(BlockPipe.UP, false).condition(BlockPipe.WEST, false).condition(BlockPipe.STRAIGHT, Straight.Y);
+        bld.part().modelFile(pipeStraight).rotationX(90).addModel().condition(PipeBlock.DOWN, false).condition(PipeBlock.EAST, false).condition(PipeBlock.NORTH, true).condition(PipeBlock.SOUTH, true).condition(PipeBlock.UP, false).condition(PipeBlock.WEST, false).condition(PipeBlock.STRAIGHT, Straight.Y);
         //straight x
-        bld.part().modelFile(pipeStraight).rotationX(90).rotationY(90).addModel().condition(BlockPipe.DOWN, false).condition(BlockPipe.EAST, true).condition(BlockPipe.NORTH, false).condition(BlockPipe.SOUTH, false).condition(BlockPipe.UP, false).condition(BlockPipe.WEST, true).condition(BlockPipe.STRAIGHT, Straight.X);
+        bld.part().modelFile(pipeStraight).rotationX(90).rotationY(90).addModel().condition(PipeBlock.DOWN, false).condition(PipeBlock.EAST, true).condition(PipeBlock.NORTH, false).condition(PipeBlock.SOUTH, false).condition(PipeBlock.UP, false).condition(PipeBlock.WEST, true).condition(PipeBlock.STRAIGHT, Straight.X);
         //straight z
-        bld.part().modelFile(pipeStraight).addModel().condition(BlockPipe.DOWN, true).condition(BlockPipe.EAST, false).condition(BlockPipe.NORTH, false).condition(BlockPipe.SOUTH, false).condition(BlockPipe.UP, true).condition(BlockPipe.WEST, false).condition(BlockPipe.STRAIGHT, Straight.Z);
+        bld.part().modelFile(pipeStraight).addModel().condition(PipeBlock.DOWN, true).condition(PipeBlock.EAST, false).condition(PipeBlock.NORTH, false).condition(PipeBlock.SOUTH, false).condition(PipeBlock.UP, true).condition(PipeBlock.WEST, false).condition(PipeBlock.STRAIGHT, Straight.Z);
 
         //PipeUp
-        bld.part().modelFile(pipeUp).addModel().condition(BlockPipe.UP, true).condition(BlockPipe.STRAIGHT, Straight.NONE);
+        bld.part().modelFile(pipeUp).addModel().condition(PipeBlock.UP, true).condition(PipeBlock.STRAIGHT, Straight.NONE);
         //PipeDown
-        bld.part().modelFile(pipeDown).addModel().condition(BlockPipe.DOWN, true).condition(BlockPipe.STRAIGHT, Straight.NONE);
+        bld.part().modelFile(pipeDown).addModel().condition(PipeBlock.DOWN, true).condition(PipeBlock.STRAIGHT, Straight.NONE);
         //PipeEast
-        bld.part().modelFile(pipeEast).rotationX(90).addModel().condition(BlockPipe.EAST, true).condition(BlockPipe.STRAIGHT, Straight.NONE);
+        bld.part().modelFile(pipeEast).rotationX(90).addModel().condition(PipeBlock.EAST, true).condition(PipeBlock.STRAIGHT, Straight.NONE);
         //PipeNorth
-        bld.part().modelFile(pipeNorth).addModel().condition(BlockPipe.NORTH, true).condition(BlockPipe.STRAIGHT, Straight.NONE);
+        bld.part().modelFile(pipeNorth).addModel().condition(PipeBlock.NORTH, true).condition(PipeBlock.STRAIGHT, Straight.NONE);
         //PipeSouth
-        bld.part().modelFile(pipeSouth).addModel().condition(BlockPipe.SOUTH, true).condition(BlockPipe.STRAIGHT, Straight.NONE);
+        bld.part().modelFile(pipeSouth).addModel().condition(PipeBlock.SOUTH, true).condition(PipeBlock.STRAIGHT, Straight.NONE);
         //PipeWest
-        bld.part().modelFile(pipeWest).rotationX(90).addModel().condition(BlockPipe.WEST, true).condition(BlockPipe.STRAIGHT, Straight.NONE);
+        bld.part().modelFile(pipeWest).rotationX(90).addModel().condition(PipeBlock.WEST, true).condition(PipeBlock.STRAIGHT, Straight.NONE);
     }
 
     protected VariantBlockStateBuilder orientedBlockPowered(Block block, ModelFile modelOff, ModelFile modelOn) {

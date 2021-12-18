@@ -1,7 +1,7 @@
 package edivad.fluidsystem.container;
 
+import edivad.fluidsystem.blockentity.tank.ControllerTankBlockEntity;
 import edivad.fluidsystem.setup.Registration;
-import edivad.fluidsystem.tile.tank.TileEntityControllerTankBlock;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -14,11 +14,11 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerTankBlockController extends AbstractContainerMenu {
 
-    public TileEntityControllerTankBlock tile;
+    public ControllerTankBlockEntity blockentity;
 
-    public ContainerTankBlockController(int id, Inventory playerInventory, TileEntityControllerTankBlock tile) {
+    public ContainerTankBlockController(int id, Inventory playerInventory, ControllerTankBlockEntity blockentity) {
         super(Registration.CONTROLLER_TANK_BLOCK_CONTAINER.get(), id);
-        this.tile = tile;
+        this.blockentity = blockentity;
         addCustomSlots();
         addPlayerSlots(playerInventory);
     }
@@ -34,8 +34,8 @@ public class ContainerTankBlockController extends AbstractContainerMenu {
     }
 
     private void addCustomSlots() {
-        if(tile != null) {
-            tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+        if(blockentity != null) {
+            blockentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
                 this.addSlot(new SlotItemHandler(h, 0, 92, 22));
                 this.addSlot(new SlotItemHandler(h, 1, 139, 22));
             });
@@ -43,8 +43,8 @@ public class ContainerTankBlockController extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(Player playerIn) {
-        return stillValid(ContainerLevelAccess.create(tile.getLevel(), tile.getBlockPos()), playerIn, tile.getBlockState().getBlock());
+    public boolean stillValid(Player player) {
+        return stillValid(ContainerLevelAccess.create(blockentity.getLevel(), blockentity.getBlockPos()), player, blockentity.getBlockState().getBlock());
     }
 
     @Override

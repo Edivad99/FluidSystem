@@ -1,6 +1,6 @@
 package edivad.fluidsystem.compat.waila;
 
-import edivad.fluidsystem.tile.pipe.TileEntityBlockFilterablePipe;
+import edivad.fluidsystem.blockentity.pipe.FilterablePipeBlockEntity;
 import mcp.mobius.waila.api.IServerDataProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -12,8 +12,8 @@ import net.minecraft.world.level.material.Fluids;
 public class BlockFilterablePipeDataProvider implements IServerDataProvider<BlockEntity> {
 
     @Override
-    public void appendServerData(CompoundTag data, ServerPlayer player, Level world, BlockEntity tileEntity, boolean showDetails) {
-        if(tileEntity instanceof TileEntityBlockFilterablePipe output) {
+    public void appendServerData(CompoundTag data, ServerPlayer player, Level level, BlockEntity tileEntity, boolean showDetails) {
+        if(tileEntity instanceof FilterablePipeBlockEntity output) {
             Fluid fluid = output.getFluidFilter();
             if(!fluid.isSame(Fluids.EMPTY)) {
                 data.putBoolean("isFluidPresent", true);

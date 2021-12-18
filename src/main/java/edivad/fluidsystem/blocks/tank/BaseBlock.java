@@ -1,6 +1,6 @@
 package edivad.fluidsystem.blocks.tank;
 
-import edivad.fluidsystem.tile.tank.TileEntityBaseTankBlock;
+import edivad.fluidsystem.blockentity.tank.BaseTankBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -19,14 +19,14 @@ public class BaseBlock extends Block {
     }
 
     @Override
-    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-        super.setPlacedBy(worldIn, pos, state, placer, stack);
-        if(!worldIn.isClientSide) {
-            BlockEntity tile = worldIn.getBlockEntity(pos);
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        if(!level.isClientSide) {
+            BlockEntity blockentity = level.getBlockEntity(pos);
 
-            if(tile instanceof TileEntityBaseTankBlock tankBlock) {
+            if(blockentity instanceof BaseTankBlockEntity tankBlock) {
                 if(placer instanceof Player player) {
-                    tankBlock.onBlockPlacedBy(player, worldIn, pos);
+                    tankBlock.onBlockPlacedBy(player, level, pos);
                 }
             }
         }

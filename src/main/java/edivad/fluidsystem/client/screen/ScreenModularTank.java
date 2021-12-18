@@ -4,8 +4,8 @@ import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import edivad.fluidsystem.Main;
+import edivad.fluidsystem.blockentity.tank.ControllerTankBlockEntity;
 import edivad.fluidsystem.container.ContainerTankBlockController;
-import edivad.fluidsystem.tile.tank.TileEntityControllerTankBlock;
 import edivad.fluidsystem.tools.Translations;
 import edivad.fluidsystem.tools.utils.FluidUtils;
 import net.minecraft.ChatFormatting;
@@ -26,13 +26,13 @@ import java.util.List;
 public class ScreenModularTank extends AbstractContainerScreen<ContainerTankBlockController> {
 
     private static final ResourceLocation TEXTURES = new ResourceLocation(Main.MODID, "textures/gui/controller_tank_block.png");
-    private final TileEntityControllerTankBlock tile;
+    private final ControllerTankBlockEntity blockentity;
 
-    public ScreenModularTank(ContainerTankBlockController screenContainer, Inventory inv, Component titleIn) {
-        super(screenContainer, inv, titleIn);
+    public ScreenModularTank(ContainerTankBlockController screenContainer, Inventory inv, Component title) {
+        super(screenContainer, inv, title);
         this.imageWidth = 176;
         this.imageHeight = 187;
-        this.tile = screenContainer.tile;
+        this.blockentity = screenContainer.blockentity;
     }
 
     @Override
@@ -43,40 +43,40 @@ public class ScreenModularTank extends AbstractContainerScreen<ContainerTankBloc
         blit(poseStack, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
 
         //Render fluid
-        FluidStack fluid = tile.clientFluidStack;
-        int index = FluidUtils.getFluidScaled(43, fluid, tile.totalCapacity);
+        FluidStack fluid = blockentity.clientFluidStack;
+        int index = FluidUtils.getFluidScaled(43, fluid, blockentity.totalCapacity);
         TextureAtlasSprite fluidTexture = FluidUtils.getFluidTexture(fluid);
         RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
-        FluidUtils.color(FluidUtils.getLiquidColorWithBiome(fluid, tile));
+        FluidUtils.color(FluidUtils.getLiquidColorWithBiome(fluid, blockentity));
         blit(poseStack, this.leftPos + 8, this.topPos + 19 + index, 176, 52, 43 - index, fluidTexture);
     }
 
     @Override
-    protected void renderLabels(PoseStack mStack, int mouseX, int mouseY) {
-        this.font.draw(mStack, this.title, this.titleLabelX, this.titleLabelY, 4210752);
-        this.font.draw(mStack, new TranslatableComponent(Translations.TANKS_BLOCK).append(String.valueOf(tile.tanksBlock)), this.titleLabelX, this.titleLabelY + 60, 4210752);
+    protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
+        this.font.draw(poseStack, this.title, this.titleLabelX, this.titleLabelY, 4210752);
+        this.font.draw(poseStack, new TranslatableComponent(Translations.TANKS_BLOCK).append(String.valueOf(blockentity.tanksBlock)), this.titleLabelX, this.titleLabelY + 60, 4210752);
         //Render indicator
         RenderSystem.setShaderTexture(0, TEXTURES);
-        blit(mStack, 8, 19, 176, 0, 52, 228);
+        blit(poseStack, 8, 19, 176, 0, 52, 228);
     }
 
     @Override
-    public void render(PoseStack mStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(mStack);
-        super.render(mStack, mouseX, mouseY, partialTicks);
-        this.renderTooltip(mStack, mouseX, mouseY);
+    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(poseStack);
+        super.render(poseStack, mouseX, mouseY, partialTicks);
+        this.renderTooltip(poseStack, mouseX, mouseY);
         if(mouseX > this.leftPos + 6 && mouseX < this.leftPos + 61 && mouseY > this.topPos + 18 && mouseY < this.topPos + 63) {
             List<Component> tooltip = new ArrayList<>();
-            tooltip.add(tile.clientFluidStack.isEmpty() ? new TranslatableComponent(Translations.TANK_EMPTY) : tile.clientFluidStack.getDisplayName());
+            tooltip.add(blockentity.clientFluidStack.isEmpty() ? new TranslatableComponent(Translations.TANK_EMPTY) : blockentity.clientFluidStack.getDisplayName());
             DecimalFormat f = new DecimalFormat("#,##0");
-            tooltip.add(new TranslatableComponent(Translations.LIQUID_AMOUNT, f.format(tile.clientFluidStack.getAmount()), f.format(tile.totalCapacity)));
+            tooltip.add(new TranslatableComponent(Translations.LIQUID_AMOUNT, f.format(blockentity.clientFluidStack.getAmount()), f.format(blockentity.totalCapacity)));
             float percentage;
-            if(tile.totalCapacity == 0)
+            if(blockentity.totalCapacity == 0)
                 percentage = 0;
             else
-                percentage = tile.clientFluidStack.getAmount() * 100.0F / tile.totalCapacity;
+                percentage = blockentity.clientFluidStack.getAmount() * 100.0F / blockentity.totalCapacity;
             tooltip.add(new TranslatableComponent(Translations.LIQUID_PERCENTAGE, String.format("%.2f", percentage)).append("%").withStyle(percentage < 60 ? ChatFormatting.GREEN : percentage < 90 ? ChatFormatting.YELLOW : ChatFormatting.RED));
-            this.renderTooltip(mStack, Lists.transform(tooltip, Component::getVisualOrderText), mouseX, mouseY);
+            this.renderTooltip(poseStack, Lists.transform(tooltip, Component::getVisualOrderText), mouseX, mouseY);
         }
     }
 }

@@ -26,11 +26,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockPipeController extends Block implements IFluidSystemConnectableBlock {
+public class PipeControllerBlock extends Block implements IFluidSystemConnectableBlock {
 
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-    public BlockPipeController() {
+    public PipeControllerBlock() {
         super(Properties.of(Material.METAL).sound(SoundType.STONE).strength(5.0F));
         this.registerDefaultState(defaultBlockState().setValue(POWERED, false));
     }
@@ -43,18 +43,18 @@ public class BlockPipeController extends Block implements IFluidSystemConnectabl
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        Level world = context.getLevel();
+        Level level = context.getLevel();
         BlockPos blockpos = context.getClickedPos();
-        boolean isBlockPowered = world.hasNeighborSignal(blockpos);
+        boolean isBlockPowered = level.hasNeighborSignal(blockpos);
         return super.getStateForPlacement(context).setValue(POWERED, isBlockPowered);
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-        if(!worldIn.isClientSide) {
-            boolean isBlockPowered = worldIn.hasNeighborSignal(pos);
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+        if(!level.isClientSide) {
+            boolean isBlockPowered = level.hasNeighborSignal(pos);
             if(state.getValue(POWERED) != isBlockPowered) {
-                worldIn.setBlock(pos, state.setValue(POWERED, isBlockPowered), 2);
+                level.setBlock(pos, state.setValue(POWERED, isBlockPowered), 2);
             }
         }
     }
@@ -77,7 +77,7 @@ public class BlockPipeController extends Block implements IFluidSystemConnectabl
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flagIn) {
         tooltip.add(new TranslatableComponent(Translations.PIPE_CONTROLLER).withStyle(ChatFormatting.GRAY));
     }
 }

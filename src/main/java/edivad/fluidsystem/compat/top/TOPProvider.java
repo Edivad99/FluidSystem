@@ -1,9 +1,9 @@
 package edivad.fluidsystem.compat.top;
 
 import edivad.fluidsystem.Main;
-import edivad.fluidsystem.tile.pipe.TileEntityBlockFilterablePipe;
-import edivad.fluidsystem.tile.tank.TileEntityBaseTankBlock;
-import edivad.fluidsystem.tile.tank.TileEntityControllerTankBlock;
+import edivad.fluidsystem.blockentity.pipe.FilterablePipeBlockEntity;
+import edivad.fluidsystem.blockentity.tank.BaseTankBlockEntity;
+import edivad.fluidsystem.blockentity.tank.ControllerTankBlockEntity;
 import edivad.fluidsystem.tools.Config;
 import edivad.fluidsystem.tools.Translations;
 import mcjty.theoneprobe.api.IElement;
@@ -46,13 +46,13 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
     }
 
     @Override
-    public void addProbeInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level world, BlockState blockState, IProbeHitData data) {
-        BlockEntity te = world.getBlockEntity(data.getPos());
+    public void addProbeInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level level, BlockState state, IProbeHitData data) {
+        BlockEntity te = level.getBlockEntity(data.getPos());
 
-        if(te instanceof TileEntityBaseTankBlock tankBlock) {
-            TileEntityBaseTankBlock tankBase = tankBlock.getMaster();
+        if(te instanceof BaseTankBlockEntity tankBlock) {
+            BaseTankBlockEntity tankBase = tankBlock.getMaster();
             if(tankBase != null) {
-                TileEntityControllerTankBlock controller = (TileEntityControllerTankBlock) tankBase;
+                ControllerTankBlockEntity controller = (ControllerTankBlockEntity) tankBase;
 
                 probeInfo.horizontal().text(new TranslatableComponent(Translations.TANKS_BLOCK).append(String.format("%d/%d", controller.getNumberOfTanksBlock(), Config.NUMBER_OF_MODULES.get())));
                 controller.getFluidCap().ifPresent(h -> {
@@ -60,8 +60,8 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
                 });
             }
         }
-        else if(te instanceof TileEntityBlockFilterablePipe) {
-            TileEntityBlockFilterablePipe blockOutputPipe = (TileEntityBlockFilterablePipe) te;
+        else if(te instanceof FilterablePipeBlockEntity) {
+            FilterablePipeBlockEntity blockOutputPipe = (FilterablePipeBlockEntity) te;
             Fluid filter = blockOutputPipe.getFluidFilter();
             if(!filter.isSame(Fluids.EMPTY)) {
                 String fluidName = filter.getAttributes().getDisplayName(null).getString();

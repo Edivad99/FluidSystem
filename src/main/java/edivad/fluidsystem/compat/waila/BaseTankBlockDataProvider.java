@@ -1,7 +1,7 @@
 package edivad.fluidsystem.compat.waila;
 
-import edivad.fluidsystem.tile.tank.TileEntityBaseTankBlock;
-import edivad.fluidsystem.tile.tank.TileEntityControllerTankBlock;
+import edivad.fluidsystem.blockentity.tank.BaseTankBlockEntity;
+import edivad.fluidsystem.blockentity.tank.ControllerTankBlockEntity;
 import mcp.mobius.waila.api.IServerDataProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,12 +14,12 @@ import java.text.DecimalFormat;
 public class BaseTankBlockDataProvider implements IServerDataProvider<BlockEntity> {
 
     @Override
-    public void appendServerData(CompoundTag data, ServerPlayer player, Level world, BlockEntity tileEntity, boolean showDetails) {
-        if(tileEntity instanceof TileEntityBaseTankBlock tankBlock) {
-            TileEntityBaseTankBlock tankBase = tankBlock.getMaster();
+    public void appendServerData(CompoundTag data, ServerPlayer player, Level level, BlockEntity tileEntity, boolean showDetails) {
+        if(tileEntity instanceof BaseTankBlockEntity tankBlock) {
+            BaseTankBlockEntity tankBase = tankBlock.getMaster();
             if(tankBase != null) {
                 data.putBoolean("isControllerPresent", true);
-                TileEntityControllerTankBlock controller = (TileEntityControllerTankBlock) tankBase;
+                ControllerTankBlockEntity controller = (ControllerTankBlockEntity) tankBase;
                 int numberOfTanksBlock = controller.getNumberOfTanksBlock();
                 data.putInt("numberOfTanksBlock", numberOfTanksBlock);
 

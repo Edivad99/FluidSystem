@@ -15,7 +15,7 @@ import java.util.Stack;
 
 public class Routing {
 
-    public static List<IFluidSystemEject> getBlockEject(Level world, BlockPos startPos, BlockPos firstScan) {
+    public static List<IFluidSystemEject> getBlockEject(Level level, BlockPos startPos, BlockPos firstScan) {
         List<IFluidSystemEject> output = new ArrayList<>();
         List<BlockPos> blockVisited = new ArrayList<>();
         Stack<BlockPos> traversingStorages = new Stack<>();
@@ -24,13 +24,13 @@ public class Routing {
 
         while(!traversingStorages.isEmpty()) {
             BlockPos posScanBlock = traversingStorages.pop();
-            BlockState scanBlockState = world.getBlockState(posScanBlock);
+            BlockState scanBlockState = level.getBlockState(posScanBlock);
             Block scanBlock = scanBlockState.getBlock();
 
             if(scanBlock instanceof IFluidSystemConnectableBlock pipe) {
-                if(pipe.isEndPoint(world, posScanBlock)) {
-                    BlockEntity tileScanBlock = world.getBlockEntity(posScanBlock);
-                    if(tileScanBlock instanceof IFluidSystemEject fluidSystemEject && !output.contains(tileScanBlock) && !blockVisited.contains(posScanBlock)) {
+                if(pipe.isEndPoint(level, posScanBlock)) {
+                    BlockEntity ScanBlockEntity = level.getBlockEntity(posScanBlock);
+                    if(ScanBlockEntity instanceof IFluidSystemEject fluidSystemEject && !output.contains(ScanBlockEntity) && !blockVisited.contains(posScanBlock)) {
                         output.add(fluidSystemEject);
                         blockVisited.add(posScanBlock);
                     }
@@ -40,9 +40,9 @@ public class Routing {
                         for(Direction side : Direction.values()) {
                             BlockPos posNewBlock = posScanBlock.relative(side);
                             if(!traversingStorages.contains(posNewBlock) && !blockVisited.contains(posNewBlock)) {
-                                BlockState stateNewBlock = world.getBlockState(posNewBlock);
+                                BlockState stateNewBlock = level.getBlockState(posNewBlock);
                                 Block newBlock = stateNewBlock.getBlock();
-                                if(newBlock instanceof IFluidSystemConnectableBlock connectableBlock && connectableBlock.checkConnection(world, posNewBlock, side)) {
+                                if(newBlock instanceof IFluidSystemConnectableBlock connectableBlock && connectableBlock.checkConnection(level, posNewBlock, side)) {
                                     traversingStorages.add(posNewBlock);
                                 }
                             }

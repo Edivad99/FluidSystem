@@ -17,7 +17,8 @@ version = "${mod_version}"
 group = 'edivad.fluidsystem'
 archivesBaseName = "FluidSystem-${minecraft_version}"
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(16) // Mojang ships Java 16 to end users, so your mod should target Java 16.
+// Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
@@ -83,6 +84,10 @@ repositories {
         url 'https://maven.tterrag.com/'
     }
     maven {
+        name 'TOP'
+        url 'https://maven.k-4u.nl'
+    }
+    maven {
         name 'JEI'
         url 'https://dvs1.progwml6.com/files/maven'
     }
@@ -95,17 +100,16 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    //compileOnly fg.deobf("mcjty.theoneprobe:TheOneProbe-${top_version}:api")
-    //runtimeOnly fg.deobf("mcjty.theoneprobe:TheOneProbe-${top_version}")
+    implementation fg.deobf("mcjty.theoneprobe:theoneprobe:${top_version}") {
+        transitive = false
+    }
 
-    compileOnly fg.deobf('curse.maven:theoneprobe-245211:3418788')
-    runtimeOnly fg.deobf('curse.maven:theoneprobe-245211:3418788')
-
-    compileOnly fg.deobf("curse.maven:jade-api-324717:${jade_id}")
+    compileOnly fg.deobf("curse.maven:jade-api-324717:${jade_id_api}")
     runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_id}")
 
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
+
     //runtimeOnly fg.deobf("team.chisel.ctm:CTM:MC1.16.1-${ctm_version}")
-    //runtimeOnly fg.deobf("mezz.jei:jei-1.16.5:${jei_version}")
     //runtimeOnly fg.deobf("curse.maven:mekanism-268560:${mekanism_version}")
 }
 
@@ -117,7 +121,7 @@ jar {
             'Specification-Vendor': 'edivad',
             'Specification-Version': '1', // We are version 1 of ourselves
             'Implementation-Title': project.name,
-            'Implementation-Version': "${version}",
+            'Implementation-Version': project.jar.archiveVersion,
             'Implementation-Vendor' :'edivad',
             'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])

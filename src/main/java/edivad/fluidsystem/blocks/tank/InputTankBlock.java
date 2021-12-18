@@ -1,7 +1,7 @@
 package edivad.fluidsystem.blocks.tank;
 
 import edivad.fluidsystem.api.IFluidSystemConnectableBlock;
-import edivad.fluidsystem.tile.tank.TileEntityInputTankBlock;
+import edivad.fluidsystem.blockentity.tank.InputTankBlockEntity;
 import edivad.fluidsystem.tools.Translations;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -22,17 +22,17 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class InputTankBlock extends BaseBlockRotable implements IFluidSystemConnectableBlock, EntityBlock {
+public class InputTankBlock extends BaseRotableBlock implements IFluidSystemConnectableBlock, EntityBlock {
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new TileEntityInputTankBlock(blockPos, blockState);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new InputTankBlockEntity(pos, state);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flagIn) {
         tooltip.add(new TranslatableComponent(Translations.TANK_BLOCK_INPUT_TOOLTIP).withStyle(ChatFormatting.GRAY));
     }
 

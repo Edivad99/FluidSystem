@@ -1,8 +1,8 @@
 package edivad.fluidsystem.blocks.tank;
 
+import edivad.fluidsystem.blockentity.tank.BaseTankBlockEntity;
+import edivad.fluidsystem.blockentity.tank.ControllerTankBlockEntity;
 import edivad.fluidsystem.setup.Registration;
-import edivad.fluidsystem.tile.tank.TileEntityBaseTankBlock;
-import edivad.fluidsystem.tile.tank.TileEntityControllerTankBlock;
 import edivad.fluidsystem.tools.Translations;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -31,14 +31,14 @@ public class ControllerTankBlock extends BaseBlock implements EntityBlock {
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new TileEntityControllerTankBlock(blockPos, blockState);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new ControllerTankBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        BlockEntityTicker<TileEntityBaseTankBlock> serverTicker = TileEntityBaseTankBlock::serverTick;
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+        BlockEntityTicker<BaseTankBlockEntity> serverTicker = BaseTankBlockEntity::serverTick;
         if(Registration.CONTROLLER_TANK_BLOCK_TILE.get() == blockEntityType && !level.isClientSide) {
             return (BlockEntityTicker<T>) serverTicker;
         }
@@ -46,21 +46,21 @@ public class ControllerTankBlock extends BaseBlock implements EntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        if(worldIn.isClientSide)
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+        if(level.isClientSide)
             return InteractionResult.SUCCESS;
 
-        BlockEntity tile = worldIn.getBlockEntity(pos);
+        BlockEntity blockentity = level.getBlockEntity(pos);
 
-        if(tile instanceof TileEntityControllerTankBlock controllerTankBlock) {
-            return controllerTankBlock.activate(player, worldIn, pos, handIn);
+        if(blockentity instanceof ControllerTankBlockEntity controllerTankBlock) {
+            return controllerTankBlock.activate(player, level, pos, handIn);
         }
         return InteractionResult.FAIL;
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flagIn) {
         tooltip.add(new TranslatableComponent(Translations.TANK_BLOCK_CONTROLLER_TOOLTIP).withStyle(ChatFormatting.GRAY));
     }
 }

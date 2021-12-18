@@ -1,6 +1,6 @@
 package edivad.fluidsystem.compat.waila;
 
-import edivad.fluidsystem.tile.tank.TileEntityBaseTankBlock;
+import edivad.fluidsystem.blockentity.tank.BaseTankBlockEntity;
 import edivad.fluidsystem.tools.Config;
 import edivad.fluidsystem.tools.Translations;
 import mcp.mobius.waila.api.BlockAccessor;
@@ -15,7 +15,7 @@ public class BaseTankBlockComponentProvider implements IComponentProvider {
 
     @Override
     public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
-        if(accessor.getBlockEntity() instanceof TileEntityBaseTankBlock) {
+        if(accessor.getBlockEntity() instanceof BaseTankBlockEntity) {
             CompoundTag data = accessor.getServerData();
             if(data.getBoolean("isControllerPresent")) {
                 tooltip.add(new TranslatableComponent(Translations.TANKS_BLOCK).append(String.format("%d/%d", data.getInt("numberOfTanksBlock"), Config.NUMBER_OF_MODULES.get())));

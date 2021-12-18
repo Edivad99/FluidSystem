@@ -1,8 +1,8 @@
-package edivad.fluidsystem.tile.pipe;
+package edivad.fluidsystem.blockentity.pipe;
 
 import edivad.fluidsystem.api.IFluidSystemFilterable;
 import edivad.fluidsystem.network.PacketHandler;
-import edivad.fluidsystem.network.packet.UpdateBlockFilterablePipe;
+import edivad.fluidsystem.network.packet.UpdateFilterablePipeBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -13,20 +13,20 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor;
 
-public class TileEntityBlockFilterablePipe extends BlockEntity implements IFluidSystemFilterable {
+public class FilterablePipeBlockEntity extends BlockEntity implements IFluidSystemFilterable {
 
     private FluidStack fluidFilter = FluidStack.EMPTY;
 
-    public TileEntityBlockFilterablePipe(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
-        super(blockEntityType, blockPos, blockState);
+    public FilterablePipeBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state) {
+        super(blockEntityType, pos, state);
     }
 
     @Override
-    public CompoundTag save(CompoundTag tag) {
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
         fluidFilter.writeToNBT(tag);
-        return super.save(tag);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class TileEntityBlockFilterablePipe extends BlockEntity implements IFluid
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
         CompoundTag tag = new CompoundTag();
         fluidFilter.writeToNBT(tag);
-        return new ClientboundBlockEntityDataPacket(getBlockPos(), 1, tag);
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class TileEntityBlockFilterablePipe extends BlockEntity implements IFluid
             fluidFilter = new FluidStack(fluid, 1000);
         setChanged();
         if(!level.isClientSide)
-            PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpdateBlockFilterablePipe(getBlockPos(), fluidFilter));
+            PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpdateFilterablePipeBlock(getBlockPos(), fluidFilter));
     }
 
     @Override
