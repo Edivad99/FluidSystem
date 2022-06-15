@@ -16,7 +16,7 @@ public class ClientSetup {
 
     public static void init(FMLClientSetupEvent event) {
         //Version checker
-        MinecraftForge.EVENT_BUS.register(EventHandler.INSTANCE);
+        MinecraftForge.EVENT_BUS.register(new EventHandler());
 
         //Special render & GUI
         MenuScreens.register(Registration.CONTROLLER_TANK_BLOCK_CONTAINER.get(), ScreenModularTank::new);
