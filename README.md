@@ -1,5 +1,5 @@
 # FluidSystem
-![FluidSystem CI](https://github.com/Edivad99/FluidSystem/workflows/FluidSystem%20CI/badge.svg?branch=1.18.x)
+![FluidSystem CI](https://github.com/Edivad99/FluidSystem/workflows/FluidSystem%20CI/badge.svg?branch=1.19.x)
 [![CurseForge](http://cf.way2muchnoise.eu/full_398349_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/fluidsystem)
 ## Table of Contents
 
