@@ -5,7 +5,7 @@ import edivad.fluidsystem.blocks.RotableBlock;
 import edivad.fluidsystem.tools.Translations;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.fluids.FluidType;
 
 public class FilterableBlock extends RotableBlock {
 
@@ -34,11 +35,12 @@ public class FilterableBlock extends RotableBlock {
             if(blockentity instanceof FilterablePipeBlockEntity tilePipeFilterable) {
                 if(bucket.getFluid().isSame(Fluids.EMPTY)) {
                     if(!tilePipeFilterable.getFluidFilter().isSame(Fluids.EMPTY))
-                        player.displayClientMessage(new TranslatableComponent(Translations.FLUID_FILTERED_REMOVE), false);
+                        player.displayClientMessage(Component.translatable(Translations.FLUID_FILTERED_REMOVE), false);
                 }
                 else {
-                    String fluidName = bucket.getFluid().getAttributes().getDisplayName(null).getString();
-                    player.displayClientMessage(new TranslatableComponent(Translations.FLUID_FILTERED_SET, fluidName).withStyle(ChatFormatting.GREEN), false);
+                    FluidType fluidType = bucket.getFluid().getFluidType();
+                    String fluidName = Component.translatable(fluidType.getDescriptionId()).getString();
+                    player.displayClientMessage(Component.translatable(Translations.FLUID_FILTERED_SET, fluidName).withStyle(ChatFormatting.GREEN), false);
                 }
                 tilePipeFilterable.setFilteredFluid(bucket.getFluid());
                 return InteractionResult.SUCCESS;

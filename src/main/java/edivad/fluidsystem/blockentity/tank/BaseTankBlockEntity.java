@@ -5,7 +5,8 @@ import edivad.fluidsystem.tools.Translations;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -139,15 +140,15 @@ public abstract class BaseTankBlockEntity extends BlockEntity {
     protected enum Status {
         FORMED, CONTROLLER_MISSING, EXTRA_CONTROLLER, TOO_BIG, MISSING_SPACE;
 
-        public TranslatableComponent getStatusText() {
-            return switch(this) {
-                case FORMED -> new TranslatableComponent(Translations.TANK_FORMED);
-                case CONTROLLER_MISSING -> new TranslatableComponent(Translations.TANK_CONTROLLER_MISSING);
-                case EXTRA_CONTROLLER -> new TranslatableComponent(Translations.TANK_EXTRA_CONTROLLER);
-                case TOO_BIG -> new TranslatableComponent(Translations.TANK_TOO_BIG);
-                case MISSING_SPACE -> new TranslatableComponent(Translations.TANK_MISSING_SPACE);
-                default -> null;
+        public MutableComponent getStatusText() {
+            String translatableKey = switch(this) {
+                case FORMED -> Translations.TANK_FORMED;
+                case CONTROLLER_MISSING -> Translations.TANK_CONTROLLER_MISSING;
+                case EXTRA_CONTROLLER -> Translations.TANK_EXTRA_CONTROLLER;
+                case TOO_BIG -> Translations.TANK_TOO_BIG;
+                case MISSING_SPACE -> Translations.TANK_MISSING_SPACE;
             };
+            return Component.translatable(translatableKey);
         }
     }
 }

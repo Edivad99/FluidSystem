@@ -8,6 +8,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class Items extends ItemModelProvider {
 
@@ -34,17 +35,17 @@ public class Items extends ItemModelProvider {
     }
 
     private void parentedBlock(Block block) {
-        String name = block.getRegistryName().getPath();
+        String name = ForgeRegistries.BLOCKS.getKey(block).getPath();
         getBuilder(name).parent(new ModelFile.UncheckedModelFile(modLoc("block/" + name)));
     }
 
     private void parentedBlockActivable(Block block, boolean state) {
-        String name = block.getRegistryName().getPath();
+        String name = ForgeRegistries.BLOCKS.getKey(block).getPath();
         getBuilder(name).parent(new ModelFile.UncheckedModelFile(modLoc("block/" + name + (state ? "_on" : "_off"))));
     }
 
     private void parentedPipe(PipeBlock pipe) {
-        String name = pipe.getRegistryName().getPath();
+        String name = ForgeRegistries.BLOCKS.getKey(pipe).getPath();
         getBuilder(name).parent(new ModelFile.UncheckedModelFile(modLoc("block/" + name + "_center")));
     }
 }

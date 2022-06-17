@@ -14,7 +14,7 @@ import mcjty.theoneprobe.api.IProbeInfoProvider;
 import mcjty.theoneprobe.api.ITheOneProbe;
 import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -54,18 +54,17 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
             if(tankBase != null) {
                 ControllerTankBlockEntity controller = (ControllerTankBlockEntity) tankBase;
 
-                probeInfo.horizontal().text(new TranslatableComponent(Translations.TANKS_BLOCK).append(String.format("%d/%d", controller.getNumberOfTanksBlock(), Config.NUMBER_OF_MODULES.get())));
+                probeInfo.horizontal().text(Component.translatable(Translations.TANKS_BLOCK).append(String.format("%d/%d", controller.getNumberOfTanksBlock(), Config.NUMBER_OF_MODULES.get())));
                 controller.getFluidCap().ifPresent(h -> {
                     probeInfo.element(new FluidElement(h.getFluidInTank(0), controller.getTotalCapacity(), controller));
                 });
             }
         }
-        else if(te instanceof FilterablePipeBlockEntity) {
-            FilterablePipeBlockEntity blockOutputPipe = (FilterablePipeBlockEntity) te;
+        else if(te instanceof FilterablePipeBlockEntity blockOutputPipe) {
             Fluid filter = blockOutputPipe.getFluidFilter();
             if(!filter.isSame(Fluids.EMPTY)) {
-                String fluidName = filter.getAttributes().getDisplayName(null).getString();
-                probeInfo.horizontal().text(new TranslatableComponent(Translations.FLUID_FILTERED, fluidName));
+                String fluidName = Component.translatable(filter.getFluidType().getDescriptionId()).getString();
+                probeInfo.horizontal().text(Component.translatable(Translations.FLUID_FILTERED, fluidName));
             }
         }
     }

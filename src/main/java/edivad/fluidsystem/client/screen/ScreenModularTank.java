@@ -13,7 +13,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -27,6 +27,8 @@ public class ScreenModularTank extends AbstractContainerScreen<ContainerTankBloc
 
     private static final ResourceLocation TEXTURES = new ResourceLocation(Main.MODID, "textures/gui/controller_tank_block.png");
     private final ControllerTankBlockEntity blockentity;
+
+    private static final MutableComponent TANK_EMPTY = Component.translatable(Translations.TANK_EMPTY);
 
     public ScreenModularTank(ContainerTankBlockController screenContainer, Inventory inv, Component title) {
         super(screenContainer, inv, title);
@@ -54,7 +56,7 @@ public class ScreenModularTank extends AbstractContainerScreen<ContainerTankBloc
     @Override
     protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
         this.font.draw(poseStack, this.title, this.titleLabelX, this.titleLabelY, 4210752);
-        this.font.draw(poseStack, new TranslatableComponent(Translations.TANKS_BLOCK).append(String.valueOf(blockentity.tanksBlock)), this.titleLabelX, this.titleLabelY + 60, 4210752);
+        this.font.draw(poseStack, Component.translatable(Translations.TANKS_BLOCK).append(String.valueOf(blockentity.tanksBlock)), this.titleLabelX, this.titleLabelY + 60, 4210752);
         //Render indicator
         RenderSystem.setShaderTexture(0, TEXTURES);
         blit(poseStack, 8, 19, 176, 0, 52, 228);
@@ -67,15 +69,15 @@ public class ScreenModularTank extends AbstractContainerScreen<ContainerTankBloc
         this.renderTooltip(poseStack, mouseX, mouseY);
         if(mouseX > this.leftPos + 6 && mouseX < this.leftPos + 61 && mouseY > this.topPos + 18 && mouseY < this.topPos + 63) {
             List<Component> tooltip = new ArrayList<>();
-            tooltip.add(blockentity.clientFluidStack.isEmpty() ? new TranslatableComponent(Translations.TANK_EMPTY) : blockentity.clientFluidStack.getDisplayName());
+            tooltip.add(blockentity.clientFluidStack.isEmpty() ? TANK_EMPTY : blockentity.clientFluidStack.getDisplayName());
             DecimalFormat f = new DecimalFormat("#,##0");
-            tooltip.add(new TranslatableComponent(Translations.LIQUID_AMOUNT, f.format(blockentity.clientFluidStack.getAmount()), f.format(blockentity.totalCapacity)));
-            float percentage;
-            if(blockentity.totalCapacity == 0)
-                percentage = 0;
-            else
+            tooltip.add(Component.translatable(Translations.LIQUID_AMOUNT, f.format(blockentity.clientFluidStack.getAmount()), f.format(blockentity.totalCapacity)));
+            float percentage = 0;
+            if(blockentity.totalCapacity > 0)
                 percentage = blockentity.clientFluidStack.getAmount() * 100.0F / blockentity.totalCapacity;
-            tooltip.add(new TranslatableComponent(Translations.LIQUID_PERCENTAGE, String.format("%.2f", percentage)).append("%").withStyle(percentage < 60 ? ChatFormatting.GREEN : percentage < 90 ? ChatFormatting.YELLOW : ChatFormatting.RED));
+
+            ChatFormatting textColor = percentage < 60 ? ChatFormatting.GREEN : percentage < 90 ? ChatFormatting.YELLOW : ChatFormatting.RED;
+            tooltip.add(Component.translatable(Translations.LIQUID_PERCENTAGE, String.format("%.2f", percentage)).append("%").withStyle(textColor));
             this.renderTooltip(poseStack, Lists.transform(tooltip, Component::getVisualOrderText), mouseX, mouseY);
         }
     }

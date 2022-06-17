@@ -7,22 +7,28 @@ import edivad.fluidsystem.blockentity.tank.InputTankBlockEntity;
 import edivad.fluidsystem.blocks.pipe.FilterableBlock;
 import edivad.fluidsystem.blocks.tank.BaseBlock;
 import edivad.fluidsystem.blocks.tank.InputTankBlock;
-import mcp.mobius.waila.api.IRegistrar;
-import mcp.mobius.waila.api.IWailaPlugin;
-import mcp.mobius.waila.api.TooltipPosition;
-import mcp.mobius.waila.api.WailaPlugin;
+import snownee.jade.api.IWailaClientRegistration;
+import snownee.jade.api.IWailaCommonRegistration;
+import snownee.jade.api.IWailaPlugin;
+import snownee.jade.api.WailaPlugin;
 
 @WailaPlugin(Main.MODID)
 public class WailaCompatibility implements IWailaPlugin {
 
-    @Override
-    public void register(IRegistrar registrar) {
-        registrar.registerBlockDataProvider(new BlockFilterablePipeDataProvider(), FilterablePipeBlockEntity.class);
-        registrar.registerComponentProvider(new BlockFilterablePipeComponentProvider(), TooltipPosition.BODY, FilterableBlock.class);
+    private static final FilterablePipeBlockComponentProvider FILTERABLE_PIPE_COMPONENT_PROVIDER = new FilterablePipeBlockComponentProvider();
+    private static final BaseTankBlockComponentProvider BASE_TANK_BLOCK_COMPONENT_PROVIDER = new BaseTankBlockComponentProvider();
 
-        registrar.registerBlockDataProvider(new BaseTankBlockDataProvider(), BaseTankBlockEntity.class);
-        registrar.registerComponentProvider(new BaseTankBlockComponentProvider(), TooltipPosition.BODY, BaseBlock.class);
-        registrar.registerBlockDataProvider(new BaseTankBlockDataProvider(), InputTankBlockEntity.class);
-        registrar.registerComponentProvider(new BaseTankBlockComponentProvider(), TooltipPosition.BODY, InputTankBlock.class);
+    @Override
+    public void register(IWailaCommonRegistration registration) {
+        registration.registerBlockDataProvider(FILTERABLE_PIPE_COMPONENT_PROVIDER, FilterablePipeBlockEntity.class);
+        registration.registerBlockDataProvider(BASE_TANK_BLOCK_COMPONENT_PROVIDER, BaseTankBlockEntity.class);
+        registration.registerBlockDataProvider(BASE_TANK_BLOCK_COMPONENT_PROVIDER, InputTankBlockEntity.class);
+    }
+
+    @Override
+    public void registerClient(IWailaClientRegistration registration) {
+        registration.registerBlockComponent(FILTERABLE_PIPE_COMPONENT_PROVIDER, FilterableBlock.class);
+        registration.registerBlockComponent(BASE_TANK_BLOCK_COMPONENT_PROVIDER, BaseBlock.class);
+        registration.registerBlockComponent(BASE_TANK_BLOCK_COMPONENT_PROVIDER, InputTankBlock.class);
     }
 }

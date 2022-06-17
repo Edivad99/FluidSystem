@@ -4,7 +4,8 @@ import edivad.fluidsystem.Main;
 import edivad.fluidsystem.tools.utils.FluidUtils;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fluids.FluidStack;
@@ -47,7 +48,7 @@ public class FluidElement extends TOPElement {
         if(capacity == 0 || fluid.getAmount() == Integer.MAX_VALUE) {
             return level;
         }
-        Long fluidAmount = (long) fluid.getAmount();
+        long fluidAmount = fluid.getAmount();
         long result = fluidAmount * level / capacity;
         return (int) result;
     }
@@ -58,11 +59,11 @@ public class FluidElement extends TOPElement {
     }
 
     @Override
-    public TextComponent getText() {
+    public MutableComponent getText() {
         String liquidText = fluid.isEmpty() ? "Empty" : fluid.getDisplayName().getString();
         DecimalFormat f = new DecimalFormat("#,##0");
         int amount = fluid.getAmount();
-        return new TextComponent(String.format("%s: %smB", liquidText, f.format(amount)));
+        return Component.literal(String.format("%s: %smB", liquidText, f.format(amount)));
     }
 
     @Override

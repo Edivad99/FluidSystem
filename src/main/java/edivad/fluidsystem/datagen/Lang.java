@@ -49,6 +49,9 @@ public class Lang extends LanguageProvider {
         add(Translations.INPUT_PIPE_TOOLTIP, "Block that allows you to put liquid in the pipes, with a redstone signal");
         add(Translations.OUTPUT_PIPE_TOOLTIP, "Block that allows you to take the liquid from the pipes");
         add(Translations.PIPE_CONTROLLER, "When a redstone signal is applied disconnect the pipes");
+
+        add(Translations.JADE_ENABLE_TANK_BLOCK, "Enable custom visualization for tank blocks");
+        add(Translations.JADE_ENABLE_FILTERABLE_BLOCK, "Enable custom visualization for filterable blocks");
     }
 
 }

@@ -6,7 +6,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -78,6 +77,6 @@ public class PipeControllerBlock extends Block implements IFluidSystemConnectabl
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent(Translations.PIPE_CONTROLLER).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable(Translations.PIPE_CONTROLLER).withStyle(ChatFormatting.GRAY));
     }
 }

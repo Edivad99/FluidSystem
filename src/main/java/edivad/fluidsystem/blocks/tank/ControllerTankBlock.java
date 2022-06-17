@@ -7,7 +7,6 @@ import edivad.fluidsystem.tools.Translations;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -61,6 +60,6 @@ public class ControllerTankBlock extends BaseBlock implements EntityBlock {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent(Translations.TANK_BLOCK_CONTROLLER_TOOLTIP).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable(Translations.TANK_BLOCK_CONTROLLER_TOOLTIP).withStyle(ChatFormatting.GRAY));
     }
 }

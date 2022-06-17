@@ -7,7 +7,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
@@ -33,7 +32,7 @@ public class InputTankBlock extends BaseRotableBlock implements IFluidSystemConn
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent(Translations.TANK_BLOCK_INPUT_TOOLTIP).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable(Translations.TANK_BLOCK_INPUT_TOOLTIP).withStyle(ChatFormatting.GRAY));
     }
 
     @Override
