@@ -1,5 +1,6 @@
 package edivad.fluidsystem;
 
+import com.mojang.logging.LogUtils;
 import edivad.fluidsystem.setup.ClientSetup;
 import edivad.fluidsystem.setup.ModSetup;
 import edivad.fluidsystem.setup.Registration;
@@ -9,8 +10,7 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 @Mod(Main.MODID)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -18,7 +18,7 @@ public class Main {
 
     public static final String MODID = "fluidsystem";
     public static final String MODNAME = "FluidSystem";
-    public static final Logger logger = LogManager.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public Main() {
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SERVER_CONFIG);

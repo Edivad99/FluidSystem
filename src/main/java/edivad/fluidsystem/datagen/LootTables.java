@@ -1,13 +1,14 @@
 package edivad.fluidsystem.datagen;
 
-import edivad.fluidsystem.datagen.util.BaseLootTableProvider;
+import edivad.edivadlib.datagen.BaseLootTableProvider;
+import edivad.fluidsystem.Main;
 import edivad.fluidsystem.setup.Registration;
 import net.minecraft.data.DataGenerator;
 
 public class LootTables extends BaseLootTableProvider {
 
     public LootTables(DataGenerator dataGeneratorIn) {
-        super(dataGeneratorIn);
+        super(dataGeneratorIn, Main.MODNAME);
     }
 
     @Override

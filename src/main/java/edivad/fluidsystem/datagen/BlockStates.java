@@ -1,7 +1,6 @@
 package edivad.fluidsystem.datagen;
 
 import edivad.fluidsystem.Main;
-import edivad.fluidsystem.datagen.util.CustomBlockStateProvider;
 import edivad.fluidsystem.setup.Registration;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.client.model.generators.ModelFile;

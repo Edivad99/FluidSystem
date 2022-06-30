@@ -1,7 +1,7 @@
 package edivad.fluidsystem.setup;
 
 import edivad.fluidsystem.Main;
-import edivad.fluidsystem.compat.MainCompatHandler;
+import edivad.fluidsystem.compat.top.TOPProvider;
 import edivad.fluidsystem.network.PacketHandler;
 import edivad.fluidsystem.tools.Config;
 import net.minecraft.world.item.CreativeModeTab;
@@ -12,6 +12,8 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
@@ -29,8 +31,10 @@ public class ModSetup {
     public static void init(final FMLCommonSetupEvent event) {
         PacketHandler.init();
 
-        //Compat
-        MainCompatHandler.registerTOP();
+        // Register TheOneProbe
+        if(ModList.get().isLoaded("theoneprobe")) {
+            InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPProvider::new);
+        }
     }
 
     @SubscribeEvent

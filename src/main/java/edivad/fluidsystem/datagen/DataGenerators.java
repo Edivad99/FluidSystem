@@ -1,5 +1,6 @@
 package edivad.fluidsystem.datagen;
 
+import edivad.fluidsystem.Main;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

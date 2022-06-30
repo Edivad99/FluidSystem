@@ -1,5 +1,6 @@
 package edivad.fluidsystem.setup;
 
+import edivad.edivadlib.setup.UpdateChecker;
 import edivad.fluidsystem.Main;
 import edivad.fluidsystem.client.render.RenderFilterablePipeBlockEntity;
 import edivad.fluidsystem.client.screen.ScreenModularTank;
@@ -16,7 +17,7 @@ public class ClientSetup {
 
     public static void init(FMLClientSetupEvent event) {
         //Version checker
-        MinecraftForge.EVENT_BUS.register(new EventHandler());
+        MinecraftForge.EVENT_BUS.register(new UpdateChecker(Main.MODID));
 
         //Special render & GUI
         MenuScreens.register(Registration.CONTROLLER_TANK_BLOCK_CONTAINER.get(), ScreenModularTank::new);

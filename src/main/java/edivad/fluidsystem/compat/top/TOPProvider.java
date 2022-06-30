@@ -34,12 +34,12 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
 
             @Override
             public IElement createElement(FriendlyByteBuf friendlyByteBuf) {
-                return new FluidElement(friendlyByteBuf);
+                return new MyFluidElement(friendlyByteBuf);
             }
 
             @Override
             public ResourceLocation getId() {
-                return FluidElement.ID;
+                return MyFluidElement.ID;
             }
         });
         return null;
@@ -56,7 +56,7 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
 
                 probeInfo.horizontal().text(Component.translatable(Translations.TANKS_BLOCK).append(String.format("%d/%d", controller.getNumberOfTanksBlock(), Config.NUMBER_OF_MODULES.get())));
                 controller.getFluidCap().ifPresent(h -> {
-                    probeInfo.element(new FluidElement(h.getFluidInTank(0), controller.getTotalCapacity(), controller));
+                    probeInfo.element(new MyFluidElement(h.getFluidInTank(0), controller.getTotalCapacity(), controller));
                 });
             }
         }

@@ -68,7 +68,7 @@ public class Registration {
         BlockPos pos = data.readBlockPos();
         BlockEntity be = inv.player.getCommandSenderWorld().getBlockEntity(pos);
         if(!(be instanceof ControllerTankBlockEntity blockentity)) {
-            Main.logger.error("Wrong type of blockentity (expected ControllerTankBlockEntity)!");
+            Main.LOGGER.error("Wrong type of blockentity (expected ControllerTankBlockEntity)!");
             return null;
         }
 

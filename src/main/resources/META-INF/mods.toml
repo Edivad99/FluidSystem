@@ -51,3 +51,9 @@ description="A system to manage LARGE quantities of liquids inside Minecraft"
     versionRange="[1.19,1.20.0)"
     ordering="NONE"
     side="BOTH"
+[[dependencies.fluidsystem]]
+    modId="edivadlib"
+    mandatory=true
+    versionRange="[1.0.1,)"
+    ordering="NONE"
+    side="BOTH"
