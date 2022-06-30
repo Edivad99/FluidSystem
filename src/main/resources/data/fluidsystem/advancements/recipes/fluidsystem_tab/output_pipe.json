@@ -1,13 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
-  "rewards": {
-    "recipes": [
-      "fluidsystem:output_pipe"
-    ]
-  },
   "criteria": {
-    "structural_tank_block": {
-      "trigger": "minecraft:inventory_changed",
+    "has_structural_tank_block": {
       "conditions": {
         "items": [
           {
@@ -16,19 +10,25 @@
             ]
           }
         ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
     },
     "has_the_recipe": {
-      "trigger": "minecraft:recipe_unlocked",
       "conditions": {
         "recipe": "fluidsystem:output_pipe"
-      }
+      },
+      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "structural_tank_block",
+      "has_structural_tank_block",
       "has_the_recipe"
     ]
-  ]
+  ],
+  "rewards": {
+    "recipes": [
+      "fluidsystem:output_pipe"
+    ]
+  }
 }

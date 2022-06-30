@@ -1,13 +1,36 @@
 {
   "parent": "minecraft:block/block",
-  "textures": {
-    "fluidsystem:side": "fluidsystem:blocks/tank/structural_tank_block",
-    "fluidsystem:front": "fluidsystem:blocks/tank/input_tank_block",
-    "fluidsystem:back": "fluidsystem:blocks/tank/structural_tank_block",
-    "particle": "fluidsystem:blocks/tank/structural_tank_block"
-  },
   "elements": [
     {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "rotation": 180,
+          "texture": "fluidsystem:side"
+        },
+        "east": {
+          "cullface": "east",
+          "rotation": 90,
+          "texture": "fluidsystem:side"
+        },
+        "north": {
+          "cullface": "north",
+          "texture": "fluidsystem:front"
+        },
+        "south": {
+          "cullface": "south",
+          "texture": "fluidsystem:back"
+        },
+        "up": {
+          "cullface": "up",
+          "texture": "fluidsystem:side"
+        },
+        "west": {
+          "cullface": "west",
+          "rotation": 270,
+          "texture": "fluidsystem:side"
+        }
+      },
       "from": [
         0,
         0,
@@ -17,36 +40,13 @@
         16,
         16,
         16
-      ],
-      "faces": {
-        "down": {
-          "texture": "fluidsystem:side",
-          "cullface": "down",
-          "rotation": 180
-        },
-        "up": {
-          "texture": "fluidsystem:side",
-          "cullface": "up"
-        },
-        "north": {
-          "texture": "fluidsystem:front",
-          "cullface": "north"
-        },
-        "south": {
-          "texture": "fluidsystem:back",
-          "cullface": "south"
-        },
-        "west": {
-          "texture": "fluidsystem:side",
-          "cullface": "west",
-          "rotation": 270
-        },
-        "east": {
-          "texture": "fluidsystem:side",
-          "cullface": "east",
-          "rotation": 90
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "textures": {
+    "fluidsystem:back": "fluidsystem:blocks/tank/structural_tank_block",
+    "fluidsystem:front": "fluidsystem:blocks/tank/input_tank_block",
+    "fluidsystem:side": "fluidsystem:blocks/tank/structural_tank_block",
+    "particle": "fluidsystem:blocks/tank/structural_tank_block"
+  }
 }

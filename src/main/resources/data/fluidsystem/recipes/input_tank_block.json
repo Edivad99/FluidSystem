@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " b ",
-    "aaa",
-    " c "
-  ],
   "key": {
     "a": {
       "item": "fluidsystem:structural_tank_block"
@@ -16,6 +11,11 @@
       "item": "minecraft:redstone"
     }
   },
+  "pattern": [
+    " b ",
+    "aaa",
+    " c "
+  ],
   "result": {
     "item": "fluidsystem:input_tank_block"
   }

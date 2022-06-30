@@ -2,15 +2,15 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "infinite_water_source",
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "name": "fluidsystem:infinite_water_source"
         }
-      ]
+      ],
+      "name": "infinite_water_source",
+      "rolls": 1.0
     }
   ]
 }

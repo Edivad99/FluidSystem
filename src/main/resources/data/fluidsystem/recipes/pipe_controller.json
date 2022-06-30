@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " a ",
-    "aba",
-    " a "
-  ],
   "key": {
     "a": {
       "item": "fluidsystem:pipe"
@@ -13,6 +8,11 @@
       "item": "minecraft:redstone_block"
     }
   },
+  "pattern": [
+    " a ",
+    "aba",
+    " a "
+  ],
   "result": {
     "item": "fluidsystem:pipe_controller"
   }

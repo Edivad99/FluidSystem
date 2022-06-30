@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "   ",
-    "abc",
-    "   "
-  ],
   "key": {
     "a": {
       "item": "minecraft:bucket"
@@ -16,6 +11,11 @@
       "item": "minecraft:water_bucket"
     }
   },
+  "pattern": [
+    "   ",
+    "abc",
+    "   "
+  ],
   "result": {
     "item": "fluidsystem:interface_tank_block"
   }
