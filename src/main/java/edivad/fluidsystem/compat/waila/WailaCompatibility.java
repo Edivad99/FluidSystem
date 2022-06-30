@@ -15,20 +15,17 @@ import snownee.jade.api.WailaPlugin;
 @WailaPlugin(Main.MODID)
 public class WailaCompatibility implements IWailaPlugin {
 
-    private static final FilterablePipeBlockComponentProvider FILTERABLE_PIPE_COMPONENT_PROVIDER = new FilterablePipeBlockComponentProvider();
-    private static final BaseTankBlockComponentProvider BASE_TANK_BLOCK_COMPONENT_PROVIDER = new BaseTankBlockComponentProvider();
-
     @Override
     public void register(IWailaCommonRegistration registration) {
-        registration.registerBlockDataProvider(FILTERABLE_PIPE_COMPONENT_PROVIDER, FilterablePipeBlockEntity.class);
-        registration.registerBlockDataProvider(BASE_TANK_BLOCK_COMPONENT_PROVIDER, BaseTankBlockEntity.class);
-        registration.registerBlockDataProvider(BASE_TANK_BLOCK_COMPONENT_PROVIDER, InputTankBlockEntity.class);
+        registration.registerBlockDataProvider(new FilterablePipeBlockProvider(), FilterablePipeBlockEntity.class);
+        registration.registerBlockDataProvider(new BaseTankBlockProvider(), BaseTankBlockEntity.class);
+        registration.registerBlockDataProvider(new BaseTankBlockProvider(), InputTankBlockEntity.class);
     }
 
     @Override
     public void registerClient(IWailaClientRegistration registration) {
-        registration.registerBlockComponent(FILTERABLE_PIPE_COMPONENT_PROVIDER, FilterableBlock.class);
-        registration.registerBlockComponent(BASE_TANK_BLOCK_COMPONENT_PROVIDER, BaseBlock.class);
-        registration.registerBlockComponent(BASE_TANK_BLOCK_COMPONENT_PROVIDER, InputTankBlock.class);
+        registration.registerBlockComponent(new FilterablePipeBlockComponent(), FilterableBlock.class);
+        registration.registerBlockComponent(new BaseTankBlockComponent(), BaseBlock.class);
+        registration.registerBlockComponent(new BaseTankBlockComponent(), InputTankBlock.class);
     }
 }
