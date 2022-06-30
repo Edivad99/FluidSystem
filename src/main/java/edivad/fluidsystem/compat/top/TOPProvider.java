@@ -4,7 +4,7 @@ import edivad.fluidsystem.Main;
 import edivad.fluidsystem.blockentity.pipe.FilterablePipeBlockEntity;
 import edivad.fluidsystem.blockentity.tank.BaseTankBlockEntity;
 import edivad.fluidsystem.blockentity.tank.ControllerTankBlockEntity;
-import edivad.fluidsystem.tools.Config;
+import edivad.fluidsystem.setup.Config;
 import edivad.fluidsystem.tools.Translations;
 import mcjty.theoneprobe.api.IElement;
 import mcjty.theoneprobe.api.IElementFactory;
@@ -54,7 +54,7 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
             if(tankBase != null) {
                 ControllerTankBlockEntity controller = (ControllerTankBlockEntity) tankBase;
 
-                probeInfo.horizontal().text(Component.translatable(Translations.TANKS_BLOCK).append(String.format("%d/%d", controller.getNumberOfTanksBlock(), Config.NUMBER_OF_MODULES.get())));
+                probeInfo.horizontal().text(Component.translatable(Translations.TANKS_BLOCK).append(String.format("%d/%d", controller.getNumberOfTanksBlock(), Config.Tank.NUMBER_OF_MODULES.get())));
                 controller.getFluidCap().ifPresent(h -> {
                     probeInfo.element(new MyFluidElement(h.getFluidInTank(0), controller.getTotalCapacity(), controller));
                 });

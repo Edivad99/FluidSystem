@@ -1,7 +1,7 @@
 package edivad.fluidsystem.blockentity.tank;
 
 import edivad.fluidsystem.setup.Registration;
-import edivad.fluidsystem.tools.Config;
+import edivad.fluidsystem.setup.Config;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -18,6 +18,6 @@ public class StructuralTankBlockEntity extends BaseTankBlockEntity {
 
     @Override
     public int blockCapacity() {
-        return Config.BLOCK_CAPACITY.get();
+        return Config.Tank.BLOCK_CAPACITY.get();
     }
 }

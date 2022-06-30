@@ -3,7 +3,6 @@ package edivad.fluidsystem.setup;
 import edivad.fluidsystem.Main;
 import edivad.fluidsystem.compat.top.TOPProvider;
 import edivad.fluidsystem.network.PacketHandler;
-import edivad.fluidsystem.tools.Config;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -39,7 +38,7 @@ public class ModSetup {
 
     @SubscribeEvent
     public static void handleFiniteWaterSource(BlockEvent.CreateFluidSourceEvent event) {
-        if(Config.FINITE_WATER_SOURCE.get()) {
+        if(Config.General.FINITE_WATER_SOURCE.get()) {
             BlockState state = event.getState();
             FluidState fluidState = state.getFluidState();
             if(fluidState.getType().isSame(Fluids.WATER))

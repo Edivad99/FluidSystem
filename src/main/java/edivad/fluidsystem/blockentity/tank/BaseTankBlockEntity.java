@@ -1,6 +1,6 @@
 package edivad.fluidsystem.blockentity.tank;
 
-import edivad.fluidsystem.tools.Config;
+import edivad.fluidsystem.setup.Config;
 import edivad.fluidsystem.tools.Translations;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -95,7 +95,7 @@ public abstract class BaseTankBlockEntity extends BlockEntity {
                 currentStatus = Status.CONTROLLER_MISSING;
             else if(controller > 1)
                 currentStatus = Status.EXTRA_CONTROLLER;
-            else if(connectedStorages.size() > Config.NUMBER_OF_MODULES.get())
+            else if(connectedStorages.size() > Config.Tank.NUMBER_OF_MODULES.get())
                 currentStatus = Status.TOO_BIG;
             else if(calculateCapacity == 0)
                 currentStatus = Status.MISSING_SPACE;

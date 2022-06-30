@@ -2,7 +2,7 @@ package edivad.fluidsystem.compat.waila;
 
 import edivad.fluidsystem.Main;
 import edivad.fluidsystem.blockentity.tank.BaseTankBlockEntity;
-import edivad.fluidsystem.tools.Config;
+import edivad.fluidsystem.setup.Config;
 import edivad.fluidsystem.tools.Translations;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -22,7 +22,7 @@ public class BaseTankBlockComponent implements IBlockComponentProvider {
             CompoundTag data = accessor.getServerData();
             if(data.getBoolean("isControllerPresent")) {
                 int numberOfBlocks = data.getInt("numberOfTanksBlock");
-                String percentage = String.format("%d/%d", numberOfBlocks, Config.NUMBER_OF_MODULES.get());
+                String percentage = String.format("%d/%d", numberOfBlocks, Config.Tank.NUMBER_OF_MODULES.get());
                 tooltip.add(Component.translatable(Translations.TANKS_BLOCK).append(percentage));
 
                 if(data.getBoolean("canReadLiquid")) {
