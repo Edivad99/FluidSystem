@@ -39,7 +39,7 @@ description="A system to manage LARGE quantities of liquids inside Minecraft"
     # Does this dependency have to exist - if not, ordering below must be specified
     mandatory=true #mandatory
     # The version range of the dependency
-    versionRange="[41.0.28,)" #mandatory
+    versionRange="[41.0.64,)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
@@ -54,6 +54,6 @@ description="A system to manage LARGE quantities of liquids inside Minecraft"
 [[dependencies.fluidsystem]]
     modId="edivadlib"
     mandatory=true
-    versionRange="[1.0.1,)"
+    versionRange="[1.0.2,)"
     ordering="NONE"
     side="BOTH"
