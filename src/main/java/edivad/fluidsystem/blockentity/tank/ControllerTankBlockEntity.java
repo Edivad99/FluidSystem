@@ -132,7 +132,7 @@ public class ControllerTankBlockEntity extends BaseTankBlockEntity implements Me
     public InteractionResult activate(Player player, Level level, BlockPos pos, InteractionHand handIn) {
         BaseTankBlockEntity master = getMaster();
         if(master != null)
-            NetworkHooks.openGui((ServerPlayer) player, this, getBlockPos());
+            NetworkHooks.openScreen((ServerPlayer) player, this, getBlockPos());
         else
             player.displayClientMessage(getStatus().getStatusText().withStyle(ChatFormatting.DARK_RED), false);
         return InteractionResult.SUCCESS;
