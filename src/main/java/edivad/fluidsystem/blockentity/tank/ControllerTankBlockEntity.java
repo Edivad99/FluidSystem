@@ -134,7 +134,7 @@ public class ControllerTankBlockEntity extends BaseTankBlockEntity implements Me
         if(master != null)
             NetworkHooks.openScreen((ServerPlayer) player, this, getBlockPos());
         else
-            player.displayClientMessage(getStatus().getStatusText().withStyle(ChatFormatting.DARK_RED), false);
+            player.displayClientMessage(getStatus().getStatusText().withStyle(ChatFormatting.DARK_RED), true);
         return InteractionResult.SUCCESS;
     }
 

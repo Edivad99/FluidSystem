@@ -35,12 +35,12 @@ public class FilterableBlock extends RotableBlock {
             if(blockentity instanceof FilterablePipeBlockEntity tilePipeFilterable) {
                 if(bucket.getFluid().isSame(Fluids.EMPTY)) {
                     if(!tilePipeFilterable.getFluidFilter().isSame(Fluids.EMPTY))
-                        player.displayClientMessage(Component.translatable(Translations.FLUID_FILTERED_REMOVE), false);
+                        player.displayClientMessage(Component.translatable(Translations.FLUID_FILTERED_REMOVE), true);
                 }
                 else {
                     FluidType fluidType = bucket.getFluid().getFluidType();
                     String fluidName = Component.translatable(fluidType.getDescriptionId()).getString();
-                    player.displayClientMessage(Component.translatable(Translations.FLUID_FILTERED_SET, fluidName).withStyle(ChatFormatting.GREEN), false);
+                    player.displayClientMessage(Component.translatable(Translations.FLUID_FILTERED_SET, fluidName).withStyle(ChatFormatting.GREEN), true);
                 }
                 tilePipeFilterable.setFilteredFluid(bucket.getFluid());
                 return InteractionResult.SUCCESS;

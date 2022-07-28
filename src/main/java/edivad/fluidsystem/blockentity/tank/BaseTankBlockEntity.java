@@ -134,7 +134,7 @@ public abstract class BaseTankBlockEntity extends BlockEntity {
 
     public void onBlockPlacedBy(Player player, Level level, BlockPos pos) {
         if(getMaster() == null)
-            player.displayClientMessage(getStatus().getStatusText().withStyle(ChatFormatting.RED), false);
+            player.displayClientMessage(getStatus().getStatusText().withStyle(ChatFormatting.RED), true);
     }
 
     protected enum Status {
