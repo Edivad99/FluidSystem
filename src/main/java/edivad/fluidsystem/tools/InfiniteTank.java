@@ -4,8 +4,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public class InfiniteTank implements IFluidHandler, IFluidTank {
 
@@ -15,7 +14,7 @@ public class InfiniteTank implements IFluidHandler, IFluidTank {
         this.fluid = fluid;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public FluidStack getFluid() {
         return new FluidStack(fluid, getFluidAmount());
@@ -41,7 +40,7 @@ public class InfiniteTank implements IFluidHandler, IFluidTank {
         return 1;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public FluidStack getFluidInTank(int tank) {
         return getFluid();
@@ -53,7 +52,7 @@ public class InfiniteTank implements IFluidHandler, IFluidTank {
     }
 
     @Override
-    public boolean isFluidValid(int tank, @Nonnull FluidStack stack) {
+    public boolean isFluidValid(int tank, @NotNull FluidStack stack) {
         return false;
     }
 
@@ -62,7 +61,7 @@ public class InfiniteTank implements IFluidHandler, IFluidTank {
         return 0;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public FluidStack drain(FluidStack resource, FluidAction action) {
         if(resource.isEmpty() || !resource.isFluidEqual(resource)) {
@@ -71,7 +70,7 @@ public class InfiniteTank implements IFluidHandler, IFluidTank {
         return drain(resource.getAmount(), action);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public FluidStack drain(int maxDrain, FluidAction action) {
         return new FluidStack(fluid, maxDrain);

@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "a": {
+      "item": "minecraft:redstone"
+    },
+    "b": {
+      "item": "fluidsystem:structural_tank_block"
+    },
+    "c": {
+      "item": "minecraft:comparator"
+    }
+  },
+  "pattern": [
+    "a a",
+    "cbc",
+    "a a"
+  ],
+  "result": {
+    "item": "fluidsystem:controller_tank_block"
+  }
+}

@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "fluidsystem:blocks/infinite_water_source"
-  }
-}

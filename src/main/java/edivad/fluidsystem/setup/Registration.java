@@ -39,7 +39,7 @@ public class Registration {
     private static final DeferredRegister<BlockEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Main.MODID);
     private static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, Main.MODID);
 
-    public static Item.Properties globalProperties = new Item.Properties().tab(ModSetup.fluidSystemTab).stacksTo(64);
+    private static Item.Properties PROPERTY = new Item.Properties();
 
     public static void init() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -50,19 +50,19 @@ public class Registration {
     }
 
     public static final RegistryObject<StructuralTankBlock> STRUCTURAL_TANK_BLOCK = BLOCKS.register("structural_tank_block", StructuralTankBlock::new);
-    public static final RegistryObject<Item> STRUCTURAL_TANK_BLOCK_ITEM = ITEMS.register("structural_tank_block", () -> new BlockItem(STRUCTURAL_TANK_BLOCK.get(), globalProperties));
+    public static final RegistryObject<Item> STRUCTURAL_TANK_BLOCK_ITEM = ITEMS.register("structural_tank_block", () -> new BlockItem(STRUCTURAL_TANK_BLOCK.get(), PROPERTY));
     public static final RegistryObject<BlockEntityType<StructuralTankBlockEntity>> STRUCTURAL_TANK_BLOCK_TILE = TILES.register("structural_tank_block", () -> BlockEntityType.Builder.of(StructuralTankBlockEntity::new, STRUCTURAL_TANK_BLOCK.get()).build(null));
 
     public static final RegistryObject<InterfaceTankBlock> INTERFACE_TANK_BLOCK = BLOCKS.register("interface_tank_block", InterfaceTankBlock::new);
-    public static final RegistryObject<Item> INTERFACE_TANK_BLOCK_ITEM = ITEMS.register("interface_tank_block", () -> new BlockItem(INTERFACE_TANK_BLOCK.get(), globalProperties));
+    public static final RegistryObject<Item> INTERFACE_TANK_BLOCK_ITEM = ITEMS.register("interface_tank_block", () -> new BlockItem(INTERFACE_TANK_BLOCK.get(), PROPERTY));
     public static final RegistryObject<BlockEntityType<InterfaceTankBlockEntity>> INTERFACE_TANK_BLOCK_TILE = TILES.register("interface_tank_block", () -> BlockEntityType.Builder.of(InterfaceTankBlockEntity::new, INTERFACE_TANK_BLOCK.get()).build(null));
 
     public static final RegistryObject<InputTankBlock> INPUT_TANK_BLOCK = BLOCKS.register("input_tank_block", InputTankBlock::new);
-    public static final RegistryObject<Item> INPUT_TANK_BLOCK_ITEM = ITEMS.register("input_tank_block", () -> new BlockItem(INPUT_TANK_BLOCK.get(), globalProperties));
+    public static final RegistryObject<Item> INPUT_TANK_BLOCK_ITEM = ITEMS.register("input_tank_block", () -> new BlockItem(INPUT_TANK_BLOCK.get(), PROPERTY));
     public static final RegistryObject<BlockEntityType<InputTankBlockEntity>> INPUT_TANK_BLOCK_TILE = TILES.register("input_tank_block", () -> BlockEntityType.Builder.of(InputTankBlockEntity::new, INPUT_TANK_BLOCK.get()).build(null));
 
     public static final RegistryObject<ControllerTankBlock> CONTROLLER_TANK_BLOCK = BLOCKS.register("controller_tank_block", ControllerTankBlock::new);
-    public static final RegistryObject<Item> CONTROLLER_TANK_BLOCK_ITEM = ITEMS.register("controller_tank_block", () -> new BlockItem(CONTROLLER_TANK_BLOCK.get(), globalProperties));
+    public static final RegistryObject<Item> CONTROLLER_TANK_BLOCK_ITEM = ITEMS.register("controller_tank_block", () -> new BlockItem(CONTROLLER_TANK_BLOCK.get(), PROPERTY));
     public static final RegistryObject<BlockEntityType<ControllerTankBlockEntity>> CONTROLLER_TANK_BLOCK_TILE = TILES.register("controller_tank_block", () -> BlockEntityType.Builder.of(ControllerTankBlockEntity::new, CONTROLLER_TANK_BLOCK.get()).build(null));
     public static final RegistryObject<MenuType<ContainerTankBlockController>> CONTROLLER_TANK_BLOCK_CONTAINER = CONTAINERS.register("controller_tank_block", () -> IForgeMenuType.create((windowId, inv, data) -> {
         BlockPos pos = data.readBlockPos();
@@ -76,20 +76,20 @@ public class Registration {
     }));
 
     public static final RegistryObject<InfiniteWaterSourceBlock> INFINITE_WATER_SOURCE = BLOCKS.register("infinite_water_source", InfiniteWaterSourceBlock::new);
-    public static final RegistryObject<Item> INFINITE_WATER_SOURCE_ITEM = ITEMS.register("infinite_water_source", () -> new BlockItem(INFINITE_WATER_SOURCE.get(), globalProperties));
+    public static final RegistryObject<Item> INFINITE_WATER_SOURCE_ITEM = ITEMS.register("infinite_water_source", () -> new BlockItem(INFINITE_WATER_SOURCE.get(), PROPERTY));
     public static final RegistryObject<BlockEntityType<InfinityWaterSourceBlockEntity>> INFINITE_WATER_SOURCE_TILE = TILES.register("infinite_water_source", () -> BlockEntityType.Builder.of(InfinityWaterSourceBlockEntity::new, INFINITE_WATER_SOURCE.get()).build(null));
 
     public static final RegistryObject<PipeBlock> PIPE = BLOCKS.register("pipe", PipeBlock::new);
-    public static final RegistryObject<Item> PIPE_ITEM = ITEMS.register("pipe", () -> new BlockItem(PIPE.get(), globalProperties));
+    public static final RegistryObject<Item> PIPE_ITEM = ITEMS.register("pipe", () -> new BlockItem(PIPE.get(), PROPERTY));
 
     public static final RegistryObject<PipeControllerBlock> PIPE_CONTROLLER = BLOCKS.register("pipe_controller", PipeControllerBlock::new);
-    public static final RegistryObject<Item> PIPE_CONTROLLER_ITEM = ITEMS.register("pipe_controller", () -> new BlockItem(PIPE_CONTROLLER.get(), globalProperties));
+    public static final RegistryObject<Item> PIPE_CONTROLLER_ITEM = ITEMS.register("pipe_controller", () -> new BlockItem(PIPE_CONTROLLER.get(), PROPERTY));
 
     public static final RegistryObject<InputPipeBlock> INPUT_PIPE = BLOCKS.register("input_pipe", InputPipeBlock::new);
-    public static final RegistryObject<Item> INPUT_PIPE_ITEM = ITEMS.register("input_pipe", () -> new BlockItem(INPUT_PIPE.get(), globalProperties));
+    public static final RegistryObject<Item> INPUT_PIPE_ITEM = ITEMS.register("input_pipe", () -> new BlockItem(INPUT_PIPE.get(), PROPERTY));
     public static final RegistryObject<BlockEntityType<InputPipeBlockEntity>> INPUT_PIPE_TILE = TILES.register("input_pipe", () -> BlockEntityType.Builder.of(InputPipeBlockEntity::new, INPUT_PIPE.get()).build(null));
 
     public static final RegistryObject<OutputPipeBlock> OUTPUT_PIPE = BLOCKS.register("output_pipe", OutputPipeBlock::new);
-    public static final RegistryObject<Item> OUTPUT_PIPE_ITEM = ITEMS.register("output_pipe", () -> new BlockItem(OUTPUT_PIPE.get(), globalProperties));
+    public static final RegistryObject<Item> OUTPUT_PIPE_ITEM = ITEMS.register("output_pipe", () -> new BlockItem(OUTPUT_PIPE.get(), PROPERTY));
     public static final RegistryObject<BlockEntityType<OutputPipeBlockEntity>> OUTPUT_PIPE_TILE = TILES.register("output_pipe", () -> BlockEntityType.Builder.of(OutputPipeBlockEntity::new, OUTPUT_PIPE.get()).build(null));
 }

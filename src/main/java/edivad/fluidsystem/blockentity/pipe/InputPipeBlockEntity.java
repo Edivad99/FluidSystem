@@ -11,8 +11,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public class InputPipeBlockEntity extends FilterablePipeBlockEntity {
         if(blockentity == null)
             return;
 
-        blockentity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, inputFace.getOpposite()).ifPresent(input -> {
+        blockentity.getCapability(ForgeCapabilities.FLUID_HANDLER, inputFace.getOpposite()).ifPresent(input -> {
             for(int i = 0; i < input.getTanks(); i++) {
                 FluidStack inputFluidStack = input.getFluidInTank(i);
                 if(!inputFluidStack.isEmpty() && (blockTile.getFluidFilter().isSame(Fluids.EMPTY) || blockTile.getFluidFilter().isSame(inputFluidStack.getFluid()))) {

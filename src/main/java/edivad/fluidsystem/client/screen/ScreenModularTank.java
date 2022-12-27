@@ -21,7 +21,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ScreenModularTank extends AbstractContainerScreen<ContainerTankBlockController> {
 
@@ -47,10 +46,12 @@ public class ScreenModularTank extends AbstractContainerScreen<ContainerTankBloc
         //Render fluid
         FluidStack fluid = blockentity.clientFluidStack;
         int index = FluidUtils.getFluidScaled(43, fluid, blockentity.totalCapacity);
-        TextureAtlasSprite fluidTexture = FluidUtils.getFluidTexture(fluid);
-        RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
-        FluidUtils.color(FluidUtils.getLiquidColorWithBiome(fluid, blockentity));
-        blit(poseStack, this.leftPos + 8, this.topPos + 19 + index, 176, 52, 43 - index, fluidTexture);
+        if (!fluid.isEmpty()) {
+            TextureAtlasSprite fluidTexture = FluidUtils.getFluidTexture(fluid);
+            RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
+            FluidUtils.color(FluidUtils.getLiquidColorWithBiome(fluid, blockentity));
+            blit(poseStack, this.leftPos + 8, this.topPos + 19 + index, 176, 52, 43 - index, fluidTexture);
+        }
     }
 
     @Override
@@ -68,9 +69,9 @@ public class ScreenModularTank extends AbstractContainerScreen<ContainerTankBloc
         super.render(poseStack, mouseX, mouseY, partialTicks);
         this.renderTooltip(poseStack, mouseX, mouseY);
         if(mouseX > this.leftPos + 6 && mouseX < this.leftPos + 61 && mouseY > this.topPos + 18 && mouseY < this.topPos + 63) {
-            List<Component> tooltip = new ArrayList<>();
+            var tooltip = new ArrayList<Component>();
             tooltip.add(blockentity.clientFluidStack.isEmpty() ? TANK_EMPTY : blockentity.clientFluidStack.getDisplayName());
-            DecimalFormat f = new DecimalFormat("#,##0");
+            var f = new DecimalFormat("#,##0");
             tooltip.add(Component.translatable(Translations.LIQUID_AMOUNT, f.format(blockentity.clientFluidStack.getAmount()), f.format(blockentity.totalCapacity)));
             float percentage = 0;
             if(blockentity.totalCapacity > 0)

@@ -1,8 +1,9 @@
 package edivad.fluidsystem.datagen;
 
 import edivad.fluidsystem.setup.Registration;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.world.item.Items;
@@ -11,13 +12,13 @@ import java.util.function.Consumer;
 
 public class Recipes extends RecipeProvider {
 
-    public Recipes(DataGenerator generatorIn) {
-        super(generatorIn);
+    public Recipes(PackOutput packOutput) {
+        super(packOutput);
     }
 
     @Override
-    protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
-        ShapedRecipeBuilder.shaped(Registration.STRUCTURAL_TANK_BLOCK.get(), 4)
+    protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.STRUCTURAL_TANK_BLOCK.get(), 4)
                 .pattern("aba")
                 .pattern("bcb")
                 .pattern("aba")
@@ -27,7 +28,7 @@ public class Recipes extends RecipeProvider {
                 .unlockedBy(getHasName(Items.IRON_INGOT), has(Items.IRON_INGOT))
                 .save(consumer);
 
-        ShapedRecipeBuilder.shaped(Registration.PIPE.get(), 8)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.PIPE.get(), 8)
                 .pattern("aaa")
                 .pattern("bbb")
                 .pattern("aaa")
@@ -36,7 +37,7 @@ public class Recipes extends RecipeProvider {
                 .unlockedBy(getHasName(Items.BAMBOO), has(Items.BAMBOO))
                 .save(consumer);
 
-        ShapedRecipeBuilder.shaped(Registration.PIPE_CONTROLLER.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.PIPE_CONTROLLER.get())
                 .pattern(" a ")
                 .pattern("aba")
                 .pattern(" a ")
@@ -45,7 +46,7 @@ public class Recipes extends RecipeProvider {
                 .unlockedBy(getHasName(Registration.PIPE.get()), has(Registration.PIPE.get()))
                 .save(consumer);
 
-        ShapedRecipeBuilder.shaped(Registration.INTERFACE_TANK_BLOCK.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.INTERFACE_TANK_BLOCK.get())
                 .pattern("   ")
                 .pattern("abc")
                 .pattern("   ")
@@ -55,7 +56,7 @@ public class Recipes extends RecipeProvider {
                 .unlockedBy(getHasName(Registration.STRUCTURAL_TANK_BLOCK.get()), has(Registration.STRUCTURAL_TANK_BLOCK.get()))
                 .save(consumer);
 
-        ShapedRecipeBuilder.shaped(Registration.OUTPUT_PIPE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.OUTPUT_PIPE.get())
                 .pattern("a")
                 .pattern("b")
                 .define('a', Registration.STRUCTURAL_TANK_BLOCK.get())
@@ -63,7 +64,7 @@ public class Recipes extends RecipeProvider {
                 .unlockedBy(getHasName(Registration.STRUCTURAL_TANK_BLOCK.get()), has(Registration.STRUCTURAL_TANK_BLOCK.get()))
                 .save(consumer);
 
-        ShapedRecipeBuilder.shaped(Registration.INPUT_PIPE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.INPUT_PIPE.get())
                 .pattern("a")
                 .pattern("b")
                 .define('a', Items.BUCKET)
@@ -71,7 +72,7 @@ public class Recipes extends RecipeProvider {
                 .unlockedBy(getHasName(Registration.STRUCTURAL_TANK_BLOCK.get()), has(Registration.STRUCTURAL_TANK_BLOCK.get()))
                 .save(consumer);
 
-        ShapedRecipeBuilder.shaped(Registration.CONTROLLER_TANK_BLOCK.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.CONTROLLER_TANK_BLOCK.get())
                 .pattern("a a")
                 .pattern("cbc")
                 .pattern("a a")
@@ -81,7 +82,7 @@ public class Recipes extends RecipeProvider {
                 .unlockedBy(getHasName(Registration.STRUCTURAL_TANK_BLOCK.get()), has(Registration.STRUCTURAL_TANK_BLOCK.get()))
                 .save(consumer);
 
-        ShapedRecipeBuilder.shaped(Registration.INPUT_TANK_BLOCK.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.INPUT_TANK_BLOCK.get())
                 .pattern(" b ")
                 .pattern("aaa")
                 .pattern(" c ")
@@ -90,7 +91,7 @@ public class Recipes extends RecipeProvider {
                 .unlockedBy(getHasName(Registration.STRUCTURAL_TANK_BLOCK.get()), has(Registration.STRUCTURAL_TANK_BLOCK.get()))
                 .save(consumer);
 
-        ShapedRecipeBuilder.shaped(Registration.INFINITE_WATER_SOURCE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.INFINITE_WATER_SOURCE.get())
                 .pattern("aca")
                 .pattern("cbc")
                 .pattern("aca")

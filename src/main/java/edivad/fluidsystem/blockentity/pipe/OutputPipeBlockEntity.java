@@ -9,8 +9,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -29,7 +29,7 @@ public class OutputPipeBlockEntity extends FilterablePipeBlockEntity implements 
             BlockEntity blockentity = level.getBlockEntity(getBlockPos().relative(outputFace));
             if(blockentity != null) {
                 AtomicInteger res = new AtomicInteger(0);
-                blockentity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, outputFace.getOpposite()).ifPresent(h -> {
+                blockentity.getCapability(ForgeCapabilities.FLUID_HANDLER, outputFace.getOpposite()).ifPresent(h -> {
                     int r = h.fill(resource, action);
                     res.set(r);
                 });
@@ -46,7 +46,7 @@ public class OutputPipeBlockEntity extends FilterablePipeBlockEntity implements 
             BlockEntity blockentity = level.getBlockEntity(getBlockPos().relative(outputFace));
             if(blockentity != null) {
                 AtomicBoolean result = new AtomicBoolean(false);
-                blockentity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, outputFace.getOpposite()).ifPresent(h -> {
+                blockentity.getCapability(ForgeCapabilities.FLUID_HANDLER, outputFace.getOpposite()).ifPresent(h -> {
                     Fluid fluidInsideTank = h.getFluidInTank(0).getFluid();
                     if(fluidInsideTank.isSame(Fluids.EMPTY))
                         result.set(true);

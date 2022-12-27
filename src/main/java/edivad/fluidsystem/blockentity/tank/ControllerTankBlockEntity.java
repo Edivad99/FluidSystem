@@ -20,15 +20,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.NetworkHooks;
@@ -74,7 +73,7 @@ public class ControllerTankBlockEntity extends BaseTankBlockEntity implements Me
         if(input.getCount() != 1 || !output.isEmpty())
             return;
 
-        input.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
+        input.getCapability(ForgeCapabilities.FLUID_HANDLER).ifPresent(h -> {
             FluidStack checkTypeofLiquid = h.getFluidInTank(0);
 
             if(!tank.isEmpty())//Il tank contiene del liquido
@@ -162,14 +161,14 @@ public class ControllerTankBlockEntity extends BaseTankBlockEntity implements Me
 
             @Override
             public boolean isItemValid(int slot, ItemStack stack) {
-                return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent();
+                return stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent();
             }
         };
     }
 
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-        if(cap.equals(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY))
+        if(cap.equals(ForgeCapabilities.ITEM_HANDLER))
             return item.cast();
         return super.getCapability(cap, side);
     }

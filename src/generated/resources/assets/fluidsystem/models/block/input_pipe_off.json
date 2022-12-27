@@ -1,0 +1,52 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "rotation": 180,
+          "texture": "fluidsystem:side"
+        },
+        "east": {
+          "cullface": "east",
+          "rotation": 90,
+          "texture": "fluidsystem:side"
+        },
+        "north": {
+          "cullface": "north",
+          "texture": "fluidsystem:front"
+        },
+        "south": {
+          "cullface": "south",
+          "texture": "fluidsystem:back"
+        },
+        "up": {
+          "cullface": "up",
+          "texture": "fluidsystem:side"
+        },
+        "west": {
+          "cullface": "west",
+          "rotation": 270,
+          "texture": "fluidsystem:side"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    }
+  ],
+  "textures": {
+    "fluidsystem:back": "fluidsystem:block/input_pipe_back",
+    "fluidsystem:front": "fluidsystem:block/input_pipe_front",
+    "fluidsystem:side": "fluidsystem:block/input_pipe_side_off",
+    "particle": "fluidsystem:block/input_pipe_side_off"
+  }
+}

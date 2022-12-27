@@ -1,0 +1,26 @@
+{
+  "ctm": {
+    "ctm_version": 1,
+    "type": "CTM",
+    "layer": "SOLID",
+    "textures": [
+      "fluidsystem:block/tank/controller_tank_block-ctm"
+    ],
+    "extra": {
+      "connect_to": [
+        {
+          "block": "fluidsystem:structural_tank_block"
+        },
+        {
+          "block": "fluidsystem:controller_tank_block"
+        },
+        {
+          "block": "fluidsystem:interface_tank_block"
+        },
+        {
+          "block": "fluidsystem:input_tank_block"
+        }
+      ]
+    }
+  }
+}

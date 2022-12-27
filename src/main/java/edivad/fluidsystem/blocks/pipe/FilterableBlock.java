@@ -12,16 +12,21 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.fluids.FluidType;
 
 public class FilterableBlock extends RotableBlock {
 
-    public FilterableBlock(Properties properties) {
-        super(properties);
+    public FilterableBlock() {
+        super(Properties.of(Material.METAL)
+                .sound(SoundType.STONE)
+                .strength(5.0F)
+                .requiresCorrectToolForDrops());
     }
 
     @Override

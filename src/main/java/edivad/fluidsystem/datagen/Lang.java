@@ -3,19 +3,17 @@ package edivad.fluidsystem.datagen;
 import edivad.fluidsystem.Main;
 import edivad.fluidsystem.setup.Registration;
 import edivad.fluidsystem.tools.Translations;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.LanguageProvider;
 
 public class Lang extends LanguageProvider {
 
-    public Lang(DataGenerator gen) {
-        super(gen, Main.MODID, "en_us");
+    public Lang(PackOutput packOutput) {
+        super(packOutput, Main.MODID, "en_us");
     }
 
     @Override
     protected void addTranslations() {
-        add("itemGroup." + Main.MODID + "_tab", Main.MODNAME);
-
         add(Registration.STRUCTURAL_TANK_BLOCK.get(), "Tank Block");
         add(Registration.CONTROLLER_TANK_BLOCK.get(), "Tank Block Controller");
         add(Registration.INTERFACE_TANK_BLOCK.get(), "Tank Block Interface");

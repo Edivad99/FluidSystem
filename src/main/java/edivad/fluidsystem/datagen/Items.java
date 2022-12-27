@@ -3,7 +3,7 @@ package edivad.fluidsystem.datagen;
 import edivad.fluidsystem.Main;
 import edivad.fluidsystem.blocks.pipe.PipeBlock;
 import edivad.fluidsystem.setup.Registration;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
@@ -12,8 +12,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class Items extends ItemModelProvider {
 
-    public Items(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-        super(generator, Main.MODID, existingFileHelper);
+    public Items(PackOutput packOutput, ExistingFileHelper existingFileHelper) {
+        super(packOutput, Main.MODID, existingFileHelper);
     }
 
     @Override

@@ -2,7 +2,6 @@ package edivad.fluidsystem.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
 import edivad.edivadlib.tools.utils.FluidUtils;
 import edivad.fluidsystem.blockentity.pipe.FilterablePipeBlockEntity;
 import edivad.fluidsystem.blocks.pipe.OutputPipeBlock;
@@ -17,6 +16,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidStack;
+import org.joml.Matrix4f;
 
 @OnlyIn(Dist.CLIENT)
 public class RenderFilterablePipeBlockEntity implements BlockEntityRenderer<FilterablePipeBlockEntity> {
@@ -36,7 +36,7 @@ public class RenderFilterablePipeBlockEntity implements BlockEntityRenderer<Filt
 
         mStack.pushPose();
         Matrix4f matrix4f = mStack.last().pose();
-        VertexConsumer renderer = bufferIn.getBuffer(RenderType.text(sprite.atlas().location()));
+        VertexConsumer renderer = bufferIn.getBuffer(RenderType.text(sprite.atlasLocation()));
 
         float u1 = sprite.getU0();
         float v1 = sprite.getV0();

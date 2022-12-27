@@ -49,7 +49,10 @@ public class PipeBlock extends Block implements SimpleWaterloggedBlock, IFluidSy
     private static final VoxelShape STRAIGHT_Z_SHAPE = box(4, 0, 4, 12, 16, 12);
 
     public PipeBlock() {
-        super(Properties.of(Material.METAL).sound(SoundType.STONE).strength(5.0F));
+        super(Properties.of(Material.METAL)
+                .sound(SoundType.STONE)
+                .strength(5.0F)
+                .requiresCorrectToolForDrops());
         this.registerDefaultState(defaultBlockState()//
                 .setValue(NORTH, false)//
                 .setValue(EAST, false)//

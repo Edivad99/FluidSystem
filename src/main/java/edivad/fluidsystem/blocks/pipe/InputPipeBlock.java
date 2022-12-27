@@ -27,8 +27,8 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class InputPipeBlock extends FilterableBlock implements IFluidSystemConnectableBlock, EntityBlock {
@@ -36,7 +36,7 @@ public class InputPipeBlock extends FilterableBlock implements IFluidSystemConne
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     public InputPipeBlock() {
-        super(Properties.of(Material.METAL).sound(SoundType.STONE).strength(5.0F));
+        super();
         this.registerDefaultState(defaultBlockState().setValue(POWERED, false));
     }
 

@@ -1,0 +1,10 @@
+// 1.19.3	2022-12-10T13:03:42.595705367	Item Models: fluidsystem
+cc30500253c4fe651c4873dd0b038f6ec2b4d763 assets/fluidsystem/models/item/controller_tank_block.json
+faa5b6fad4b0f7020e29433452510c464f0bcee4 assets/fluidsystem/models/item/infinite_water_source.json
+f14c2401e6c789c95516801bf2ee9def75eb9ae0 assets/fluidsystem/models/item/input_pipe.json
+810548a47571ba170beb31a5bb6e55bc9783bc5a assets/fluidsystem/models/item/input_tank_block.json
+f76be422255fbe5f27372a498a6efffdf972cbe2 assets/fluidsystem/models/item/interface_tank_block.json
+65fd040e428f18ae5a10c32d31563c8362b35fcc assets/fluidsystem/models/item/output_pipe.json
+678f888fcdc4cfdefe32dbebcb551146953d02be assets/fluidsystem/models/item/pipe.json
+4aef7935ce9bd716df15b7e14d45a254b8bacd43 assets/fluidsystem/models/item/pipe_controller.json
+b10642c615438b1c7ebfc31854e7a7de71519f68 assets/fluidsystem/models/item/structural_tank_block.json

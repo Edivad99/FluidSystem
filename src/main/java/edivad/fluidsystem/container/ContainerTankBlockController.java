@@ -9,7 +9,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerTankBlockController extends AbstractContainerMenu {
@@ -35,7 +35,7 @@ public class ContainerTankBlockController extends AbstractContainerMenu {
 
     private void addCustomSlots() {
         if(blockentity != null) {
-            blockentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            blockentity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(h -> {
                 this.addSlot(new SlotItemHandler(h, 0, 92, 22));
                 this.addSlot(new SlotItemHandler(h, 1, 139, 22));
             });

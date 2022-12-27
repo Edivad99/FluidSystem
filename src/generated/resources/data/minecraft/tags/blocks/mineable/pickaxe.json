@@ -1,0 +1,13 @@
+{
+  "values": [
+    "fluidsystem:infinite_water_source",
+    "fluidsystem:pipe",
+    "fluidsystem:pipe_controller",
+    "fluidsystem:input_pipe",
+    "fluidsystem:output_pipe",
+    "fluidsystem:structural_tank_block",
+    "fluidsystem:interface_tank_block",
+    "fluidsystem:input_tank_block",
+    "fluidsystem:controller_tank_block"
+  ]
+}

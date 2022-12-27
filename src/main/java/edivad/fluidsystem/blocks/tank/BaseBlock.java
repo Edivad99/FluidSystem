@@ -15,7 +15,10 @@ import net.minecraft.world.level.material.Material;
 public class BaseBlock extends Block {
 
     public BaseBlock() {
-        super(Properties.of(Material.METAL).sound(SoundType.STONE).strength(5.0F));
+        super(Properties.of(Material.METAL)
+                .sound(SoundType.STONE)
+                .strength(5.0F)
+                .requiresCorrectToolForDrops());
     }
 
     @Override

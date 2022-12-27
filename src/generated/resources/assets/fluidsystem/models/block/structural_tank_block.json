@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "fluidsystem:block/tank/structural_tank_block"
+  }
+}

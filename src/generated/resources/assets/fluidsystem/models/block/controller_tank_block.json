@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "fluidsystem:block/tank/structural_tank_block",
+    "side": "fluidsystem:block/tank/controller_tank_block",
+    "top": "fluidsystem:block/tank/structural_tank_block"
+  }
+}

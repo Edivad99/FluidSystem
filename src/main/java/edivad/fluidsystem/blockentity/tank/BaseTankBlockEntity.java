@@ -124,10 +124,13 @@ public abstract class BaseTankBlockEntity extends BlockEntity {
     public void setRemoved() {
         super.setRemoved();
         for(Direction side : Direction.values()) {
-            BlockEntity te = level.getBlockEntity(worldPosition.relative(side));
-            if(te instanceof BaseTankBlockEntity baseTankBlock) {
-                baseTankBlock.master = null;
-                baseTankBlock.initializeMultiblockIfNecessary();
+            var pos = worldPosition.relative(side);
+            if (level != null && level.isLoaded(pos)) {
+                var be = level.getBlockEntity(pos);
+                if(be instanceof BaseTankBlockEntity baseTankBlock) {
+                    baseTankBlock.master = null;
+                    baseTankBlock.initializeMultiblockIfNecessary();
+                }
             }
         }
     }

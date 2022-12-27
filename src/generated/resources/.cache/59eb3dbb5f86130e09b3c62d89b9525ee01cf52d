@@ -1,0 +1,10 @@
+// 1.19.3	2022-12-10T13:03:42.593701064	Loot Tables
+8f9bfaf2f4d0ffe9d3eef0f1ecc3589f0b50351d data/fluidsystem/loot_tables/blocks/controller_tank_block.json
+cce0e709d3f05dd77b3a02b588560b20b6aa6ac7 data/fluidsystem/loot_tables/blocks/infinite_water_source.json
+8a7cfa4453d194fd32f5c366de1eda3753ae8846 data/fluidsystem/loot_tables/blocks/input_pipe.json
+e0165e732794e7be235dbd12550bd62a68af205f data/fluidsystem/loot_tables/blocks/input_tank_block.json
+342b0d0e6db5cf4ebc1fe53421dd0d12e41cd3de data/fluidsystem/loot_tables/blocks/interface_tank_block.json
+563a870570852db141972eb70562d65aeaeb5690 data/fluidsystem/loot_tables/blocks/output_pipe.json
+3f04bcdac3fd0ce3589a0408502fa0455a0982ab data/fluidsystem/loot_tables/blocks/pipe.json
+517c2988f7510711e870e8609e7697e0998d1603 data/fluidsystem/loot_tables/blocks/pipe_controller.json
+a377556cf0f9522f7eef9ba71c5ab4609e7a3fb0 data/fluidsystem/loot_tables/blocks/structural_tank_block.json

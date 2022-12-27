@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "a": {
+      "item": "minecraft:bucket"
+    },
+    "b": {
+      "item": "fluidsystem:structural_tank_block"
+    },
+    "c": {
+      "item": "minecraft:water_bucket"
+    }
+  },
+  "pattern": [
+    "   ",
+    "abc",
+    "   "
+  ],
+  "result": {
+    "item": "fluidsystem:interface_tank_block"
+  }
+}

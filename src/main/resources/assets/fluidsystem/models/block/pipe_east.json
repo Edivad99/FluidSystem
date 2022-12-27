@@ -1,33 +1,33 @@
 {
-	"parent": "block/block",
-	"textures": {
-		"particle": "fluidsystem:blocks/pipe",
-		"pipe": "fluidsystem:blocks/pipe"
-	},
-	"elements": [
-		{
-			"name": "center",
-			"from": [3.2, 3.2, 3.2],
-			"to": [12.8, 12.8, 12.8],
-			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "texture": "#pipe"},
-				"east": {"uv": [0, 0, 16, 16], "texture": "#pipe"},
-				"south": {"uv": [0, 0, 16, 16], "texture": "#pipe"},
-				"west": {"uv": [0, 0, 16, 16], "texture": "#pipe"},
-				"up": {"uv": [0, 0, 16, 16], "texture": "#pipe"},
-				"down": {"uv": [0, 0, 16, 16], "texture": "#pipe"}
-			}
-		},
-		{
-			"name": "section",
-			"from": [12.5, 4, 4],
-			"to": [16, 12, 12],
-			"faces": {
-				"north": {"uv": [0, 2, 16, 14], "rotation": 270, "texture": "#pipe"},
-				"south": {"uv": [0, 2, 16, 14], "rotation": 90, "texture": "#pipe"},
-				"up": {"uv": [0, 2, 16, 14], "rotation": 90, "texture": "#pipe"},
-				"down": {"uv": [0, 2, 16, 14], "rotation": 90, "texture": "#pipe"}
-			}
-		}
-	]
+  "parent": "block/block",
+  "textures": {
+    "particle": "fluidsystem:block/pipe",
+    "pipe": "fluidsystem:block/pipe"
+  },
+  "elements": [
+    {
+      "name": "center",
+      "from": [3.2, 3.2, 3.2],
+      "to": [12.8, 12.8, 12.8],
+      "faces": {
+        "north": {"uv": [0, 0, 16, 16], "texture": "#pipe"},
+        "east": {"uv": [0, 0, 16, 16], "texture": "#pipe"},
+        "south": {"uv": [0, 0, 16, 16], "texture": "#pipe"},
+        "west": {"uv": [0, 0, 16, 16], "texture": "#pipe"},
+        "up": {"uv": [0, 0, 16, 16], "texture": "#pipe"},
+        "down": {"uv": [0, 0, 16, 16], "texture": "#pipe"}
+      }
+    },
+    {
+      "name": "section",
+      "from": [12.5, 4, 4],
+      "to": [16, 12, 12],
+      "faces": {
+        "north": {"uv": [0, 2, 16, 14], "rotation": 270, "texture": "#pipe"},
+        "south": {"uv": [0, 2, 16, 14], "rotation": 90, "texture": "#pipe"},
+        "up": {"uv": [0, 2, 16, 14], "rotation": 90, "texture": "#pipe"},
+        "down": {"uv": [0, 2, 16, 14], "rotation": 90, "texture": "#pipe"}
+      }
+    }
+  ]
 }

@@ -3,8 +3,6 @@ package edivad.fluidsystem.setup;
 import edivad.fluidsystem.Main;
 import edivad.fluidsystem.compat.top.TOPProvider;
 import edivad.fluidsystem.network.PacketHandler;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
@@ -18,14 +16,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 @Mod.EventBusSubscriber(modid = Main.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModSetup {
-
-    public static final CreativeModeTab fluidSystemTab = new CreativeModeTab(Main.MODID + "_tab") {
-
-        @Override
-        public ItemStack makeIcon() {
-            return new ItemStack(Registration.INFINITE_WATER_SOURCE.get());
-        }
-    };
 
     public static void init(final FMLCommonSetupEvent event) {
         PacketHandler.init();
