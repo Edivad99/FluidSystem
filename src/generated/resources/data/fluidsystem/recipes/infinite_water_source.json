@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "fluidsystem:infinite_water_source"
-  }
+  },
+  "show_notification": true
 }

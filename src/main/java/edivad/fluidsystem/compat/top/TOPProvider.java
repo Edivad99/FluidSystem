@@ -1,6 +1,7 @@
 package edivad.fluidsystem.compat.top;
 
-import edivad.fluidsystem.Main;
+import java.util.function.Function;
+import edivad.fluidsystem.FluidSystem;
 import edivad.fluidsystem.blockentity.pipe.FilterablePipeBlockEntity;
 import edivad.fluidsystem.blockentity.tank.BaseTankBlockEntity;
 import edivad.fluidsystem.blockentity.tank.ControllerTankBlockEntity;
@@ -23,54 +24,56 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
-import java.util.function.Function;
-
 public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, Void> {
 
-    @Override
-    public Void apply(ITheOneProbe probe) {
-        probe.registerProvider(this);
-        probe.registerElementFactory(new IElementFactory() {
+  @Override
+  public Void apply(ITheOneProbe probe) {
+    probe.registerProvider(this);
+    probe.registerElementFactory(new IElementFactory() {
 
-            @Override
-            public IElement createElement(FriendlyByteBuf friendlyByteBuf) {
-                return new MyFluidElement(friendlyByteBuf);
-            }
+      @Override
+      public IElement createElement(FriendlyByteBuf friendlyByteBuf) {
+        return new MyFluidElement(friendlyByteBuf);
+      }
 
-            @Override
-            public ResourceLocation getId() {
-                return MyFluidElement.ID;
-            }
+      @Override
+      public ResourceLocation getId() {
+        return MyFluidElement.ID;
+      }
+    });
+    return null;
+  }
+
+  @Override
+  public void addProbeInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level level,
+      BlockState state, IProbeHitData data) {
+    BlockEntity te = level.getBlockEntity(data.getPos());
+
+    if (te instanceof BaseTankBlockEntity tankBlock) {
+      BaseTankBlockEntity tankBase = tankBlock.getMaster();
+      if (tankBase != null) {
+        ControllerTankBlockEntity controller = (ControllerTankBlockEntity) tankBase;
+
+        var blocks = String.format("%d/%d", controller.getNumberOfTanksBlock(),
+            Config.Tank.NUMBER_OF_MODULES.get());
+        probeInfo.horizontal().text(Component.translatable(Translations.TANKS_BLOCK, blocks));
+        controller.getFluidCap().ifPresent(h -> {
+          probeInfo.element(
+              new MyFluidElement(h.getFluidInTank(0), controller.getTotalCapacity(), controller));
         });
-        return null;
+      }
+    } else if (te instanceof FilterablePipeBlockEntity blockOutputPipe) {
+      Fluid filter = blockOutputPipe.getFluidFilter();
+      if (!filter.isSame(Fluids.EMPTY)) {
+        String fluidName = Component.translatable(filter.getFluidType().getDescriptionId())
+            .getString();
+        probeInfo.horizontal().text(Component.translatable(Translations.FLUID_FILTERED, fluidName));
+      }
     }
+  }
 
-    @Override
-    public void addProbeInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level level, BlockState state, IProbeHitData data) {
-        BlockEntity te = level.getBlockEntity(data.getPos());
-
-        if(te instanceof BaseTankBlockEntity tankBlock) {
-            BaseTankBlockEntity tankBase = tankBlock.getMaster();
-            if(tankBase != null) {
-                ControllerTankBlockEntity controller = (ControllerTankBlockEntity) tankBase;
-
-                probeInfo.horizontal().text(Component.translatable(Translations.TANKS_BLOCK).append(String.format("%d/%d", controller.getNumberOfTanksBlock(), Config.Tank.NUMBER_OF_MODULES.get())));
-                controller.getFluidCap().ifPresent(h -> {
-                    probeInfo.element(new MyFluidElement(h.getFluidInTank(0), controller.getTotalCapacity(), controller));
-                });
-            }
-        }
-        else if(te instanceof FilterablePipeBlockEntity blockOutputPipe) {
-            Fluid filter = blockOutputPipe.getFluidFilter();
-            if(!filter.isSame(Fluids.EMPTY)) {
-                String fluidName = Component.translatable(filter.getFluidType().getDescriptionId()).getString();
-                probeInfo.horizontal().text(Component.translatable(Translations.FLUID_FILTERED, fluidName));
-            }
-        }
-    }
-
-    @Override
-    public ResourceLocation getID() {
-        return new ResourceLocation(Main.MODID, "default");
-    }
+  @Override
+  public ResourceLocation getID() {
+    return new ResourceLocation(FluidSystem.ID, "default");
+  }
 }

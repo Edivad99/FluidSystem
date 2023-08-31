@@ -1,45 +1,38 @@
 package edivad.fluidsystem.network.packet;
 
+import java.util.function.Supplier;
 import edivad.fluidsystem.network.ClientPacketHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.function.Supplier;
+public record UpdateControllerTankBlock(BlockPos pos, FluidStack fluidStack, int tanksBlock,
+                                        int totalCapacity) {
 
-public class UpdateControllerTankBlock {
+  public static UpdateControllerTankBlock decode(FriendlyByteBuf buf) {
+    var pos = buf.readBlockPos();
+    var fluidStack = buf.readFluidStack();
+    var tanksBlock = buf.readVarInt();
+    var totalCapacity = buf.readVarInt();
+    return new UpdateControllerTankBlock(pos, fluidStack, tanksBlock, totalCapacity);
+  }
 
-    private final BlockPos pos;
-    private final FluidStack fluidStack;
-    private final int tanksBlock;
-    private final int totalCapacity;
+  public void encode(FriendlyByteBuf buf) {
+    buf.writeBlockPos(pos);
+    buf.writeFluidStack(fluidStack);
+    buf.writeVarInt(tanksBlock);
+    buf.writeVarInt(totalCapacity);
+  }
 
-    public UpdateControllerTankBlock(FriendlyByteBuf buf) {
-        pos = buf.readBlockPos();
-        fluidStack = buf.readFluidStack();
-        tanksBlock = buf.readVarInt();
-        totalCapacity = buf.readVarInt();
-    }
-
-    public UpdateControllerTankBlock(BlockPos pos, FluidStack fluidStack, int tanksBlock, int totalCapacity) {
-        this.pos = pos;
-        this.fluidStack = fluidStack;
-        this.tanksBlock = tanksBlock;
-        this.totalCapacity = totalCapacity;
-    }
-
-    public void toBytes(FriendlyByteBuf buf) {
-        buf.writeBlockPos(pos);
-        buf.writeFluidStack(fluidStack);
-        buf.writeVarInt(tanksBlock);
-        buf.writeVarInt(totalCapacity);
-    }
-
-    public void handle(Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientPacketHandler.updateTankBlock(pos, fluidStack, tanksBlock, totalCapacity)));
-        ctx.get().setPacketHandled(true);
-    }
+  public void handle(Supplier<NetworkEvent.Context> ctx) {
+    ctx.get().enqueueWork(() -> {
+      if (FMLEnvironment.dist == Dist.CLIENT) {
+        ClientPacketHandler.updateTankBlock(pos, fluidStack, tanksBlock, totalCapacity);
+      }
+    });
+    ctx.get().setPacketHandled(true);
+  }
 }

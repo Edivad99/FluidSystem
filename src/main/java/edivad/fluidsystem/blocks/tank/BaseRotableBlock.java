@@ -10,25 +10,29 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 
 public class BaseRotableBlock extends RotableBlock {
 
-    public BaseRotableBlock() {
-        super(Properties.of(Material.METAL).sound(SoundType.STONE).strength(5.0F));
-    }
+  public BaseRotableBlock() {
+    super(Properties.of()
+        .mapColor(MapColor.METAL)
+        .sound(SoundType.STONE)
+        .strength(5.0F));
+  }
 
-    @Override
-    public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-        super.setPlacedBy(level, pos, state, placer, stack);
-        if(!level.isClientSide) {
-            BlockEntity blockentity = level.getBlockEntity(pos);
+  @Override
+  public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer,
+      ItemStack stack) {
+    super.setPlacedBy(level, pos, state, placer, stack);
+    if (!level.isClientSide) {
+      BlockEntity blockentity = level.getBlockEntity(pos);
 
-            if(blockentity instanceof BaseTankBlockEntity tankBlock) {
-                if(placer instanceof Player player) {
-                    tankBlock.onBlockPlacedBy(player, level, pos);
-                }
-            }
+      if (blockentity instanceof BaseTankBlockEntity tankBlock) {
+        if (placer instanceof Player player) {
+          tankBlock.onBlockPlacedBy(player, level, pos);
         }
+      }
     }
+  }
 }

@@ -30,5 +30,6 @@
     "recipes": [
       "fluidsystem:input_tank_block"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

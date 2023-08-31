@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "fluidsystem:controller_tank_block"
-  }
+  },
+  "show_notification": true
 }

@@ -15,5 +15,6 @@
   ],
   "result": {
     "item": "fluidsystem:output_pipe"
-  }
+  },
+  "show_notification": true
 }

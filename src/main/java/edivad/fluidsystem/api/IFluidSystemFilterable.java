@@ -4,7 +4,7 @@ import net.minecraft.world.level.material.Fluid;
 
 public interface IFluidSystemFilterable {
 
-    void setFilteredFluid(Fluid fluid);
+  void setFilteredFluid(Fluid fluid);
 
-    Fluid getFluidFilter();
+  Fluid getFluidFilter();
 }

@@ -17,65 +17,69 @@ import net.minecraftforge.network.PacketDistributor;
 
 public class FilterablePipeBlockEntity extends BlockEntity implements IFluidSystemFilterable {
 
-    private FluidStack fluidFilter = FluidStack.EMPTY;
+  private FluidStack fluidFilter = FluidStack.EMPTY;
 
-    public FilterablePipeBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state) {
-        super(blockEntityType, pos, state);
-    }
+  public FilterablePipeBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos,
+      BlockState state) {
+    super(blockEntityType, pos, state);
+  }
 
-    @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
-        fluidFilter.writeToNBT(tag);
-    }
+  @Override
+  protected void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
+    fluidFilter.writeToNBT(tag);
+  }
 
-    @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
-        fluidFilter = FluidStack.loadFluidStackFromNBT(tag);
-    }
+  @Override
+  public void load(CompoundTag tag) {
+    super.load(tag);
+    fluidFilter = FluidStack.loadFluidStackFromNBT(tag);
+  }
 
-    //Synchronizing on block update
-    @Override
-    public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        CompoundTag tag = new CompoundTag();
-        fluidFilter.writeToNBT(tag);
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
+  //Synchronizing on block update
+  @Override
+  public ClientboundBlockEntityDataPacket getUpdatePacket() {
+    CompoundTag tag = new CompoundTag();
+    fluidFilter.writeToNBT(tag);
+    return ClientboundBlockEntityDataPacket.create(this);
+  }
 
-    @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        CompoundTag tag = pkt.getTag();
-        fluidFilter = FluidStack.loadFluidStackFromNBT(tag);
-    }
+  @Override
+  public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+    CompoundTag tag = pkt.getTag();
+    fluidFilter = FluidStack.loadFluidStackFromNBT(tag);
+  }
 
-    //Synchronizing on chunk load
-    @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag tag = super.getUpdateTag();
-        fluidFilter.writeToNBT(tag);
-        return tag;
-    }
+  //Synchronizing on chunk load
+  @Override
+  public CompoundTag getUpdateTag() {
+    CompoundTag tag = super.getUpdateTag();
+    fluidFilter.writeToNBT(tag);
+    return tag;
+  }
 
-    @Override
-    public void handleUpdateTag(CompoundTag tag) {
-        super.handleUpdateTag(tag);
-        fluidFilter = FluidStack.loadFluidStackFromNBT(tag);
-    }
+  @Override
+  public void handleUpdateTag(CompoundTag tag) {
+    super.handleUpdateTag(tag);
+    fluidFilter = FluidStack.loadFluidStackFromNBT(tag);
+  }
 
-    @Override
-    public void setFilteredFluid(Fluid fluid) {
-        if(fluid.isSame(Fluids.EMPTY))
-            fluidFilter = FluidStack.EMPTY;
-        else
-            fluidFilter = new FluidStack(fluid, 1000);
-        setChanged();
-        if(!level.isClientSide)
-            PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpdateFilterablePipeBlock(getBlockPos(), fluidFilter));
+  @Override
+  public void setFilteredFluid(Fluid fluid) {
+    if (fluid.isSame(Fluids.EMPTY)) {
+      fluidFilter = FluidStack.EMPTY;
+    } else {
+      fluidFilter = new FluidStack(fluid, 1000);
     }
+    setChanged();
+    if (!level.isClientSide) {
+      PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(),
+          new UpdateFilterablePipeBlock(getBlockPos(), fluidFilter));
+    }
+  }
 
-    @Override
-    public Fluid getFluidFilter() {
-        return fluidFilter.getFluid();
-    }
+  @Override
+  public Fluid getFluidFilter() {
+    return fluidFilter.getFluid();
+  }
 }

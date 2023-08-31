@@ -30,5 +30,6 @@
     "recipes": [
       "fluidsystem:infinite_water_source"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

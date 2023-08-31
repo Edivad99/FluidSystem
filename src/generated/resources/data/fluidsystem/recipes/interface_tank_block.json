@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "fluidsystem:interface_tank_block"
-  }
+  },
+  "show_notification": true
 }

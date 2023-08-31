@@ -10,25 +10,26 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class ClientPacketHandler {
 
-    public static void  updateTankBlock(BlockPos pos, FluidStack fluidStack, int tanksBlock, int totalCapacity) {
-        Level level = Minecraft.getInstance().level;
-        if(level.isLoaded(pos)) {
-            BlockEntity be = level.getBlockEntity(pos);
-            if(be instanceof ControllerTankBlockEntity controller) {
-                controller.clientFluidStack = fluidStack;
-                controller.tanksBlock = tanksBlock;
-                controller.totalCapacity = totalCapacity;
-            }
-        }
+  public static void updateTankBlock(BlockPos pos, FluidStack fluidStack, int tanksBlock,
+      int totalCapacity) {
+    Level level = Minecraft.getInstance().level;
+    if (level.isLoaded(pos)) {
+      BlockEntity be = level.getBlockEntity(pos);
+      if (be instanceof ControllerTankBlockEntity controller) {
+        controller.clientFluidStack = fluidStack;
+        controller.tanksBlock = tanksBlock;
+        controller.totalCapacity = totalCapacity;
+      }
     }
+  }
 
-    public static void  updateFilterableBlock(BlockPos pos, FluidStack fluidStack) {
-        Level level = Minecraft.getInstance().level;
-        if(level.isLoaded(pos)) {
-            BlockEntity be = level.getBlockEntity(pos);
-            if(be instanceof FilterablePipeBlockEntity output) {
-                output.setFilteredFluid(fluidStack.getFluid());
-            }
-        }
+  public static void updateFilterableBlock(BlockPos pos, FluidStack fluidStack) {
+    Level level = Minecraft.getInstance().level;
+    if (level.isLoaded(pos)) {
+      BlockEntity be = level.getBlockEntity(pos);
+      if (be instanceof FilterablePipeBlockEntity output) {
+        output.setFilteredFluid(fluidStack.getFluid());
+      }
     }
+  }
 }
