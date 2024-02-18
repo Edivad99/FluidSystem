@@ -23,7 +23,7 @@ public class BaseTankBlockComponent implements IBlockComponentProvider {
         int numberOfBlocks = data.getInt("numberOfTanksBlock");
         String percentage = String.format("%d/%d", numberOfBlocks,
             Config.Tank.NUMBER_OF_MODULES.get());
-        tooltip.add(Component.translatable(Translations.TANKS_BLOCK).append(percentage));
+        tooltip.add(Component.translatable(Translations.TANKS_BLOCK, percentage));
 
         if (data.getBoolean("canReadLiquid")) {
           int fluidAmount = data.getInt("fluidAmount");

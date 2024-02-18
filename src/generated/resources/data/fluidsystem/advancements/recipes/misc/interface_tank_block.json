@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_structural_tank_block",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_structural_tank_block"
     ]
   ],
   "rewards": {
     "recipes": [
       "fluidsystem:interface_tank_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

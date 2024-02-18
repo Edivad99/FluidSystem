@@ -1,8 +1,8 @@
 package edivad.fluidsystem.setup;
 
 import edivad.fluidsystem.client.render.RenderFilterablePipeBlockEntity;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 
 public class ClientSetup {
 
@@ -11,9 +11,9 @@ public class ClientSetup {
   }
 
   private static void registerRenders(EntityRenderersEvent.RegisterRenderers event) {
-    event.registerBlockEntityRenderer(Registration.OUTPUT_PIPE_TILE.get(),
+    event.registerBlockEntityRenderer(Registration.OUTPUT_PIPE_BLOCK_ENTITY.get(),
         RenderFilterablePipeBlockEntity::new);
-    event.registerBlockEntityRenderer(Registration.INPUT_PIPE_TILE.get(),
+    event.registerBlockEntityRenderer(Registration.INPUT_PIPE_BLOCK_ENTITY.get(),
         RenderFilterablePipeBlockEntity::new);
   }
 }

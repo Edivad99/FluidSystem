@@ -1,14 +1,14 @@
 package edivad.fluidsystem.setup;
 
 import edivad.fluidsystem.FluidSystem;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class Config {
 
   public static void init() {
-    var SERVER_BUILDER = new ForgeConfigSpec.Builder();
+    var SERVER_BUILDER = new ModConfigSpec.Builder();
     SERVER_BUILDER.comment(FluidSystem.NAME + "'s config");
     Tank.registerServerConfig(SERVER_BUILDER);
 
@@ -17,10 +17,10 @@ public class Config {
 
   public static class Tank {
 
-    public static ForgeConfigSpec.IntValue BLOCK_CAPACITY;
-    public static ForgeConfigSpec.IntValue NUMBER_OF_MODULES;
+    public static ModConfigSpec.IntValue BLOCK_CAPACITY;
+    public static ModConfigSpec.IntValue NUMBER_OF_MODULES;
 
-    public static void registerServerConfig(ForgeConfigSpec.Builder SERVER_BUILDER) {
+    public static void registerServerConfig(ModConfigSpec.Builder SERVER_BUILDER) {
       SERVER_BUILDER.push("Tank");
 
       Tank.BLOCK_CAPACITY = SERVER_BUILDER

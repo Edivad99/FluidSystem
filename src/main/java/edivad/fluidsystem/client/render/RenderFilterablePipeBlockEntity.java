@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public class RenderFilterablePipeBlockEntity implements
     BlockEntityRenderer<FilterablePipeBlockEntity> {
@@ -29,7 +29,7 @@ public class RenderFilterablePipeBlockEntity implements
       return;
     }
 
-    FluidStack fluid = new FluidStack(blockentity.getFluidFilter(), 1000);
+    var fluid = new FluidStack(blockentity.getFluidFilter(), 1000);
     TextureAtlasSprite sprite = FluidUtils.getFluidTexture(fluid);
     if (sprite == null) {
       return;

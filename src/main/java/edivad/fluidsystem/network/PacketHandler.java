@@ -1,36 +1,26 @@
 package edivad.fluidsystem.network;
 
+import edivad.edivadlib.network.BasePacketHandler;
+import edivad.edivadlib.network.EdivadLibPacket;
 import edivad.fluidsystem.FluidSystem;
 import edivad.fluidsystem.network.packet.UpdateControllerTankBlock;
 import edivad.fluidsystem.network.packet.UpdateFilterablePipeBlock;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.network.PacketDistributor;
 
-public class PacketHandler {
+public class PacketHandler extends BasePacketHandler {
 
-  private static final String PROTOCOL_VERSION = "1";
-  public static SimpleChannel INSTANCE = NetworkRegistry.ChannelBuilder
-      .named(new ResourceLocation(FluidSystem.ID, "network"))
-      .clientAcceptedVersions(PROTOCOL_VERSION::equals)
-      .serverAcceptedVersions(PROTOCOL_VERSION::equals)
-      .networkProtocolVersion(() -> PROTOCOL_VERSION)
-      .simpleChannel();
+  public PacketHandler(IEventBus modEventBus) {
+    super(modEventBus, FluidSystem.ID, "1");
+  }
 
+  @Override
+  protected void registerServerToClient(PacketRegistrar registrar) {
+    registrar.play(UpdateControllerTankBlock.ID, UpdateControllerTankBlock::read);
+    registrar.play(UpdateFilterablePipeBlock.ID, UpdateFilterablePipeBlock::read);
+  }
 
-  public static void init() {
-    INSTANCE
-        .messageBuilder(UpdateControllerTankBlock.class, 0, NetworkDirection.PLAY_TO_CLIENT)
-        .encoder(UpdateControllerTankBlock::encode)
-        .decoder(UpdateControllerTankBlock::decode)
-        .consumerMainThread(UpdateControllerTankBlock::handle)
-        .add();
-    INSTANCE
-        .messageBuilder(UpdateFilterablePipeBlock.class, 1, NetworkDirection.PLAY_TO_CLIENT)
-        .encoder(UpdateFilterablePipeBlock::encode)
-        .decoder(UpdateFilterablePipeBlock::decode)
-        .consumerMainThread(UpdateFilterablePipeBlock::handle)
-        .add();
+  public static void sendToAll(EdivadLibPacket packet) {
+    PacketDistributor.ALL.noArg().send(packet);
   }
 }

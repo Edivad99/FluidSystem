@@ -9,14 +9,14 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.client.model.generators.BlockModelBuilder;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ModelBuilder.FaceRotation;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.ModelProvider;
-import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
-import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.ModelProvider;
+import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder;
+import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public abstract class CustomBlockStateProvider extends BlockStateProvider {
 
@@ -207,14 +207,14 @@ public abstract class CustomBlockStateProvider extends BlockStateProvider {
       model.element()
           .from(0, 0, 0)
           .to(16, 16, 16)
-          .face(Direction.DOWN).cullface(Direction.DOWN).rotation(FaceRotation.UPSIDE_DOWN)
+          .face(Direction.DOWN).cullface(Direction.DOWN).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN)
           .uvs(0, 0, 16, 16).texture(modid + ":side").end()
           .face(Direction.UP).cullface(Direction.UP).texture(modid + ":side").end()
           .face(Direction.NORTH).cullface(Direction.NORTH).texture(modid + ":front").end()
           .face(Direction.SOUTH).cullface(Direction.SOUTH).texture(modid + ":back").end()
-          .face(Direction.WEST).cullface(Direction.WEST).rotation(FaceRotation.COUNTERCLOCKWISE_90)
+          .face(Direction.WEST).cullface(Direction.WEST).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90)
           .texture(modid + ":side").end()
-          .face(Direction.EAST).cullface(Direction.EAST).rotation(FaceRotation.CLOCKWISE_90)
+          .face(Direction.EAST).cullface(Direction.EAST).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90)
           .texture(modid + ":side").end()
           .end()
           .texture(modid + ":side", i == 0 ? sideOff : sideOn)
@@ -270,14 +270,14 @@ public abstract class CustomBlockStateProvider extends BlockStateProvider {
     model.element()
         .from(0, 0, 0)
         .to(16, 16, 16)
-        .face(Direction.DOWN).cullface(Direction.DOWN).rotation(FaceRotation.UPSIDE_DOWN)
+        .face(Direction.DOWN).cullface(Direction.DOWN).rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN)
         .uvs(0, 0, 16, 16).texture(modid + ":side").end()
         .face(Direction.UP).cullface(Direction.UP).texture(modid + ":side").end()
         .face(Direction.NORTH).cullface(Direction.NORTH).texture(modid + ":front").end()
         .face(Direction.SOUTH).cullface(Direction.SOUTH).texture(modid + ":back").end()
-        .face(Direction.WEST).cullface(Direction.WEST).rotation(FaceRotation.COUNTERCLOCKWISE_90)
+        .face(Direction.WEST).cullface(Direction.WEST).rotation(ModelBuilder.FaceRotation.COUNTERCLOCKWISE_90)
         .texture(modid + ":side").end()
-        .face(Direction.EAST).cullface(Direction.EAST).rotation(FaceRotation.CLOCKWISE_90)
+        .face(Direction.EAST).cullface(Direction.EAST).rotation(ModelBuilder.FaceRotation.CLOCKWISE_90)
         .texture(modid + ":side").end()
         .end()
         .texture(modid + ":side", side)

@@ -3,12 +3,12 @@ package edivad.fluidsystem.datagen;
 import edivad.fluidsystem.FluidSystem;
 import edivad.fluidsystem.blocks.pipe.PipeBlock;
 import edivad.fluidsystem.setup.Registration;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class Items extends ItemModelProvider {
 
@@ -35,18 +35,18 @@ public class Items extends ItemModelProvider {
   }
 
   private void parentedBlock(Block block) {
-    String name = ForgeRegistries.BLOCKS.getKey(block).getPath();
+    String name = BuiltInRegistries.BLOCK.getKey(block).getPath();
     getBuilder(name).parent(new ModelFile.UncheckedModelFile(modLoc("block/" + name)));
   }
 
   private void parentedBlockActivable(Block block, boolean state) {
-    String name = ForgeRegistries.BLOCKS.getKey(block).getPath();
+    String name = BuiltInRegistries.BLOCK.getKey(block).getPath();
     getBuilder(name).parent(
         new ModelFile.UncheckedModelFile(modLoc("block/" + name + (state ? "_on" : "_off"))));
   }
 
   private void parentedPipe(PipeBlock pipe) {
-    String name = ForgeRegistries.BLOCKS.getKey(pipe).getPath();
+    String name = BuiltInRegistries.BLOCK.getKey(pipe).getPath();
     getBuilder(name).parent(new ModelFile.UncheckedModelFile(modLoc("block/" + name + "_center")));
   }
 }

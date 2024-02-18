@@ -1,8 +1,8 @@
 package edivad.fluidsystem.api;
 
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 /**
  * Tile entities that implement this interface will be able to receive fluid from the pressure

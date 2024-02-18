@@ -13,8 +13,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class StructuralTankBlock extends BaseBlock implements EntityBlock {
 
@@ -24,7 +22,6 @@ public class StructuralTankBlock extends BaseBlock implements EntityBlock {
     return new StructuralTankBlockEntity(pos, state);
   }
 
-  @OnlyIn(Dist.CLIENT)
   @Override
   public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip,
       TooltipFlag flagIn) {

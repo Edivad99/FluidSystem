@@ -1,20 +1,17 @@
 package edivad.fluidsystem.blockentity.tank;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import edivad.fluidsystem.api.IFluidSystemEject;
 import edivad.fluidsystem.setup.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class InputTankBlockEntity extends BaseTankBlockEntity implements IFluidSystemEject {
 
   public InputTankBlockEntity(BlockPos pos, BlockState state) {
-    super(Registration.INPUT_TANK_BLOCK_TILE.get(), pos, state);
+    super(Registration.INPUT_TANK_BLOCK_ENTITY.get(), pos, state);
   }
 
   @Override
@@ -30,13 +27,12 @@ public class InputTankBlockEntity extends BaseTankBlockEntity implements IFluidS
   @Override
   public int fill(FluidStack resource, IFluidHandler.FluidAction action) {
     if (acceptFluid(resource.getFluid())) {
-      ControllerTankBlockEntity controller = (ControllerTankBlockEntity) getMaster();
+      var controller = (ControllerTankBlockEntity) getMaster();
       if (controller != null) {
-        AtomicInteger res = new AtomicInteger(0);
-        controller.getFluidCap().ifPresent(h -> {
-          res.set(h.fill(resource, action));
-        });
-        return res.get();
+        var fluidCap = controller.getFluidCap();
+        if (fluidCap != null) {
+          return fluidCap.fill(resource, action);
+        }
       }
     }
     return 0;
@@ -44,17 +40,13 @@ public class InputTankBlockEntity extends BaseTankBlockEntity implements IFluidS
 
   @Override
   public boolean acceptFluid(Fluid fluidToInsert) {
-    ControllerTankBlockEntity controller = (ControllerTankBlockEntity) getMaster();
+    var controller = (ControllerTankBlockEntity) getMaster();
     if (controller != null) {
-      AtomicBoolean result = new AtomicBoolean(false);
-      controller.getFluidCap().ifPresent(h -> {
-        if (h.getFluidInTank(0).getFluid().isSame(Fluids.EMPTY)) {
-          result.set(true);
-        } else {
-          result.set(h.getFluidInTank(0).getFluid().isSame(fluidToInsert));
-        }
-      });
-      return result.get();
+      var fluidCap = controller.getFluidCap();
+      if (fluidCap != null) {
+        var fluidStack = fluidCap.getFluidInTank(0);
+        return fluidStack.isEmpty() || fluidStack.is(fluidToInsert);
+      }
     }
     return false;
   }

@@ -40,18 +40,17 @@ public class ControllerTankBlock extends BaseBlock implements EntityBlock {
     return level.isClientSide()
         ? null
         : BaseEntityBlock.createTickerHelper(blockEntityType,
-            Registration.CONTROLLER_TANK_BLOCK_TILE.get(), BaseTankBlockEntity::serverTick);
+            Registration.CONTROLLER_TANK_BLOCK_ENTITY.get(), BaseTankBlockEntity::serverTick);
   }
 
   @Override
   public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
       InteractionHand handIn, BlockHitResult hit) {
-    if (level.isClientSide) {
-      return InteractionResult.SUCCESS;
+    if (player instanceof ServerPlayer serverPlayer) {
+      level.getBlockEntity(pos, Registration.CONTROLLER_TANK_BLOCK_ENTITY.get())
+          .ifPresent(blockEntity -> blockEntity.activate(serverPlayer));
     }
-    return level.getBlockEntity(pos, Registration.CONTROLLER_TANK_BLOCK_TILE.get())
-        .map(x -> x.activate((ServerPlayer) player))
-        .orElse(InteractionResult.FAIL);
+    return InteractionResult.sidedSuccess(level.isClientSide());
   }
 
   @Override

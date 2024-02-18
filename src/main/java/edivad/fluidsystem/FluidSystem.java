@@ -3,6 +3,9 @@ package edivad.fluidsystem;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 import edivad.edivadlib.setup.UpdateChecker;
+import edivad.fluidsystem.blockentity.InfinityWaterSourceBlockEntity;
+import edivad.fluidsystem.blockentity.tank.ControllerTankBlockEntity;
+import edivad.fluidsystem.blockentity.tank.InterfaceTankBlockEntity;
 import edivad.fluidsystem.client.screen.ScreenModularTank;
 import edivad.fluidsystem.compat.top.TOPProvider;
 import edivad.fluidsystem.datagen.BlockStates;
@@ -19,16 +22,18 @@ import edivad.fluidsystem.setup.Registration;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.loot.LootTableProvider;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.fml.InterModComms;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.InterModComms;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 @Mod(FluidSystem.ID)
 public class FluidSystem {
@@ -37,24 +42,22 @@ public class FluidSystem {
   public static final String NAME = "FluidSystem";
   public static final Logger LOGGER = LogUtils.getLogger();
 
-  public FluidSystem() {
-    var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
+  public FluidSystem(IEventBus modEventBus, Dist dist) {
     Registration.init(modEventBus);
     modEventBus.addListener(this::handleCommonSetup);
     modEventBus.addListener(this::handleClientSetup);
     modEventBus.addListener(this::handleGatherData);
+    modEventBus.addListener(this::handleRegisterCapabilities);
     FluidsystemCreativeModeTabs.register(modEventBus);
+    var packetHandler = new PacketHandler(modEventBus);
     Config.init();
 
-    if (FMLEnvironment.dist == Dist.CLIENT) {
+    if (dist.isClient()) {
       ClientSetup.init(modEventBus);
     }
   }
 
   private void handleCommonSetup(FMLCommonSetupEvent event) {
-    PacketHandler.init();
-
     // Register TheOneProbe
     if (ModList.get().isLoaded("theoneprobe")) {
       InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPProvider::new);
@@ -62,8 +65,8 @@ public class FluidSystem {
   }
 
   private void handleClientSetup(FMLClientSetupEvent event) {
-    MinecraftForge.EVENT_BUS.register(new UpdateChecker(ID));
-    MenuScreens.register(Registration.CONTROLLER_TANK_BLOCK_CONTAINER.get(),
+    NeoForge.EVENT_BUS.register(new UpdateChecker(ID));
+    MenuScreens.register(Registration.CONTROLLER_TANK_BLOCK_MENU.get(),
         ScreenModularTank::new);
   }
 
@@ -82,5 +85,21 @@ public class FluidSystem {
     generator.addProvider(event.includeClient(), new BlockStates(packOutput, fileHelper));
     generator.addProvider(event.includeClient(),
         new Items(packOutput, event.getExistingFileHelper()));
+  }
+
+  private void handleRegisterCapabilities(RegisterCapabilitiesEvent event) {
+    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+        Registration.INFINITE_WATER_SOURCE_BLOCK_ENTITY.get(),
+        InfinityWaterSourceBlockEntity::getFluidCap);
+    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+        Registration.INTERFACE_TANK_BLOCK_ENTITY.get(),
+        InterfaceTankBlockEntity::getFluidCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        Registration.CONTROLLER_TANK_BLOCK_ENTITY.get(),
+        ControllerTankBlockEntity::getItemCap);
+  }
+
+  public static ResourceLocation rl(String path) {
+    return new ResourceLocation(ID, path);
   }
 }

@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_nether_star",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_nether_star"
     ]
   ],
   "rewards": {
     "recipes": [
       "fluidsystem:infinite_water_source"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

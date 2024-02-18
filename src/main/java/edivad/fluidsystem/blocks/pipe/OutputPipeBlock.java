@@ -17,8 +17,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class OutputPipeBlock extends FilterableBlock implements IFluidSystemConnectableBlock,
     EntityBlock {
@@ -33,7 +31,6 @@ public class OutputPipeBlock extends FilterableBlock implements IFluidSystemConn
     return new OutputPipeBlockEntity(pos, state);
   }
 
-  @OnlyIn(Dist.CLIENT)
   @Override
   public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip,
       TooltipFlag flagIn) {

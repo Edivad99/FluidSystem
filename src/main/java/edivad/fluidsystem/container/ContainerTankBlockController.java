@@ -9,8 +9,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.SlotItemHandler;
+import net.neoforged.neoforge.items.SlotItemHandler;
 
 public class ContainerTankBlockController extends AbstractContainerMenu {
 
@@ -18,7 +17,7 @@ public class ContainerTankBlockController extends AbstractContainerMenu {
 
   public ContainerTankBlockController(int id, Inventory playerInventory,
       ControllerTankBlockEntity blockentity) {
-    super(Registration.CONTROLLER_TANK_BLOCK_CONTAINER.get(), id);
+    super(Registration.CONTROLLER_TANK_BLOCK_MENU.get(), id);
     this.blockentity = blockentity;
     addCustomSlots();
     addPlayerSlots(playerInventory);
@@ -39,10 +38,11 @@ public class ContainerTankBlockController extends AbstractContainerMenu {
 
   private void addCustomSlots() {
     if (blockentity != null) {
-      blockentity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(h -> {
-        this.addSlot(new SlotItemHandler(h, 0, 92, 22));
-        this.addSlot(new SlotItemHandler(h, 1, 139, 22));
-      });
+      var itemCap = blockentity.getItemCap(null);
+      if (itemCap != null) {
+        this.addSlot(new SlotItemHandler(itemCap, 0, 92, 22));
+        this.addSlot(new SlotItemHandler(itemCap, 1, 139, 22));
+      }
     }
   }
 

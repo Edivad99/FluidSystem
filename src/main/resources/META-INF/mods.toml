@@ -1,32 +1,32 @@
 modLoader = "javafml"
-loaderVersion = "[47,)"
+loaderVersion = "${loader_version_range}"
 license = "GNU AGPLv3"
+issueTrackerURL = "https://github.com/Edivad99/FluidSystem/issues"
 
 [[mods]]
-modId = "fluidsystem"
-version="${mod_version}"
-displayName = "FluidSystem"
-updateJSONURL = "https://api.modrinth.com/updates/fluidsystem/forge_updates.json"
-issueTrackerURL = "https://github.com/Edivad99/FluidSystem/issues"
-modUrl = "https://www.curseforge.com/minecraft/mc-mods/fluidsystem"
-authors="Edivad99"
-description = "A system to manage LARGE quantities of liquids inside Minecraft"
+  modId = "fluidsystem"
+  version = "${mod_version}"
+  displayName = "FluidSystem"
+  updateJSONURL = "https://api.modrinth.com/updates/fluidsystem/forge_updates.json?neoforge=include"
+  modUrl = "https://www.curseforge.com/minecraft/mc-mods/fluidsystem"
+  authors = "Edivad99"
+  description = "A system to manage LARGE quantities of liquids inside Minecraft"
 
 [[dependencies.fluidsystem]]
-  modId = "forge"
-  mandatory = true
-  versionRange="[47,)"
+  modId = "neoforge"
+  type = "required"
+  versionRange = "${neo_version_range}"
   ordering = "NONE"
   side = "BOTH"
 [[dependencies.fluidsystem]]
   modId = "minecraft"
-  mandatory = true
-  versionRange="[1.20.1,1.21)"
+  type = "required"
+  versionRange = "${minecraft_version_range}"
   ordering = "NONE"
   side = "BOTH"
 [[dependencies.fluidsystem]]
   modId = "edivadlib"
-  mandatory = true
-  versionRange = "[2.0.1,)"
+  type = "required"
+  versionRange = "${edivadlib_version_range}"
   ordering = "NONE"
   side = "BOTH"

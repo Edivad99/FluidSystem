@@ -57,10 +57,11 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
         var blocks = String.format("%d/%d", controller.getNumberOfTanksBlock(),
             Config.Tank.NUMBER_OF_MODULES.get());
         probeInfo.horizontal().text(Component.translatable(Translations.TANKS_BLOCK, blocks));
-        controller.getFluidCap().ifPresent(h -> {
+        var fluidCap = controller.getFluidCap();
+        if (fluidCap != null) {
           probeInfo.element(
-              new MyFluidElement(h.getFluidInTank(0), controller.getTotalCapacity(), controller));
-        });
+              new MyFluidElement(fluidCap.getFluidInTank(0), controller.getTotalCapacity(), controller));
+        }
       }
     } else if (te instanceof FilterablePipeBlockEntity blockOutputPipe) {
       Fluid filter = blockOutputPipe.getFluidFilter();

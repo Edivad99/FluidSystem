@@ -16,7 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public class ScreenModularTank extends AbstractContainerScreen<ContainerTankBlockController> {
 
@@ -68,7 +68,7 @@ public class ScreenModularTank extends AbstractContainerScreen<ContainerTankBloc
 
   @Override
   public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-    this.renderBackground(guiGraphics);
+    this.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
     super.render(guiGraphics, mouseX, mouseY, partialTick);
     this.renderTooltip(guiGraphics, mouseX, mouseY);
     if (mouseX > this.leftPos + 6 &&

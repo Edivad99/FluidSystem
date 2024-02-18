@@ -10,8 +10,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -19,33 +17,26 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 
 public class ControllerTankBlockEntity extends BaseTankBlockEntity implements MenuProvider {
 
   private final ItemStackHandler itemHandler = createHandler();
-  private final LazyOptional<IItemHandler> item = LazyOptional.of(() -> itemHandler);
   private final FluidTank tank = new FluidTank(blockCapacity());
 
   //Client Side
   public FluidStack clientFluidStack = FluidStack.EMPTY;
   public int tanksBlock;
   public int totalCapacity;
-  private LazyOptional<IFluidHandler> fluid;
 
   public ControllerTankBlockEntity(BlockPos pos, BlockState state) {
-    super(Registration.CONTROLLER_TANK_BLOCK_TILE.get(), pos, state);
+    super(Registration.CONTROLLER_TANK_BLOCK_ENTITY.get(), pos, state);
   }
 
   @Override
@@ -58,42 +49,45 @@ public class ControllerTankBlockEntity extends BaseTankBlockEntity implements Me
     return 0;
   }
 
-  public LazyOptional<IFluidHandler> getFluidCap() {
-    return fluid;
+  public IFluidHandler getFluidCap() {
+    return this.tank;
+  }
+
+  public IItemHandler getItemCap(Direction direction) {
+    return this.itemHandler;
   }
 
   @Override
   public void onServerTick(Level level, BlockPos pos, BlockState state,
       BaseTankBlockEntity baseTankBlockEntity) {
     super.onServerTick(level, pos, state, baseTankBlockEntity);
-
-    PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(),
-        new UpdateControllerTankBlock(getBlockPos(), tank.getFluid(), getNumberOfTanksBlock(),
-            getTotalCapacity()));
+    PacketHandler.sendToAll(
+        new UpdateControllerTankBlock(getBlockPos(), tank.getFluid(), getNumberOfTanksBlock(), getTotalCapacity()));
     ItemStack input = itemHandler.getStackInSlot(0);
     ItemStack output = itemHandler.getStackInSlot(1);
     if (input.getCount() != 1 || !output.isEmpty()) {
       return;
     }
 
-    input.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> {
-      FluidStack checkTypeofLiquid = h.getFluidInTank(0);
+    var fluidHandler = input.getCapability(Capabilities.FluidHandler.ITEM);
+    if (fluidHandler != null) {
+      var checkTypeofLiquid = fluidHandler.getFluidInTank(0);
 
       if (!tank.isEmpty()) {
         if (checkTypeofLiquid.isEmpty()) {
           var result = FluidUtil.tryFillContainerAndStow(input, tank, itemHandler,
-              h.getTankCapacity(0), null, true);
+              fluidHandler.getTankCapacity(0), null, true);
           itemHandler.extractItem(0, 1, false);
           itemHandler.insertItem(1, result.getResult(), false);
           setChanged();
-        } else if (checkTypeofLiquid.getAmount() < h.getTankCapacity(0)) {
+        } else if (checkTypeofLiquid.getAmount() < fluidHandler.getTankCapacity(0)) {
           var result = FluidUtil.tryFillContainerAndStow(input, tank, itemHandler,
-              h.getTankCapacity(0) - checkTypeofLiquid.getAmount(), null, true);
+              fluidHandler.getTankCapacity(0) - checkTypeofLiquid.getAmount(), null, true);
           itemHandler.extractItem(0, 1, false);
           itemHandler.insertItem(1, result.getResult(), false);
           setChanged();
-        } else if (checkTypeofLiquid.getAmount() == h.getTankCapacity(0) && checkTypeofLiquid.isFluidEqual(tank.getFluid())) {
-          if (h.getTankCapacity(0) <= tank.getSpace()) {
+        } else if (checkTypeofLiquid.getAmount() == fluidHandler.getTankCapacity(0) && checkTypeofLiquid.isFluidEqual(tank.getFluid())) {
+          if (fluidHandler.getTankCapacity(0) <= tank.getSpace()) {
             var result = FluidUtil.tryEmptyContainerAndStow(input, tank, itemHandler,
                 tank.getSpace(), null, true);
             itemHandler.extractItem(0, 1, false);
@@ -110,7 +104,7 @@ public class ControllerTankBlockEntity extends BaseTankBlockEntity implements Me
           setChanged();
         }
       }
-    });
+    }
   }
 
   @Override
@@ -120,23 +114,17 @@ public class ControllerTankBlockEntity extends BaseTankBlockEntity implements Me
     tank.setCapacity(newCapacity);
     if (oldCapacity > newCapacity && tank.getFluidAmount() > newCapacity) {
       tank.drain(new FluidStack(tank.getFluid(), tank.getFluidAmount() - newCapacity),
-          FluidAction.EXECUTE);
+          IFluidHandler.FluidAction.EXECUTE);
     }
-    if (fluid != null) {
-      fluid.invalidate();
-    }
-    fluid = LazyOptional.of(() -> tank);
   }
 
-  public InteractionResult activate(ServerPlayer player) {
+  public void activate(ServerPlayer player) {
     var master = getMaster();
     if (master != null) {
-      NetworkHooks.openScreen(player, this, getBlockPos());
+      player.openMenu(this, getBlockPos());
     } else {
-      player
-          .displayClientMessage(getStatus().getStatusText().withStyle(ChatFormatting.RED), true);
+      player.displayClientMessage(getStatus().getStatusText().withStyle(ChatFormatting.RED), true);
     }
-    return InteractionResult.SUCCESS;
   }
 
   @Override
@@ -163,17 +151,9 @@ public class ControllerTankBlockEntity extends BaseTankBlockEntity implements Me
 
       @Override
       public boolean isItemValid(int slot, ItemStack stack) {
-        return stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent();
+        return FluidUtil.getFluidHandler(stack).isPresent();
       }
     };
-  }
-
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-    if (cap.equals(ForgeCapabilities.ITEM_HANDLER)) {
-      return item.cast();
-    }
-    return super.getCapability(cap, side);
   }
 
   @Override

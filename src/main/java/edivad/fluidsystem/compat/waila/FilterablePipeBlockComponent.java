@@ -19,7 +19,7 @@ public class FilterablePipeBlockComponent implements IBlockComponentProvider {
       CompoundTag data = accessor.getServerData();
       if (data.getBoolean("isFluidPresent")) {
         String fluidName = Component.translatable(data.getString("fluid")).getString();
-        tooltip.add(Component.translatable(Translations.FLUID_FILTERED).append(fluidName));
+        tooltip.add(Component.translatable(Translations.FLUID_FILTERED, fluidName));
       }
     }
   }

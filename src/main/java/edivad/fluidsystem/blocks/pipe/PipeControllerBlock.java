@@ -21,8 +21,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class PipeControllerBlock extends Block implements IFluidSystemConnectableBlock {
 
@@ -78,7 +76,6 @@ public class PipeControllerBlock extends Block implements IFluidSystemConnectabl
     return !isEndPoint(level, pos);
   }
 
-  @OnlyIn(Dist.CLIENT)
   @Override
   public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip,
       TooltipFlag flagIn) {

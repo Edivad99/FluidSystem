@@ -1,10 +1,7 @@
 package edivad.fluidsystem.datagen;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
-import edivad.fluidsystem.FluidSystem;
 import edivad.fluidsystem.setup.Registration;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
@@ -12,7 +9,7 @@ import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class LootTables extends BlockLootSubProvider {
 
@@ -41,9 +38,6 @@ public class LootTables extends BlockLootSubProvider {
 
   @Override
   protected Iterable<Block> getKnownBlocks() {
-    return ForgeRegistries.BLOCKS.getEntries().stream()
-        .filter(e -> e.getKey().location().getNamespace().equals(FluidSystem.ID))
-        .map(Map.Entry::getValue)
-        .collect(Collectors.toList());
+    return Registration.getBlockEntries().stream().map(DeferredHolder::get).map(Block.class::cast).toList();
   }
 }

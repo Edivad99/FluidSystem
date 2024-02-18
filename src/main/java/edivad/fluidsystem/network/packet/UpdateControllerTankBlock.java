@@ -1,18 +1,21 @@
 package edivad.fluidsystem.network.packet;
 
-import java.util.function.Supplier;
-import edivad.fluidsystem.network.ClientPacketHandler;
+import edivad.edivadlib.network.EdivadLibPacket;
+import edivad.fluidsystem.FluidSystem;
+import edivad.fluidsystem.blockentity.tank.ControllerTankBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public record UpdateControllerTankBlock(BlockPos pos, FluidStack fluidStack, int tanksBlock,
-                                        int totalCapacity) {
+public record UpdateControllerTankBlock(
+    BlockPos pos, FluidStack fluidStack,
+    int tanksBlock, int totalCapacity) implements EdivadLibPacket {
 
-  public static UpdateControllerTankBlock decode(FriendlyByteBuf buf) {
+  public static final ResourceLocation ID = FluidSystem.rl("update_controller_tank_block");
+
+  public static UpdateControllerTankBlock read(FriendlyByteBuf buf) {
     var pos = buf.readBlockPos();
     var fluidStack = buf.readFluidStack();
     var tanksBlock = buf.readVarInt();
@@ -20,19 +23,30 @@ public record UpdateControllerTankBlock(BlockPos pos, FluidStack fluidStack, int
     return new UpdateControllerTankBlock(pos, fluidStack, tanksBlock, totalCapacity);
   }
 
-  public void encode(FriendlyByteBuf buf) {
+  @Override
+  public void write(FriendlyByteBuf buf) {
     buf.writeBlockPos(pos);
     buf.writeFluidStack(fluidStack);
     buf.writeVarInt(tanksBlock);
     buf.writeVarInt(totalCapacity);
   }
 
-  public void handle(Supplier<NetworkEvent.Context> ctx) {
-    ctx.get().enqueueWork(() -> {
-      if (FMLEnvironment.dist == Dist.CLIENT) {
-        ClientPacketHandler.updateTankBlock(pos, fluidStack, tanksBlock, totalCapacity);
+  @Override
+  public ResourceLocation id() {
+    return ID;
+  }
+
+  @Override
+  public void handle(PlayPayloadContext playPayloadContext) {
+    playPayloadContext.level().ifPresent(level -> {
+      if (level.isLoaded(pos)) {
+        var be = level.getBlockEntity(pos);
+        if (be instanceof ControllerTankBlockEntity controller) {
+          controller.clientFluidStack = fluidStack;
+          controller.tanksBlock = tanksBlock;
+          controller.totalCapacity = totalCapacity;
+        }
       }
     });
-    ctx.get().setPacketHandled(true);
   }
 }

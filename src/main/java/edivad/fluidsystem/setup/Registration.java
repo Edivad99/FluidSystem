@@ -1,5 +1,6 @@
 package edivad.fluidsystem.setup;
 
+import java.util.Collection;
 import edivad.fluidsystem.FluidSystem;
 import edivad.fluidsystem.blockentity.InfinityWaterSourceBlockEntity;
 import edivad.fluidsystem.blockentity.pipe.InputPipeBlockEntity;
@@ -18,122 +19,118 @@ import edivad.fluidsystem.blocks.tank.InputTankBlock;
 import edivad.fluidsystem.blocks.tank.InterfaceTankBlock;
 import edivad.fluidsystem.blocks.tank.StructuralTankBlock;
 import edivad.fluidsystem.container.ContainerTankBlockController;
-import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.common.extensions.IForgeMenuType;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.network.IContainerFactory;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredItem;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class Registration {
 
-  private static final DeferredRegister<Block> BLOCKS =
-      DeferredRegister.create(ForgeRegistries.BLOCKS, FluidSystem.ID);
-  public static final RegistryObject<StructuralTankBlock> STRUCTURAL_TANK_BLOCK =
+  private static final DeferredRegister.Blocks BLOCKS =
+      DeferredRegister.createBlocks(FluidSystem.ID);
+  public static final DeferredBlock<StructuralTankBlock> STRUCTURAL_TANK_BLOCK =
       BLOCKS.register("structural_tank_block", StructuralTankBlock::new);
-  public static final RegistryObject<InterfaceTankBlock> INTERFACE_TANK_BLOCK =
+  public static final DeferredBlock<InterfaceTankBlock> INTERFACE_TANK_BLOCK =
       BLOCKS.register("interface_tank_block", InterfaceTankBlock::new);
-  public static final RegistryObject<InputTankBlock> INPUT_TANK_BLOCK =
+  public static final DeferredBlock<InputTankBlock> INPUT_TANK_BLOCK =
       BLOCKS.register("input_tank_block", InputTankBlock::new);
-  public static final RegistryObject<ControllerTankBlock> CONTROLLER_TANK_BLOCK =
+  public static final DeferredBlock<ControllerTankBlock> CONTROLLER_TANK_BLOCK =
       BLOCKS.register("controller_tank_block", ControllerTankBlock::new);
-  public static final RegistryObject<InfiniteWaterSourceBlock> INFINITE_WATER_SOURCE =
+  public static final DeferredBlock<InfiniteWaterSourceBlock> INFINITE_WATER_SOURCE =
       BLOCKS.register("infinite_water_source", InfiniteWaterSourceBlock::new);
-  public static final RegistryObject<PipeBlock> PIPE = BLOCKS.register("pipe", PipeBlock::new);
-  public static final RegistryObject<PipeControllerBlock> PIPE_CONTROLLER =
+  public static final DeferredBlock<PipeBlock> PIPE = BLOCKS.register("pipe", PipeBlock::new);
+  public static final DeferredBlock<PipeControllerBlock> PIPE_CONTROLLER =
       BLOCKS.register("pipe_controller", PipeControllerBlock::new);
-  public static final RegistryObject<InputPipeBlock> INPUT_PIPE =
+  public static final DeferredBlock<InputPipeBlock> INPUT_PIPE =
       BLOCKS.register("input_pipe", InputPipeBlock::new);
-  public static final RegistryObject<OutputPipeBlock> OUTPUT_PIPE =
+  public static final DeferredBlock<OutputPipeBlock> OUTPUT_PIPE =
       BLOCKS.register("output_pipe", OutputPipeBlock::new);
-  private static final DeferredRegister<Item> ITEMS =
-      DeferredRegister.create(ForgeRegistries.ITEMS, FluidSystem.ID);
-  private static final DeferredRegister<BlockEntityType<?>> TILES =
-      DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, FluidSystem.ID);
-  public static final RegistryObject<BlockEntityType<StructuralTankBlockEntity>> STRUCTURAL_TANK_BLOCK_TILE =
-      TILES.register("structural_tank_block", () ->
-          BlockEntityType.Builder.of(StructuralTankBlockEntity::new, STRUCTURAL_TANK_BLOCK.get())
-          .build(null));
-
-  private static final DeferredRegister<MenuType<?>> CONTAINERS =
-      DeferredRegister.create(ForgeRegistries.MENU_TYPES, FluidSystem.ID);
-  public static final RegistryObject<MenuType<ContainerTankBlockController>> CONTROLLER_TANK_BLOCK_CONTAINER =
-      CONTAINERS.register("controller_tank_block", () ->
-          IForgeMenuType.create((windowId, inv, data) -> {
-            BlockPos pos = data.readBlockPos();
-            BlockEntity be = inv.player.getCommandSenderWorld().getBlockEntity(pos);
+  private static final DeferredRegister.Items ITEMS =
+      DeferredRegister.createItems(FluidSystem.ID);
+  public static final DeferredItem<BlockItem> STRUCTURAL_TANK_BLOCK_ITEM =
+      ITEMS.registerSimpleBlockItem(STRUCTURAL_TANK_BLOCK);
+  public static final DeferredItem<BlockItem> INTERFACE_TANK_BLOCK_ITEM =
+      ITEMS.registerSimpleBlockItem(INTERFACE_TANK_BLOCK);
+  public static final DeferredItem<BlockItem> INPUT_TANK_BLOCK_ITEM =
+      ITEMS.registerSimpleBlockItem(INPUT_TANK_BLOCK);
+  public static final DeferredItem<BlockItem> CONTROLLER_TANK_BLOCK_ITEM =
+      ITEMS.registerSimpleBlockItem(CONTROLLER_TANK_BLOCK);
+  public static final DeferredItem<BlockItem> INFINITE_WATER_SOURCE_ITEM =
+      ITEMS.registerSimpleBlockItem(INFINITE_WATER_SOURCE);
+  public static final DeferredItem<BlockItem> PIPE_ITEM =
+      ITEMS.registerSimpleBlockItem(PIPE);
+  public static final DeferredItem<BlockItem> PIPE_CONTROLLER_ITEM =
+      ITEMS.registerSimpleBlockItem(PIPE_CONTROLLER);
+  public static final DeferredItem<BlockItem> INPUT_PIPE_ITEM =
+      ITEMS.registerSimpleBlockItem(INPUT_PIPE);
+  public static final DeferredItem<BlockItem> OUTPUT_PIPE_ITEM =
+      ITEMS.registerSimpleBlockItem(OUTPUT_PIPE);
+  private static final DeferredRegister<MenuType<?>> MENU =
+      DeferredRegister.create(BuiltInRegistries.MENU, FluidSystem.ID);
+  public static final DeferredHolder<MenuType<?>, MenuType<ContainerTankBlockController>> CONTROLLER_TANK_BLOCK_MENU =
+      MENU.register("controller_tank_block", () ->
+          new MenuType<>((IContainerFactory<ContainerTankBlockController>) (id, inventory, buf) -> {
+            var pos = buf.readBlockPos();
+            var be = inventory.player.getCommandSenderWorld().getBlockEntity(pos);
             if (!(be instanceof ControllerTankBlockEntity blockentity)) {
-              FluidSystem.LOGGER
-                  .error("Wrong type of blockentity (expected ControllerTankBlockEntity)!");
+              FluidSystem.LOGGER.error("Wrong type of blockentity (expected ControllerTankBlockEntity)!");
               return null;
             }
-            return new ContainerTankBlockController(windowId, inv.player.getInventory(), blockentity);
-      }));
-  public static final RegistryObject<Item> STRUCTURAL_TANK_BLOCK_ITEM =
-      ITEMS.register("structural_tank_block",
-          () -> new BlockItem(STRUCTURAL_TANK_BLOCK.get(), new Item.Properties()));
+            return new ContainerTankBlockController(id, inventory.player.getInventory(), blockentity);
+          }, FeatureFlags.DEFAULT_FLAGS)
+      );
 
-  public static final RegistryObject<BlockEntityType<InterfaceTankBlockEntity>> INTERFACE_TANK_BLOCK_TILE =
-      TILES.register("interface_tank_block",
-      () -> BlockEntityType.Builder.of(InterfaceTankBlockEntity::new, INTERFACE_TANK_BLOCK.get())
-          .build(null));
-  public static final RegistryObject<Item> INTERFACE_TANK_BLOCK_ITEM =
-      ITEMS.register("interface_tank_block",
-          () -> new BlockItem(INTERFACE_TANK_BLOCK.get(), new Item.Properties()));
-  public static final RegistryObject<Item> INPUT_TANK_BLOCK_ITEM =
-      ITEMS.register("input_tank_block",
-          () -> new BlockItem(INPUT_TANK_BLOCK.get(), new Item.Properties()));
-  public static final RegistryObject<Item> CONTROLLER_TANK_BLOCK_ITEM =
-      ITEMS.register("controller_tank_block",
-          () -> new BlockItem(CONTROLLER_TANK_BLOCK.get(), new Item.Properties()));
-  public static final RegistryObject<Item> INFINITE_WATER_SOURCE_ITEM =
-      ITEMS.register("infinite_water_source",
-          () -> new BlockItem(INFINITE_WATER_SOURCE.get(), new Item.Properties()));
-  public static final RegistryObject<Item> PIPE_ITEM = ITEMS.register("pipe",
-      () -> new BlockItem(PIPE.get(), new Item.Properties()));
+  private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY =
+      DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, FluidSystem.ID);
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<StructuralTankBlockEntity>> STRUCTURAL_TANK_BLOCK_ENTITY =
+      BLOCK_ENTITY.register("structural_tank_block", () ->
+          BlockEntityType.Builder.of(StructuralTankBlockEntity::new, STRUCTURAL_TANK_BLOCK.get())
+              .build(null));
 
-  public static final RegistryObject<BlockEntityType<InputTankBlockEntity>> INPUT_TANK_BLOCK_TILE =
-      TILES.register("input_tank_block",
-          () -> BlockEntityType.Builder.of(InputTankBlockEntity::new, INPUT_TANK_BLOCK.get())
-          .build(null));
-  public static final RegistryObject<Item> PIPE_CONTROLLER_ITEM =
-      ITEMS.register("pipe_controller",
-          () -> new BlockItem(PIPE_CONTROLLER.get(), new Item.Properties()));
-  public static final RegistryObject<Item> INPUT_PIPE_ITEM =
-      ITEMS.register("input_pipe",
-      () -> new BlockItem(INPUT_PIPE.get(), new Item.Properties()));
-  public static final RegistryObject<Item> OUTPUT_PIPE_ITEM =
-      ITEMS.register("output_pipe",
-      () -> new BlockItem(OUTPUT_PIPE.get(), new Item.Properties()));
-
-  public static final RegistryObject<BlockEntityType<ControllerTankBlockEntity>> CONTROLLER_TANK_BLOCK_TILE =
-      TILES.register("controller_tank_block",
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ControllerTankBlockEntity>> CONTROLLER_TANK_BLOCK_ENTITY =
+      BLOCK_ENTITY.register("controller_tank_block",
       () -> BlockEntityType.Builder.of(ControllerTankBlockEntity::new, CONTROLLER_TANK_BLOCK.get())
           .build(null));
 
-  public static final RegistryObject<BlockEntityType<InfinityWaterSourceBlockEntity>> INFINITE_WATER_SOURCE_TILE =
-      TILES.register("infinite_water_source",
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<InterfaceTankBlockEntity>> INTERFACE_TANK_BLOCK_ENTITY =
+      BLOCK_ENTITY.register("interface_tank_block",
+          () -> BlockEntityType.Builder.of(InterfaceTankBlockEntity::new, INTERFACE_TANK_BLOCK.get())
+              .build(null));
+
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<InfinityWaterSourceBlockEntity>> INFINITE_WATER_SOURCE_BLOCK_ENTITY =
+      BLOCK_ENTITY.register("infinite_water_source",
           () -> BlockEntityType.Builder.of(InfinityWaterSourceBlockEntity::new,
           INFINITE_WATER_SOURCE.get()).build(null));
 
-  public static final RegistryObject<BlockEntityType<InputPipeBlockEntity>> INPUT_PIPE_TILE =
-      TILES.register("input_pipe",
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<InputTankBlockEntity>> INPUT_TANK_BLOCK_ENTITY =
+      BLOCK_ENTITY.register("input_tank_block",
+          () -> BlockEntityType.Builder.of(InputTankBlockEntity::new, INPUT_TANK_BLOCK.get())
+              .build(null));
+
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<InputPipeBlockEntity>> INPUT_PIPE_BLOCK_ENTITY =
+      BLOCK_ENTITY.register("input_pipe",
       () -> BlockEntityType.Builder.of(InputPipeBlockEntity::new, INPUT_PIPE.get()).build(null));
 
-  public static final RegistryObject<BlockEntityType<OutputPipeBlockEntity>> OUTPUT_PIPE_TILE =
-      TILES.register("output_pipe",
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<OutputPipeBlockEntity>> OUTPUT_PIPE_BLOCK_ENTITY =
+      BLOCK_ENTITY.register("output_pipe",
       () -> BlockEntityType.Builder.of(OutputPipeBlockEntity::new, OUTPUT_PIPE.get()).build(null));
+
+  public static Collection<DeferredHolder<Block, ? extends Block>> getBlockEntries() {
+    return BLOCKS.getEntries();
+  }
 
   public static void init(IEventBus eventBus) {
     BLOCKS.register(eventBus);
     ITEMS.register(eventBus);
-    TILES.register(eventBus);
-    CONTAINERS.register(eventBus);
+    BLOCK_ENTITY.register(eventBus);
+    MENU.register(eventBus);
   }
 }

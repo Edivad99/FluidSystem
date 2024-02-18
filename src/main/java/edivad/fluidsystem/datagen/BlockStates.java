@@ -4,8 +4,8 @@ import java.util.List;
 import edivad.fluidsystem.FluidSystem;
 import edivad.fluidsystem.setup.Registration;
 import net.minecraft.data.PackOutput;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class BlockStates extends CustomBlockStateProvider {
 

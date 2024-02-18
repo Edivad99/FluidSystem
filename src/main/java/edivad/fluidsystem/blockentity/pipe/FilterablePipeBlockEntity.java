@@ -12,8 +12,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public class FilterablePipeBlockEntity extends BlockEntity implements IFluidSystemFilterable {
 
@@ -73,8 +72,7 @@ public class FilterablePipeBlockEntity extends BlockEntity implements IFluidSyst
     }
     setChanged();
     if (!level.isClientSide) {
-      PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(),
-          new UpdateFilterablePipeBlock(getBlockPos(), fluidFilter));
+      PacketHandler.sendToAll(new UpdateFilterablePipeBlock(getBlockPos(), fluidFilter));
     }
   }
 

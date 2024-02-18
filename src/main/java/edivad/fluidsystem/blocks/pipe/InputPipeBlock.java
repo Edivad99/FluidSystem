@@ -16,6 +16,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -25,8 +26,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class InputPipeBlock extends FilterableBlock implements IFluidSystemConnectableBlock,
     EntityBlock {
@@ -48,11 +47,10 @@ public class InputPipeBlock extends FilterableBlock implements IFluidSystemConne
   @Override
   public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
       BlockEntityType<T> blockEntityType) {
-    BlockEntityTicker<InputPipeBlockEntity> serverTicker = InputPipeBlockEntity::serverTick;
-    if (Registration.INPUT_PIPE_TILE.get() == blockEntityType && !level.isClientSide) {
-      return (BlockEntityTicker<T>) serverTicker;
-    }
-    return null;
+    return level.isClientSide()
+        ? null
+        : BaseEntityBlock.createTickerHelper(blockEntityType,
+            Registration.INPUT_PIPE_BLOCK_ENTITY.get(), InputPipeBlockEntity::serverTick);
   }
 
   @Override
@@ -80,7 +78,6 @@ public class InputPipeBlock extends FilterableBlock implements IFluidSystemConne
     }
   }
 
-  @OnlyIn(Dist.CLIENT)
   @Override
   public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip,
       TooltipFlag flagIn) {
