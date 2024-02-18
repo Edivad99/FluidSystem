@@ -18,7 +18,7 @@ public class MyFluidElement extends FluidElement {
   }
 
   public MyFluidElement(FriendlyByteBuf buf) {
-    super(buf.readFluidStack(), buf.readInt(), buf.readInt());
+    super(buf);
   }
 
   @Override

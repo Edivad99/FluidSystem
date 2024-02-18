@@ -19,9 +19,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
 public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, Void> {
@@ -47,12 +45,12 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
   @Override
   public void addProbeInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level level,
       BlockState state, IProbeHitData data) {
-    BlockEntity te = level.getBlockEntity(data.getPos());
+    var te = level.getBlockEntity(data.getPos());
 
     if (te instanceof BaseTankBlockEntity tankBlock) {
-      BaseTankBlockEntity tankBase = tankBlock.getMaster();
+      var tankBase = tankBlock.getMaster();
       if (tankBase != null) {
-        ControllerTankBlockEntity controller = (ControllerTankBlockEntity) tankBase;
+        var controller = (ControllerTankBlockEntity) tankBase;
 
         var blocks = String.format("%d/%d", controller.getNumberOfTanksBlock(),
             Config.Tank.NUMBER_OF_MODULES.get());
@@ -64,9 +62,9 @@ public class TOPProvider implements IProbeInfoProvider, Function<ITheOneProbe, V
         }
       }
     } else if (te instanceof FilterablePipeBlockEntity blockOutputPipe) {
-      Fluid filter = blockOutputPipe.getFluidFilter();
+      var filter = blockOutputPipe.getFluidFilter();
       if (!filter.isSame(Fluids.EMPTY)) {
-        String fluidName = Component.translatable(filter.getFluidType().getDescriptionId())
+        var fluidName = Component.translatable(filter.getFluidType().getDescriptionId())
             .getString();
         probeInfo.horizontal().text(Component.translatable(Translations.FLUID_FILTERED, fluidName));
       }

@@ -97,8 +97,8 @@ public class Registration {
 
   public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ControllerTankBlockEntity>> CONTROLLER_TANK_BLOCK_ENTITY =
       BLOCK_ENTITY.register("controller_tank_block",
-      () -> BlockEntityType.Builder.of(ControllerTankBlockEntity::new, CONTROLLER_TANK_BLOCK.get())
-          .build(null));
+          () -> BlockEntityType.Builder.of(ControllerTankBlockEntity::new, CONTROLLER_TANK_BLOCK.get())
+              .build(null));
 
   public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<InterfaceTankBlockEntity>> INTERFACE_TANK_BLOCK_ENTITY =
       BLOCK_ENTITY.register("interface_tank_block",
@@ -107,8 +107,8 @@ public class Registration {
 
   public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<InfinityWaterSourceBlockEntity>> INFINITE_WATER_SOURCE_BLOCK_ENTITY =
       BLOCK_ENTITY.register("infinite_water_source",
-          () -> BlockEntityType.Builder.of(InfinityWaterSourceBlockEntity::new,
-          INFINITE_WATER_SOURCE.get()).build(null));
+          () -> BlockEntityType.Builder.of(InfinityWaterSourceBlockEntity::new, INFINITE_WATER_SOURCE.get())
+              .build(null));
 
   public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<InputTankBlockEntity>> INPUT_TANK_BLOCK_ENTITY =
       BLOCK_ENTITY.register("input_tank_block",
@@ -117,11 +117,13 @@ public class Registration {
 
   public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<InputPipeBlockEntity>> INPUT_PIPE_BLOCK_ENTITY =
       BLOCK_ENTITY.register("input_pipe",
-      () -> BlockEntityType.Builder.of(InputPipeBlockEntity::new, INPUT_PIPE.get()).build(null));
+          () -> BlockEntityType.Builder.of(InputPipeBlockEntity::new, INPUT_PIPE.get())
+              .build(null));
 
   public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<OutputPipeBlockEntity>> OUTPUT_PIPE_BLOCK_ENTITY =
       BLOCK_ENTITY.register("output_pipe",
-      () -> BlockEntityType.Builder.of(OutputPipeBlockEntity::new, OUTPUT_PIPE.get()).build(null));
+          () -> BlockEntityType.Builder.of(OutputPipeBlockEntity::new, OUTPUT_PIPE.get())
+              .build(null));
 
   public static Collection<DeferredHolder<Block, ? extends Block>> getBlockEntries() {
     return BLOCKS.getEntries();

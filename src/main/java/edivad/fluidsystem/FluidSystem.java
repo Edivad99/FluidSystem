@@ -19,7 +19,6 @@ import edivad.fluidsystem.setup.ClientSetup;
 import edivad.fluidsystem.setup.Config;
 import edivad.fluidsystem.setup.FluidsystemCreativeModeTabs;
 import edivad.fluidsystem.setup.Registration;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -32,6 +31,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
@@ -46,6 +46,7 @@ public class FluidSystem {
     Registration.init(modEventBus);
     modEventBus.addListener(this::handleCommonSetup);
     modEventBus.addListener(this::handleClientSetup);
+    modEventBus.addListener(this::handleRegisterMenuScreens);
     modEventBus.addListener(this::handleGatherData);
     modEventBus.addListener(this::handleRegisterCapabilities);
     FluidsystemCreativeModeTabs.register(modEventBus);
@@ -66,8 +67,10 @@ public class FluidSystem {
 
   private void handleClientSetup(FMLClientSetupEvent event) {
     NeoForge.EVENT_BUS.register(new UpdateChecker(ID));
-    MenuScreens.register(Registration.CONTROLLER_TANK_BLOCK_MENU.get(),
-        ScreenModularTank::new);
+  }
+
+  private void handleRegisterMenuScreens(RegisterMenuScreensEvent event) {
+    event.register(Registration.CONTROLLER_TANK_BLOCK_MENU.get(), ScreenModularTank::new);
   }
 
   private void handleGatherData(GatherDataEvent event) {
